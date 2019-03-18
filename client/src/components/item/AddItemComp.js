@@ -16,17 +16,23 @@ class LoginFormComp extends Component {
   onSubmit(e) {
     e.preventDefault();
     console.log(this.props);
-    
+    console.log(this.state);
+
     axios
-      .post("/api/auth/login", this.state)
+      .post("/api/items", this.state, {
+        headers: { "x-access-token": sessionStorage.getItem("jwtToken") }
+      })
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+
+    /* axios
+      .post("/api/items/", this.state)
       .then(res => {
         console.log(res);
-        sessionStorage.setItem("jwtToken", res.data.token)
-        this.props.history.push('/');
+        //sessionStorage.setItem("jwtToken", res.data.token);
+        //this.props.history.push("/");
       })
-      .catch(err => console.log(err.response.data));
-
-     
+      .catch(err => console.log(err.response.data)); */
   }
 
   componentDidMount() {}
@@ -38,54 +44,56 @@ class LoginFormComp extends Component {
           <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div className="card card-signin my-5">
               <div className="card-body">
-                <h5 className="card-title text-center">Sign In</h5>
+                <h5 className="card-title text-center">Add item</h5>
                 <form className="form-signin" onSubmit={this.onSubmit}>
-                  <label for="inputEmail" className="sr-only">
-                    Email address
+                  <label for="name" className="sr-only">
+                    Name
                   </label>
                   <input
-                    type="email"
-                    id="inputEmail"
+                    type="text"
+                    id="name"
                     className="form-control"
-                    placeholder="Email address"
+                    placeholder="Item name"
                     required
                     autofocus
-                    name="email"
+                    name="name"
                     onChange={this.onValuChange}
                   />
                   <br />
-                  <label for="inputPassword" className="sr-only">
-                    Password
+                  <label for="description" className="sr-only">
+                    Description
                   </label>
                   <input
-                    type="password"
-                    id="inputPassword"
+                    type="text"
+                    id="description"
                     className="form-control"
-                    placeholder="Password"
+                    placeholder="Item description"
                     required
-                    name="password"
+                    autofocus
+                    name="description"
                     onChange={this.onValuChange}
                   />
                   <br />
-                  <div className="checkbox">
-                    <label>
-                      <input type="checkbox" value="remember-me" /> Remember me
-                    </label>
-                  </div>
+                  <label for="price" className="sr-only">
+                    Price (LKR)
+                  </label>
+                  <input
+                    type="text"
+                    id="price"
+                    className="form-control"
+                    placeholder="Item price"
+                    required
+                    autofocus
+                    name="price"
+                    onChange={this.onValuChange}
+                  />
+                  <br />
+
                   <button
                     className="btn btn-lg btn-primary btn-block"
                     type="submit"
                   >
-                    Sign in
-                  </button>
-                  <button className="btn btn-lg btn-facebook btn-block text-uppercase">
-                    <i className="fab fa-google mr-2" /> Sign in with Google
-                  </button>
-                  <button
-                    className="btn btn-lg btn-facebook btn-block text-uppercase"
-                    type="submit"
-                  >
-                    <i className="fab fa-facebook-f mr-2" /> Sign in with Facebook
+                    Add item
                   </button>
                 </form>
               </div>

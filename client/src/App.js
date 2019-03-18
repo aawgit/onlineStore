@@ -4,6 +4,7 @@ import Home from "./routes/Home";
 import Login from "./routes/Login";
 import Register from "./routes/Register";
 import Item from "./routes/Item";
+import AddItem from "./routes/AddItem";
 import NavBarComp from "./components/NavBarComp";
 import FooterComp from "./components/FooterComp";
 
@@ -18,6 +19,7 @@ class App extends Component {
             <Route path="/login/" component={Login}/>
             <Route path="/register" component={Register}/>
             <Route path="/viewItem/:id" component={Item}/>
+            <Route path="/addItem/" component={AddItem}/>
           </div>
           <FooterComp />
         </div>
