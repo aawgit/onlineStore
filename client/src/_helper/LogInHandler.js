@@ -1,4 +1,4 @@
 module.exports = {checkLoggedIn(){
-    if(sessionStorage.getItem("jwtToken")) return true;
+    if(sessionStorage.getItem("user")) return true;
     else return false;
 }}

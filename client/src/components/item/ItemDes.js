@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import ReactDOM from "react-dom";
 
 class ItemDes extends Component {
   constructor(props) {
@@ -14,16 +15,44 @@ class ItemDes extends Component {
         __v: 0
       }
     };
+    this.onDeleteClick = this.onDeleteClick.bind(this);
   }
+
   componentDidMount() {
     var self = this;
     axios
       .get("api/items/" + this.props.id)
       .then(function(res) {
         self.setState({ itemDesc: res.data });
+        console.log(JSON.parse(sessionStorage.getItem("user")).userId);
+        if (
+          JSON.parse(sessionStorage.getItem("user")).userId ===
+          res.data.owner._id
+        ) {
+          const deleteButton = (
+            <button className="btn btn-lg btn-danger btn-block" onClick={self.onDeleteClick}>
+              Delete item
+            </button>
+          );
+          ReactDOM.render(deleteButton, document.getElementById("delete"));
+        }
       })
       .catch(function(err) {
         console.log(err);
+      });
+  }
+
+  onDeleteClick(e) {
+    e.preventDefault();
+    axios
+      .delete("/api/items/"+this.state.itemDesc._id, {
+        headers: { "x-access-token": JSON.parse(sessionStorage.getItem("user")).jwtToken }
+      })
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err.response.data);
       });
   }
 
@@ -52,6 +81,8 @@ class ItemDes extends Component {
             <button className="btn btn-lg btn-primary btn-block" type="submit">
               Contact the seller
             </button>
+            <br />
+            <div id="delete" />
           </div>
         </div>
       </div>

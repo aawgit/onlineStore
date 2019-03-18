@@ -44,9 +44,10 @@ router.get('/', function (req, res) {
 
 // DELETES AN ITEM FROM THE DATABASE
 router.delete('/:id',  VerifyToken, function (req, res) {
+    console.log(req.params.id)
     Item.findByIdAndRemove(req.params.id, function (err, item) {
         if (err) return res.status(500).send("There was a problem deleting the item.");
-        res.status(200).send("Itemr: "+ item.name +" was deleted.");
+        if(item) return res.status(200).send("Iteme: "+ item.name +" was deleted.");
     });
 });
 

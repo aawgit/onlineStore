@@ -20,7 +20,7 @@ class LoginFormComp extends Component {
 
     axios
       .post("/api/items", this.state, {
-        headers: { "x-access-token": sessionStorage.getItem("jwtToken") }
+        headers: { "x-access-token": JSON.parse(sessionStorage.getItem("user")).jwtToken }
       })
       .then(res => console.log(res))
       .catch(err => console.log(err));

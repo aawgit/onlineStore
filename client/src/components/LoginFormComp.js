@@ -21,7 +21,7 @@ class LoginFormComp extends Component {
       .post("/api/auth/login", this.state)
       .then(res => {
         console.log(res);
-        sessionStorage.setItem("jwtToken", res.data.token)
+        sessionStorage.setItem("user", JSON.stringify({"jwtToken": res.data.token, "userId": res.data.userId}));
         this.props.history.push('/');
       })
       .catch(err => console.log(err.response.data));

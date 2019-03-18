@@ -51,8 +51,8 @@ router.post("/register", function(req, res) {
             subject: "Please verify the email address", // Subject line
             html: `<h4>Thank you for registering.<h4>
             <p>Please verify this email address by clicking the following link</p>
-            <a href="http://localhost:5000/api/auth/verify/${user.secretToken}">
-            http://localhost:5000/api/auth/verify/${user.secretToken}</a>`
+            <a href="https://frozen-lake-54898.herokuapp.com/api/auth/verify/${user.secretToken}">
+            https://frozen-lake-54898.herokuapp.com/api/auth/verify/${user.secretToken}</a>`
           };
 
           mailer.sendMail(mailOptions);
@@ -80,7 +80,7 @@ router.post("/login", function(req, res) {
     var token = jwt.sign({ id: user._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     });
-    res.status(200).send({ auth: true, token: token });
+    res.status(200).send({ auth: true, token: token, userId:user._id });
   });
 });
 
