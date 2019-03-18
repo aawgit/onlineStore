@@ -23,7 +23,9 @@ class LoginFormComp extends Component {
         console.log(res);
         this.props.history.push('/');
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err.response.data));
+
+     
   }
 
   componentDidMount() {}
@@ -31,19 +33,19 @@ class LoginFormComp extends Component {
   render() {
     return (
       <div className="container">
-        <div class="row">
-          <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <div class="card card-signin my-5">
-              <div class="card-body">
-                <h5 class="card-title text-center">Sign In</h5>
-                <form class="form-signin" onSubmit={this.onSubmit}>
-                  <label for="inputEmail" class="sr-only">
+        <div className="row">
+          <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div className="card card-signin my-5">
+              <div className="card-body">
+                <h5 className="card-title text-center">Sign In</h5>
+                <form className="form-signin" onSubmit={this.onSubmit}>
+                  <label for="inputEmail" className="sr-only">
                     Email address
                   </label>
                   <input
                     type="email"
                     id="inputEmail"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Email address"
                     required
                     autofocus
@@ -51,38 +53,38 @@ class LoginFormComp extends Component {
                     onChange={this.onValuChange}
                   />
                   <br />
-                  <label for="inputPassword" class="sr-only">
+                  <label for="inputPassword" className="sr-only">
                     Password
                   </label>
                   <input
                     type="password"
                     id="inputPassword"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Password"
                     required
                     name="password"
                     onChange={this.onValuChange}
                   />
                   <br />
-                  <div class="checkbox">
+                  <div className="checkbox">
                     <label>
                       <input type="checkbox" value="remember-me" /> Remember me
                     </label>
                   </div>
                   <button
-                    class="btn btn-lg btn-primary btn-block"
+                    className="btn btn-lg btn-primary btn-block"
                     type="submit"
                   >
                     Sign in
                   </button>
-                  <button class="btn btn-lg btn-facebook btn-block text-uppercase">
-                    <i class="fab fa-google mr-2" /> Sign in with Google
+                  <button className="btn btn-lg btn-facebook btn-block text-uppercase">
+                    <i className="fab fa-google mr-2" /> Sign in with Google
                   </button>
                   <button
-                    class="btn btn-lg btn-facebook btn-block text-uppercase"
+                    className="btn btn-lg btn-facebook btn-block text-uppercase"
                     type="submit"
                   >
-                    <i class="fab fa-facebook-f mr-2" /> Sign in with Facebook
+                    <i className="fab fa-facebook-f mr-2" /> Sign in with Facebook
                   </button>
                 </form>
               </div>

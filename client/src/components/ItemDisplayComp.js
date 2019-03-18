@@ -1,5 +1,6 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 class ItemDisplayComp extends React.Component {
   constructor(props) {
@@ -10,23 +11,20 @@ class ItemDisplayComp extends React.Component {
   }
 
   componentDidMount() {
-    this.setState(
-      {
-        items: [
-          { name: "item 1" },
-          { name: "item 2" },
-          { name: "item 3" },
-          { name: "item 4" }
-        ]
-      },
-      function() {
-        console.log(this.state);
-      }
-    );
+    var self = this;
+    axios
+      .get("api/items")
+      .then(function(response) {
+        self.setState({ items: response.data });
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   render() {
-    const { items } = this.state;
+    const items = this.state.items;
+    //console.log(items);
     return (
       <div>
         <main role="main">
@@ -34,27 +32,23 @@ class ItemDisplayComp extends React.Component {
             <div className="container">
               <div className="row">
                 {items.map(item => (
-                  <div className="col-md-4">
+                  <div className="col-md-4" key={item._id}>
                     <div className="card mb-4 shadow-sm">
-                      <svg
-                        className="bd-placeholder-img card-img-top"
-                        width="100%"
-                        height="225"
-                        xmlns="http://www.w3.org/2000/svg"
-                        preserveAspectRatio="xMidYMid slice"
-                        focusable="false"
-                        role="img"
-                        aria-label="Placeholder: Thumbnail"
+                      <a
+                        href={"/#/viewItem/" + item._id + "/#"}
+                        className="card-img-top-new"
                       >
-                        <title>{item.name}</title>
-                        <rect width="100%" height="100%" fill="#55595c" />
-                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                          {item.name}
-                        </text>
-                      </svg>
+                        <img src={"/images/" + item._id + "/img_1.jpeg"} className="card-img-top-new"/>
+                      </a>
                       <div className="card-body">
+                        <h5>{item.name}</h5>
+                        <br />
                         <p className="card-text">
-                          This rendered content from dynamic data.
+                          {item.description}
+                          <br />
+                          {item.price}
+                          <br />
+                          {item.owner.name}
                         </p>
                         <div className="d-flex justify-content-between align-items-center">
                           <div className="btn-group">

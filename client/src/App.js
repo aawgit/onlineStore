@@ -3,6 +3,7 @@ import { Route, HashRouter } from "react-router-dom";
 import Home from "./routes/Home";
 import Login from "./routes/Login";
 import Register from "./routes/Register";
+import Item from "./routes/Item";
 import NavBarComp from "./components/NavBarComp";
 import FooterComp from "./components/FooterComp";
 
@@ -14,8 +15,9 @@ class App extends Component {
           <NavBarComp />
           <div className="content">
             <Route exact path="/" component={Home}/>
-            <Route path="/login" component={Login}/>
+            <Route path="/login/" component={Login}/>
             <Route path="/register" component={Register}/>
+            <Route path="/viewItem/:id" component={Item}/>
           </div>
           <FooterComp />
         </div>

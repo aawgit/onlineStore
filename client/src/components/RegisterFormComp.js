@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { request } from "https";
+import ReactDOM from "react-dom";
 
 class RegisterFormComp extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class RegisterFormComp extends Component {
   }
 
   onSubmit(e) {
+    var message = "";
     e.preventDefault();
 
     let newUser = {
@@ -24,8 +26,16 @@ class RegisterFormComp extends Component {
     };
     axios
       .post("/api/auth/register", newUser)
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .then(res => {
+        message = `Verification e-mail has been sent to ${res.data}.`;
+        ReactDOM.render(message, document.getElementById("message"));
+        console.log(res.data);
+      })
+      .catch(err => {
+        message = `Oops! There is a problem. ${err.response.data.message}.`;
+        ReactDOM.render(message, document.getElementById("message"));
+        console.log(err.response.data);
+      });
   }
 
   componentDidMount() {}
@@ -101,6 +111,8 @@ class RegisterFormComp extends Component {
                   >
                     Register
                   </button>
+                  <br />
+                  <div id="message" />
                 </form>
               </div>
             </div>
