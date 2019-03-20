@@ -1,26 +1,35 @@
 import React, { Component } from "react";
 import ItemPic from "../components/item/ItemPic";
 import ItemDes from "../components/item/ItemDes";
+import axios from "axios";
 
 class Item extends Component {
   constructor(props) {
     super(props);
-    this.state = { itemId: this.props.match.params.id };
+    this.state = { "": "", owner: { name: "", id: "" } };
   }
 
   componentDidMount() {
-    //this.setState({ itemId: this.props.match.params.id });
+    var self = this;
+    axios
+      .get("api/items/" + this.props.match.params.id)
+      .then(function(res) {
+        self.setState(res.data);
+        //self.setState({owner:{name:"Adam Sandler", id:"some id"}});
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
   }
 
   render() {
+    console.log(this.state.owner.name);
     return (
       <div className="container">
         <div className="row">
-          
-            
-              <ItemPic id={this.state.itemId} />
-            
-          <ItemDes id={this.state.itemId} />
+          <ItemPic imageLocation={this.state.imageLocation} />
+
+          <ItemDes item={this.state} />
         </div>
       </div>
     );

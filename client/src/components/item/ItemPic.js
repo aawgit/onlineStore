@@ -5,14 +5,9 @@ class ItemPic extends Component {
     return (
       <div className="col-sm-9 col-md-6 col-lg-5">
         <div className="card card-signin my-5">
-          
-            <img
-              src={"/images/" + this.props.id + "/img_1.jpeg"}
-              className="card-img-top-new"
-            />
-          </div>
+          <img src={this.props.imageLocation} className="card-img-top-new" />
         </div>
-      
+      </div>
     );
   }
 }

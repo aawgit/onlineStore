@@ -38,7 +38,7 @@ class ItemDisplayComp extends React.Component {
                         href={"/#/viewItem/" + item._id + "/#"}
                         className="card-img-top-new"
                       >
-                        <img src={"/images/" + item._id + "/img_1.jpeg"} className="card-img-top-new"/>
+                        <img src={item.imageLocation} className="card-img-top-new"/>
                       </a>
                       <div className="card-body">
                         <h5>{item.name}</h5>
@@ -52,18 +52,18 @@ class ItemDisplayComp extends React.Component {
                         </p>
                         <div className="d-flex justify-content-between align-items-center">
                           <div className="btn-group">
-                            <button
+                            <a href={"/#/viewItem/"+item._id}
                               type="button"
                               className="btn btn-sm btn-outline-secondary"
                             >
                               View
-                            </button>
-                            <button
+                            </a>
+                            <a href={"/#/editItem/"+item._id}
                               type="button"
                               className="btn btn-sm btn-outline-secondary"
                             >
                               Edit
-                            </button>
+                            </a>
                           </div>
                           <small className="text-muted">9 mins</small>
                         </div>

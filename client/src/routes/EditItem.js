@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import AddItemComp from "../components/item/AddItemComp";
+import EditItemComp from "../components/item/EditItemComp";
 import LoginHandler from "../_helper/LogInHandler";
 
 class AddItem extends Component {
@@ -8,7 +8,7 @@ class AddItem extends Component {
     if (LoginHandler.checkLoggedIn()) {
       return (
         <div>
-          <AddItemComp history={this.props.history} />
+          <EditItemComp history={this.props.history} itemId={this.props.match.params.id} />
         </div>
       );
     } else {

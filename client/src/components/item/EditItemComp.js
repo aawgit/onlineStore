@@ -5,43 +5,24 @@ import { Redirect } from "react-router-dom";
 class LoginFormComp extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: "", description: "", price: "", file: "" };
-    this.onValueChange = this.onValueChange.bind(this);
+    this.state = {};
+    this.onValuChange = this.onValuChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.onfileUpload = this.onfileUpload.bind(this);
   }
 
-  onValueChange(e) {
-    switch (e.target.name) {
-      case "file":
-        this.setState({ file: e.target.files[0] });
-        break;
-      default:
-        this.setState({ [e.target.name]: e.target.value });
-    }
-  }
-
-  onfileUpload(e) {
-    e.preventDefault();
-    console.log(e.target.files[0]);
-    this.setState({ file: e.target.files[0] });
-    console.log(this.state);
+  onValuChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   onSubmit(e) {
     e.preventDefault();
-    let formData = new FormData();
-    const { name, description, price, file } = this.state;
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("price", price);
-    formData.append("file", file);
     console.log(this.state);
+    //console.log(this.state);
+
     axios
-      .post("/api/items", formData, {
+      .put("/api/items/" + this.props.itemId, this.state, {
         headers: {
           "x-access-token": JSON.parse(sessionStorage.getItem("user")).jwtToken
-          //"Content-Type": "application/x-www-form-urlencoded"
         }
       })
       .then(res => {
@@ -60,7 +41,30 @@ class LoginFormComp extends Component {
       .catch(err => console.log(err.response.data)); */
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    var self = this;
+    axios
+      .get("api/items/" + this.props.itemId)
+      .then(function(res) {
+        self.setState(res.data);
+        console.log(self.state);
+       /*  console.log(JSON.parse(sessionStorage.getItem("user")).userId);
+        if (
+          JSON.parse(sessionStorage.getItem("user")).userId ===
+          res.data.owner._id
+        ) {
+          const deleteButton = (
+            <button className="btn btn-lg btn-danger btn-block" onClick={self.onDeleteClick}>
+              Delete item
+            </button>
+          );
+          ReactDOM.render(deleteButton, document.getElementById("delete")); 
+        }*/
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+  }
 
   render() {
     return (
@@ -69,12 +73,8 @@ class LoginFormComp extends Component {
           <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div className="card card-signin my-5">
               <div className="card-body">
-                <h5 className="card-title text-center">Add item</h5>
-                <form
-                  className="form-signin"
-                  onSubmit={this.onSubmit}
-                  enctype="multipart/form-data"
-                >
+                <h5 className="card-title text-center">Edit item</h5>
+                <form className="form-signin" onSubmit={this.onSubmit}>
                   <label for="name" className="sr-only">
                     Name
                   </label>
@@ -86,7 +86,8 @@ class LoginFormComp extends Component {
                     required
                     autofocus
                     name="name"
-                    onChange={this.onValueChange}
+                    onChange={this.onValuChange}
+                    value={this.state.name}
                   />
                   <br />
                   <label for="description" className="sr-only">
@@ -100,7 +101,8 @@ class LoginFormComp extends Component {
                     required
                     autofocus
                     name="description"
-                    onChange={this.onValueChange}
+                    onChange={this.onValuChange}
+                    value={this.state.description}
                   />
                   <br />
                   <label for="price" className="sr-only">
@@ -114,21 +116,16 @@ class LoginFormComp extends Component {
                     required
                     autofocus
                     name="price"
-                    onChange={this.onValueChange}
+                    onChange={this.onValuChange}
+                    value={this.state.price}
                   />
                   <br />
-                  <input
-                    type="file"
-                    name="file"
-                    accept="image/*"
-                    id="file"
-                    onChange={this.onValueChange}
-                  />
+
                   <button
                     className="btn btn-lg btn-primary btn-block"
                     type="submit"
                   >
-                    Add item
+                    Save changes
                   </button>
                 </form>
               </div>

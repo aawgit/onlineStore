@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import {signOut} from "../_helper/LogInHandler";
 
 class NavBarComp extends React.Component {
   render() {
@@ -13,9 +14,9 @@ class NavBarComp extends React.Component {
                 <p className="text-muted">This is an online shop.</p>
               </div>
               <div className="col-sm-4 offset-md-1 py-4">
-                <NavLink to="login"><h4 className="text-white">Sign in</h4></NavLink>                
-                <NavLink to="register"><h4 className="text-white">Register</h4></NavLink>
-                <h4 className="text-white">Contact</h4>
+                <a href="#/login"><h4 className="text-white">Sign in</h4></a>                
+                <a href="#/register"><h4 className="text-white">Register</h4></a>
+                <a href="" onClick={signOut}><h4 className="text-white">Sign out</h4> </a>
               </div>
             </div>
           </div>
