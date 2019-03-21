@@ -16,8 +16,23 @@ class ItemDes extends Component {
     this.onDeleteClick = this.onDeleteClick.bind(this);
   }
 
-  componentDidMount() {
-     
+  componentDidMount() {}
+
+  displayEdit() {
+    const user = sessionStorage.getItem("user");
+    const {item} = this.props;
+    if (user) {
+      if (JSON.parse(user).userId === item.owner._id) {
+        return (
+          <a href={"/#/editItem/"+item._id} className="btn btn-lg btn-secondary btn-block">Edit</a>
+        );
+      }
+    } else
+      return (
+        <button className="btn btn-lg btn-primary btn-block" type="submit">
+          Contact the seller
+        </button>
+      );
   }
 
   onDeleteClick(e) {
@@ -37,7 +52,7 @@ class ItemDes extends Component {
   }
 
   render() {
-    let item = this.props.item;   
+    let item = this.props.item;
     return (
       <div className="col-sm-9 col-md-6 col-lg-5">
         <div className="card card-signin my-5">
@@ -58,22 +73,14 @@ class ItemDes extends Component {
               {item.owner.name}
             </label>
             <br />
-            <button className="btn btn-lg btn-primary btn-block" type="submit">
-              Contact the seller
-            </button>
+
             <br />
-            <div id="edit" />
-          
+            <div id="action">{this.displayEdit()}</div>
           </div>
         </div>
       </div>
     );
   }
-}
-
-function diplayEdit() {
-
-  
 }
 
 export default ItemDes;
