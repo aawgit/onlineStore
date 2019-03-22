@@ -88,7 +88,7 @@ class LoginFormComp extends Component {
                   </button>
                   <div style={{textAlign: "center"}}>
                   <p>Or</p>
-                  <Facebook />
+                  <Facebook history={this.props.history} setUser={this.props.setUser}/>
                   </div>
                 </form>
               </div>

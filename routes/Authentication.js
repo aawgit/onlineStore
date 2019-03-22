@@ -19,7 +19,6 @@ var config = require("../config/config");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-
 //Passport strategy for facebook login
 passport.use(
   "facebookToken",
@@ -29,9 +28,7 @@ passport.use(
       clientSecret: config.clientSecret
     },
     function(accessToken, refreshToken, profile, done) {
-      console.log(accessToken, refreshToken, profile);
-      
-      var user = "FB user";
+      var user = { name: profile._json.name, email: profile._json.email };
       return done(null, user);
     }
   )
@@ -52,8 +49,41 @@ router.post("/facebook/login", passport.authenticate("facebookToken"), function(
   req,
   res
 ) {
-  // do something with req.user
-  res.send(req.user ? 200 : 401);
+  User.findOne({ email: req.user.email }, function(err, user) {
+    //if(err) return res.status(404).send("Problem in getting user info from Facebook")
+    if (user) {
+      var token = jwt.sign({ id: user._id }, config.secret, {
+        expiresIn: 86400 // expires in 24 hours
+      });
+      return res.send({
+        auth: true,
+        token: token,
+        userId: user._id,
+        name: user.name
+      });
+    } else {
+      User.create(req.user, function(err, user) {
+        if (err)
+          return res
+            .status(500)
+            .json({ message: "Problem in creating new user" });
+        if (user) {
+          var token = jwt.sign({ id: user._id }, config.secret, {
+            expiresIn: 86400 // expires in 24 hours
+          });
+          return res
+            .status(201)
+            .send({
+              auth: true,
+              token: token,
+              userId: user._id,
+              name: user.name
+            });
+        }
+      });
+    }
+  });
+  //res.send(req.user ? 200 : 401);
 });
 
 //New user registration
