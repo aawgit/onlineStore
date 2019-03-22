@@ -15,18 +15,18 @@ class LoginFormComp extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    console.log(this.props);
-    
     axios
       .post("/api/auth/login", this.state)
       .then(res => {
         console.log(res);
-        sessionStorage.setItem("user", JSON.stringify({"jwtToken": res.data.token, "userId": res.data.userId}));
-        this.props.history.push('/');
+        sessionStorage.setItem(
+          "user",
+          JSON.stringify({ jwtToken: res.data.token, userId: res.data.userId })
+        );
+        this.props.setUser(res.data.name);
+        this.props.history.push("/");
       })
       .catch(err => console.log(err.response.data));
-
-     
   }
 
   componentDidMount() {}
@@ -85,7 +85,8 @@ class LoginFormComp extends Component {
                     className="btn btn-lg btn-facebook btn-block text-uppercase"
                     type="submit"
                   >
-                    <i className="fab fa-facebook-f mr-2" /> Sign in with Facebook
+                    <i className="fab fa-facebook-f mr-2" /> Sign in with
+                    Facebook
                   </button>
                 </form>
               </div>

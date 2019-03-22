@@ -4,4 +4,5 @@ module.exports = {checkLoggedIn(){
 },
 signOut(){
     sessionStorage.removeItem("user");
+    console.log("signed out");
 }}
