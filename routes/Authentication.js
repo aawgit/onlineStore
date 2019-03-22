@@ -6,13 +6,55 @@ var bodyParser = require("body-parser");
 var User = require("../models/User");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-var config = require("../config/jwtConfig");
+var config = require("../config/config");
 var VerifyToken = require("../_helper/VerifyToken");
 var randomString = require("randomstring");
 var mailer = require("../_helper/mailer");
 
+var FacebookTokenStragegy = require("passport-facebook-token");
+var passport = require("passport");
+
+var config = require("../config/config");
+
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
+
+
+//Passport strategy for facebook login
+passport.use(
+  "facebookToken",
+  new FacebookTokenStragegy(
+    {
+      clientID: config.clientID,
+      clientSecret: config.clientSecret
+    },
+    function(accessToken, refreshToken, profile, done) {
+      console.log(accessToken, refreshToken, profile);
+      
+      var user = "FB user";
+      return done(null, user);
+    }
+  )
+);
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
+
+router.use(passport.initialize());
+router.use(passport.session());
+
+router.post("/facebook/login", passport.authenticate("facebookToken"), function(
+  req,
+  res
+) {
+  // do something with req.user
+  res.send(req.user ? 200 : 401);
+});
 
 //New user registration
 router.post("/register", function(req, res) {
@@ -51,8 +93,12 @@ router.post("/register", function(req, res) {
             subject: "Please verify the email address", // Subject line
             html: `<h4>Thank you for registering.<h4>
             <p>Please verify this email address by clicking the following link</p>
-            <a href="https://frozen-lake-54898.herokuapp.com/api/auth/verify/${user.secretToken}">
-            https://frozen-lake-54898.herokuapp.com/api/auth/verify/${user.secretToken}</a>`
+            <a href="https://frozen-lake-54898.herokuapp.com/api/auth/verify/${
+              user.secretToken
+            }">
+            https://frozen-lake-54898.herokuapp.com/api/auth/verify/${
+              user.secretToken
+            }</a>`
           };
 
           mailer.sendMail(mailOptions);
@@ -64,6 +110,7 @@ router.post("/register", function(req, res) {
 
 //Login registered users;
 router.post("/login", function(req, res) {
+  //console.log(config.clientID, config.clientSecret)
   User.findOne({ email: req.body.email }, function(err, user) {
     if (err) return res.status(500).send("Error on the server.");
     if (!user) return res.status(404).send("No user found.");
@@ -80,7 +127,9 @@ router.post("/login", function(req, res) {
     var token = jwt.sign({ id: user._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     });
-    res.status(200).send({ auth: true, token: token, userId:user._id, name:user.name });
+    res
+      .status(200)
+      .send({ auth: true, token: token, userId: user._id, name: user.name });
   });
 });
 
