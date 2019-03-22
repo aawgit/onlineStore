@@ -80,17 +80,18 @@ router.delete("/:id", VerifyToken, function(req, res) {
 
 // UPDATES A SINGLE ITEM IN THE DATABASE
 router.put("/:id", VerifyToken, function(req, res) {
-  Item.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(
+  var conditions = {_id:req.params.id, owner: req.userId}
+  Item.updateOne(conditions, req.body, { new: true }, function(
     err,
     item
   ) {
     if (err) {
-      console.log(err);
+      console.log("Error ", err);
       return res.status(500).send("There was a problem updating the item.");
     }
 
     res.status(200).send(item);
-    console.log(item);
+    console.log("Updated item ", item);
   });
 });
 

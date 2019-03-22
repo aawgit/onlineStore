@@ -95,7 +95,7 @@ router.get("/verify/:secretToken", function(req, res) {
 
     user.save(function(err, user) {
       if (err) return res.status(500).send("Error verifying the account");
-      res.redirect("http://localhost:3000/#/login/");
+      res.redirect("https://frozen-lake-54898.herokuapp.com/#/login/");
     });
   });
 });
