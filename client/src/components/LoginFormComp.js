@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Facebook from "./Facebook";
+
+
 
 class LoginFormComp extends Component {
   constructor(props) {
@@ -29,7 +32,9 @@ class LoginFormComp extends Component {
       .catch(err => console.log(err.response.data));
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    
+  }
 
   render() {
     return (
@@ -81,13 +86,10 @@ class LoginFormComp extends Component {
                   <button className="btn btn-lg btn-facebook btn-block text-uppercase">
                     <i className="fab fa-google mr-2" /> Sign in with Google
                   </button>
-                  <button
-                    className="btn btn-lg btn-facebook btn-block text-uppercase"
-                    type="submit"
-                  >
-                    <i className="fab fa-facebook-f mr-2" /> Sign in with
-                    Facebook
-                  </button>
+                  <div style={{textAlign: "center"}}>
+                  <p>Or</p>
+                  <Facebook />
+                  </div>
                 </form>
               </div>
             </div>

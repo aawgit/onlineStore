@@ -58,14 +58,14 @@ class ItemDisplayComp extends React.Component {
                             >
                               View
                             </a>
-                            <a href={"/#/editItem/"+item._id}
+                            {/*<a href={"/#/editItem/"+item._id}
                               type="button"
                               className="btn btn-sm btn-outline-secondary"
                             >
                               Edit
-                            </a>
+                            </a>*/}
                           </div>
-                          <small className="text-muted">9 mins</small>
+                          {/*<small className="text-muted">9 mins</small>*/}
                         </div>
                       </div>
                     </div>

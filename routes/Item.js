@@ -81,7 +81,7 @@ router.delete("/:id", VerifyToken, function(req, res) {
 // UPDATES A SINGLE ITEM IN THE DATABASE
 router.put("/:id", VerifyToken, function(req, res) {
   var conditions = {_id:req.params.id, owner: req.userId}
-  Item.updateOne(conditions, req.body, { new: true }, function(
+  Item.findOneAndUpdate(conditions, req.body, { new: true }, function(
     err,
     item
   ) {
