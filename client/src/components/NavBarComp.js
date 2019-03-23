@@ -42,6 +42,9 @@ class NavBarComp extends Component {
             <a href="#" className="nav-link">{this.props.userName}</a>
           </li>
           <li>
+            <a href="/#/addItem" className="btn btn-success" style={{marginLeft:"4px", marginRight:"4px"}}>Add item</a>
+          </li>
+          <li>
             <button onClick={this.props.removeUser} className="btn btn-outline-light">
               Sign out
             </button>

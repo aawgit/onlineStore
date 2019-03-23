@@ -11,7 +11,7 @@ class FooterComp extends React.Component {
               <a href="#">Back to top</a>
             </p>
             <p>
-              Develped by &copy; [company name]
+              Develped by &copy; AW
             </p>
 
           </div>
