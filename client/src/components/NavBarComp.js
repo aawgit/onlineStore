@@ -35,7 +35,6 @@ class NavBarComp extends Component {
     );
   }
   displayNavs() {
-    console.log(this);
     if (this.props.userName) {
       return (
         <ul className="navbar-nav ml-auto">

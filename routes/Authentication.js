@@ -45,6 +45,7 @@ passport.deserializeUser(function(obj, cb) {
 router.use(passport.initialize());
 router.use(passport.session());
 
+//Fb login or create user
 router.post("/facebook/login", passport.authenticate("facebookToken"), function(
   req,
   res

@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
 
-class LoginFormComp extends Component {
+class AddItemComp extends Component {
   constructor(props) {
     super(props);
     this.state = { name: "", description: "", price: "", file: "" };
     this.onValueChange = this.onValueChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.onfileUpload = this.onfileUpload.bind(this);
   }
 
   onValueChange(e) {
@@ -19,13 +18,6 @@ class LoginFormComp extends Component {
       default:
         this.setState({ [e.target.name]: e.target.value });
     }
-  }
-
-  onfileUpload(e) {
-    e.preventDefault();
-    console.log(e.target.files[0]);
-    this.setState({ file: e.target.files[0] });
-    console.log(this.state);
   }
 
   onSubmit(e) {
@@ -140,4 +132,4 @@ class LoginFormComp extends Component {
   }
 }
 
-export default LoginFormComp;
+export default AddItemComp;

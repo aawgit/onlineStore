@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import Facebook from "./Facebook";
 
-
-
 class LoginFormComp extends Component {
   constructor(props) {
     super(props);
@@ -32,9 +30,7 @@ class LoginFormComp extends Component {
       .catch(err => console.log(err.response.data));
   }
 
-  componentDidMount() {
-    
-  }
+  componentDidMount() {}
 
   render() {
     return (
@@ -83,12 +79,15 @@ class LoginFormComp extends Component {
                   >
                     Sign in
                   </button>
-                  <button className="btn btn-lg btn-facebook btn-block text-uppercase">
+                  {/*<button className="btn btn-lg btn-facebook btn-block text-uppercase">
                     <i className="fab fa-google mr-2" /> Sign in with Google
-                  </button>
-                  <div style={{textAlign: "center"}}>
-                  <p>Or</p>
-                  <Facebook history={this.props.history} setUser={this.props.setUser}/>
+                    </button>*/}
+                  <div style={{ textAlign: "center" }}>
+                    <p>Or</p>
+                    <Facebook
+                      history={this.props.history}
+                      setUser={this.props.setUser}
+                    />
                   </div>
                 </form>
               </div>

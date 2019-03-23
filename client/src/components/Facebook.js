@@ -9,11 +9,13 @@ class Facebook extends Component {
     name: "",
     email: "",
     picture: "",
-    accessToken:""
+    accessToken: ""
   };
   onLoginSuccess() {
     axios
-      .post("/api/auth/facebook/login", {access_token:this.state.accessToken})
+      .post("/api/auth/facebook/login", {
+        access_token: this.state.accessToken
+      })
       .then(res => {
         console.log(res);
         sessionStorage.setItem(
@@ -26,15 +28,17 @@ class Facebook extends Component {
       .catch(err => console.log(err.response.data));
   }
   responseFacebook = response => {
-    this.setState({
+    if (response.accessToken) {
+      this.setState({
         isLoggedIn: true,
         name: response.name,
-        email: response.name,
+        email: response.email,
         picture: response.picture.data.url,
         accessToken: response.accessToken
-    });
-    console.log(response);
-    this.onLoginSuccess();
+      });
+      console.log(response);
+      this.onLoginSuccess();
+    }
   };
   componentClicked = {};
 

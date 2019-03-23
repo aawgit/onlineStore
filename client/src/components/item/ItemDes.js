@@ -20,19 +20,24 @@ class ItemDes extends Component {
 
   displayEdit() {
     const user = sessionStorage.getItem("user");
-    const {item} = this.props;
+    const { item } = this.props;
     if (user) {
       if (JSON.parse(user).userId === item.owner._id) {
         return (
-          <a href={"/#/editItem/"+item._id} className="btn btn-lg btn-secondary btn-block">Edit</a>
+          <a
+            href={"/#/editItem/" + item._id}
+            className="btn btn-lg btn-secondary btn-block"
+          >
+            Edit
+          </a>
         );
       }
-    } else
-      return (
-        <button className="btn btn-lg btn-primary btn-block" type="submit">
-          Contact the seller
-        </button>
-      );
+    }
+    return (
+      <button className="btn btn-lg btn-primary btn-block" type="submit">
+        Contact the seller
+      </button>
+    );
   }
 
   onDeleteClick(e) {
