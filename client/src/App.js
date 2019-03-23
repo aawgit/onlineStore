@@ -10,12 +10,18 @@ import EditItem from "./routes/EditItem";
 import NavBarComp from "./components/NavBarComp";
 import FooterComp from "./components/FooterComp";
 
+
 class App extends Component {
   state = { name: "" };
   setUser=(name)=> {
     this.setState({name:name});
   }
-
+  
+  componentDidMount(){
+    if(sessionStorage.getItem("user")){
+      this.setState({name: JSON.parse(sessionStorage.getItem("user")).name})
+    }
+  }
   removeUser = () => {
     this.setState({ name: "" });
     signOut();

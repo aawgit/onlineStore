@@ -1,6 +1,8 @@
 module.exports = {checkLoggedIn(){
-    if(sessionStorage.getItem("user")) return true;
-    else return false;
+    if(sessionStorage.getItem("user")){
+        return(JSON.parse(sessionStorage.getItem("user")))
+      }
+      else return false;
 },
 signOut(){
     sessionStorage.removeItem("user");

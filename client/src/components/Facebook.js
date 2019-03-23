@@ -20,7 +20,7 @@ class Facebook extends Component {
         console.log(res);
         sessionStorage.setItem(
           "user",
-          JSON.stringify({ jwtToken: res.data.token, userId: res.data.userId })
+          JSON.stringify({ jwtToken: res.data.token, userId: res.data.userId, name:res.data.name })
         );
         this.props.setUser(res.data.name);
         this.props.history.push("/");
