@@ -3,11 +3,41 @@ var express = require("express");
 var router = express.Router();
 var bodyParser = require("body-parser");
 var multer = require("multer");
+var cloudinary = require("cloudinary");
+var cloudinaryStorage = require("multer-storage-cloudinary");
+var config = require("../config/config");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 var Item = require("../models/Item");
 var VerifyToken = require("../_helper/VerifyToken");
+
+//image uploading with cloudinary
+cloudinary.config({
+  cloud_name: config.cloudinaryCloudName,
+  api_key: config.cloudinaryApiKey,
+  api_secret: config.cloudinaryApiSecret
+});
+
+const cloudStorage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: "shopApp",
+  allowedFormats: ["jpg", "png"],
+  transformation: [{ width: 400, height: 400, crop: "limit" }]
+});
+const cloudImageUpload = multer({ storage: cloudStorage });
+
+/* router.post("/image", cloudImageUpload.single("file"), function(req, res) {
+  console.log(req.file)
+}); */
+
+router.delete("/image", function(req, res) {
+  const publicId =  'demo/jt1y0p5ezv2mtcpj79ic';
+  cloudinary.uploader.destroy(publicId, function(result) { console.log(result) });
+  
+});
+
+
 
 //Image upload config
 const storage = multer.diskStorage({
@@ -25,14 +55,14 @@ var upload = multer({ storage });
 }); */
 
 // CREATES A NEW ITEM
-router.post("/", VerifyToken, upload.single("file"), function(req, res) {
+router.post("/", VerifyToken, cloudImageUpload.single("file"), function(req, res) {
   Item.create(
     {
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
       owner: req.userId,
-      imageLocation: req.file.path
+      imageLocation: req.file.secure_url
     },
     function(err, item) {
       if (err)
@@ -80,7 +110,7 @@ router.delete("/:id", VerifyToken, function(req, res) {
 
 // UPDATES A SINGLE ITEM IN THE DATABASE
 router.put("/:id", VerifyToken, function(req, res) {
-  var conditions = {_id:req.params.id, owner: req.userId}
+  var conditions = { _id: req.params.id, owner: req.userId };
   Item.findOneAndUpdate(conditions, req.body, { new: true }, function(
     err,
     item
@@ -94,7 +124,5 @@ router.put("/:id", VerifyToken, function(req, res) {
     console.log("Updated item ", item);
   });
 });
-
-
 
 module.exports = router;
