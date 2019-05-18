@@ -6,7 +6,7 @@ var bodyParser = require("body-parser");
 var User = require("../models/User");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-var config = require("../config/config");
+var config = require("../config");
 var VerifyToken = require("../_helper/VerifyToken");
 var randomString = require("randomstring");
 var mailer = require("../_helper/mailer");
@@ -14,7 +14,7 @@ var mailer = require("../_helper/mailer");
 var FacebookTokenStragegy = require("passport-facebook-token");
 var passport = require("passport");
 
-var config = require("../config/config");
+var config = require("../config");
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());

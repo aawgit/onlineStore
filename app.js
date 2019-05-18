@@ -1,11 +1,14 @@
 var express = require("express");
 var app = express();
-var db = require("./db");
 var AuthRouter = require("./routes/Authentication");
 var UserRouter = require("./routes/User");
 var ItemRouter = require("./routes/Item");
+var config = require("./config")
 
 const path = require("path");
+
+var mongoose = require('mongoose');
+mongoose.connect(config.mLabURI);
 
 app.use(express.static("public"));
 

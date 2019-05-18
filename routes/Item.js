@@ -5,7 +5,7 @@ var bodyParser = require("body-parser");
 var multer = require("multer");
 var cloudinary = require("cloudinary");
 var cloudinaryStorage = require("multer-storage-cloudinary");
-var config = require("../config/config");
+var config = require("../config");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());

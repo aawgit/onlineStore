@@ -10,5 +10,7 @@ module.exports = {
   //cloudinary credentials
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
-  cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME
+  cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
+  //mLab credentials
+  mLabURI: process.env.MONGODB_URI,
 };

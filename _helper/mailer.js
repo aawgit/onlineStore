@@ -1,5 +1,5 @@
 var nodemailer = require("nodemailer");
-var config = require("../config/config");
+var config = require("../config");
 
 var transporter = nodemailer.createTransport({
   host: "server210.web-hosting.com",
