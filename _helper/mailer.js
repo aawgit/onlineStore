@@ -2,8 +2,8 @@ var nodemailer = require("nodemailer");
 var config = require("../config");
 
 var transporter = nodemailer.createTransport({
-  host: "server210.web-hosting.com",
-  Port: 465,
+  host: config.MAIL_HOST,
+  Port: config.MAIL_PORT,
   secure: true,
   auth: {
     user: config.MAIL_USER,
