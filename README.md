@@ -39,6 +39,8 @@ This project can be used as a boiler plate for building a MongoDB-Express-React-
     #Database server connection URI. If you are using mLab, this needs to be created at https://mlab.com/, and would look like the following:
     MONGODB_URI = 'mongodb://<user_name>:<password>@xxxxx.mlab.com:xxxxx/<db_name>'
 
+    #Sentry url need to be created at https://sentry.io/welcome/, and would look like the following:
+    SENTRY_DSN = https://<code>@sentry.io/<code> 
   - Run ``$ npm run dev`` to start both front end and back end on ports 5000 and 3000 respectively
   - Run ``$ npm run start`` to start the back end express server on port 5000
 

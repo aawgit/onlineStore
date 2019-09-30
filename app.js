@@ -1,11 +1,16 @@
 var express = require("express");
 var app = express();
+const Sentry = require('@sentry/node');
 var AuthRouter = require("./routes/Authentication");
 var UserRouter = require("./routes/User");
 var ItemRouter = require("./routes/Item");
 var config = require("./config")
 
 const path = require("path");
+
+Sentry.init({
+  dsn: config.dsn,
+});
 
 var mongoose = require('mongoose');
 mongoose.connect(config.mLabURI);
