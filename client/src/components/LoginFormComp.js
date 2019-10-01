@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Facebook from "./Facebook";
+import authService from "./services/AuthServices";
 
 class LoginFormComp extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class LoginFormComp extends Component {
       .post("/api/auth/login", this.state)
       .then(res => {
         console.log(res);
+        authService.setAuthDetail(res.data)
         sessionStorage.setItem(
           "user",
           JSON.stringify({ jwtToken: res.data.token, userId: res.data.userId, name:res.data.name })
