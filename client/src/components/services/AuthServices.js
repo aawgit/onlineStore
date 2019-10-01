@@ -6,7 +6,10 @@ class AuthService {
         sessionStorage.setItem('id', data.user.id);
         sessionStorage.setItem('name',data.user.username)
     }
-
+    getAuthToken() {
+        const token = sessionStorage.getItem('token');
+        return token;
+    }
 }
 const authService = new AuthService();
 export default authService;
