@@ -10,6 +10,11 @@ class AuthService {
         const token = sessionStorage.getItem('token');
         return token;
     }
+    getLoggedUser(){
+        const id = sessionStorage.getItem('id');
+        const name = sessionStorage.getItem('name');
+        return {Id:id,Name:name};
+    }
 }
 const authService = new AuthService();
 export default authService;
