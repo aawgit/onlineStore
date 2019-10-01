@@ -17,7 +17,11 @@ This project can be used as a boiler plate for building a MongoDB-Express-React-
 ### Installing
 
   - Clone the repo and check out the code
-  - Run ``$ npm install`` 
+  - Run 
+    ```
+    $ npm install 
+    $ cd client && npm install
+    ```
   - Set following environment variables in a .env file in the root directory
     ``` 
     #jwt secret
@@ -34,7 +38,7 @@ This project can be used as a boiler plate for building a MongoDB-Express-React-
     #cloudinary credentials, needs to be created at https://cloudinary.com/
     CLOUDINARY_API_SECRET = <cloudinary API secret for your app>
     CLOUDINARY_API_KEY =  <cloudinary API key for your app>
-    CLOUDINARY_CLOUD_NAME = " <cloudinary cloud name>
+    CLOUDINARY_CLOUD_NAME = <cloudinary cloud name>
     
     #Database server connection URI. If you are using mLab, this needs to be created at https://mlab.com/, and would look like the following:
     MONGODB_URI = 'mongodb://<user_name>:<password>@xxxxx.mlab.com:xxxxx/<db_name>'
