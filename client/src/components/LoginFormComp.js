@@ -7,15 +7,13 @@ class LoginFormComp extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.onValuChange = this.onValuChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onValuChange(e) {
+  onValuChange=(e)=> {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onSubmit(e) {
+  onSubmit=(e)=> {
     e.preventDefault();
     axios
       .post("/api/auth/login", this.state)
