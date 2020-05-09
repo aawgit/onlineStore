@@ -15,4 +15,6 @@ module.exports = {
   cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
   //mLab credentials
   mLabURI: process.env.MONGODB_URI,
+  //sentry url
+  dsn: process.env.SENTRY_DSN,
 };
