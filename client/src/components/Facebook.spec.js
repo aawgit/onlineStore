@@ -6,13 +6,13 @@ import FacebookLogin from 'react-facebook-login';
 // TODO api-logic and state
 describe('Facebook Component', () => {
 	it('renders with childs', async () => {
-		const wrapper = shallow(<Facebook />);
+		const wrapper = shallow(<Facebook.WrappedComponent />);
 		expect(wrapper.find(FacebookLogin)).toHaveLength(1);
 	});
 	it('callback fires', () => {
 		const mockFn = jest.fn();
 		Facebook.prototype.responseFacebook = mockFn;
-		const wrapper = shallow(<Facebook />);
+		const wrapper = shallow(<Facebook.WrappedComponent />);
 		wrapper.find(FacebookLogin).props().callback();
 		expect(mockFn).toHaveBeenCalledTimes(1);
 	});

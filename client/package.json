@@ -24,6 +24,16 @@
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},
+	"jest": {
+		"collectCoverageFrom": [
+			"src/**/*.{js,jsx,ts,tsx}",
+			"!<rootDir>/node_modules/",
+			"!<rootDir>/path/to/dir/"
+		],
+		"coverageReporters": [
+			"text"
+		]
+	},
 	"proxy": "http://localhost:5000/",
 	"eslintConfig": {
 		"extends": "react-app"

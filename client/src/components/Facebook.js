@@ -1,23 +1,32 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import FacebookLogin from 'react-facebook-login';
+import { Context } from '../App';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import FacebookLogin from 'react-facebook-login';
 
 class Facebook extends Component {
-	state = {
-		isLoggedIn: false,
-		name: '',
-		email: '',
-		picture: '',
-		accessToken: '',
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			user: {
+				isLoggedIn: false,
+				name: '',
+				email: '',
+				picture: '',
+				accessToken: '',
+			},
+		};
+		this.onLoginSuccess = this.onLoginSuccess.bind(this);
+		this.responseFacebook = this.responseFacebook.bind(this);
+	}
+	static contextType = Context;
+
 	onLoginSuccess() {
 		axios
 			.post('/api/auth/facebook/login', {
-				access_token: this.state.accessToken,
+				access_token: this.state.user.accessToken,
 			})
 			.then((res) => {
-				console.log(res);
 				sessionStorage.setItem(
 					'user',
 					JSON.stringify({
@@ -26,14 +35,12 @@ class Facebook extends Component {
 						name: res.data.name,
 					})
 				);
-				this.props.setUser(res.data.name);
+				this.context.setUser(res.data.name);
 				this.props.history.push('/');
 			})
 			.catch((err) => console.log(err.response.data));
 	}
 
-	// @amatyas001 EDIT:
-	// I've changed the arrow to prototype
 	responseFacebook(response) {
 		if (response.accessToken) {
 			this.setState({
@@ -43,25 +50,21 @@ class Facebook extends Component {
 				picture: response.picture.data.url,
 				accessToken: response.accessToken,
 			});
-			console.log(response);
 			this.onLoginSuccess();
 		}
 	}
-	componentClicked = {};
 
 	render() {
-		let fbContent;
-		fbContent = (
+		return (
 			<FacebookLogin
-				appId='129047940440558'
+				appId='1343346045860132'
 				autoLoad={false}
 				fields='name,email,picture'
-				onClick={this.componentClicked}
+				onClick={() => {}}
 				callback={this.responseFacebook}
 			/>
 		);
-		return <div>{fbContent}</div>;
 	}
 }
 
-export default Facebook;
+export default withRouter(Facebook);

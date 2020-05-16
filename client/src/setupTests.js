@@ -11,3 +11,14 @@ const localStorageMock = {
 	clear: jest.fn(),
 };
 global.localStorage = localStorageMock;
+
+const sessionStorageMock = {
+	storage: {},
+	setItem: function (field, value) {
+		this.storage.field = value;
+	},
+	getItem: function (field) {
+		return this.storage.field;
+	},
+};
+global.sessionStorage = sessionStorageMock;

@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import LoginFormComp from "../components/LoginFormComp"
- 
-class Login extends Component {
-  render() {
-    return (
-      <div>
-        <LoginFormComp history={this.props.history} setUser={this.props.setUser}/>
-      </div>
-    );
-  }
-}
- 
+import React from 'react';
+import { Context } from '../App';
+import LoginFormComp from '../components/LoginFormComp';
+
+const Login = () => {
+	const context = React.useContext(Context);
+	return (
+		<div>
+			<LoginFormComp setUser={context.name} />
+		</div>
+	);
+};
+
 export default Login;
