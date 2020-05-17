@@ -1,10 +1,9 @@
 import React from 'react';
-import { Context } from '../App';
+import { AppContext } from '../AppContext';
 import { Link } from 'react-router-dom';
 
 const NavBarComp = () => {
-	const context = React.useContext(Context);
-
+	const context = React.useContext(AppContext);
 	const displayNavs = () => {
 		if (context.user.name !== '') {
 			return (

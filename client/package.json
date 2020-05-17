@@ -22,6 +22,7 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
+		"cov": "npm run test -- --coverage",
 		"eject": "react-scripts eject"
 	},
 	"jest": {

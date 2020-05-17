@@ -7,18 +7,16 @@ const FooterComp = () => {
 		document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 	};
 	return (
-		<div>
-			<footer className='text-muted'>
-				<div className='container'>
-					<p className='float-right'>
-						<a href='#' onClick={top}>
-							Back to top
-						</a>
-					</p>
-					<p>Develped by &copy; AW</p>
-				</div>
-			</footer>
-		</div>
+		<footer className='text-muted fixed-bottom'>
+			<div className='container'>
+				<p className='float-right'>
+					<a href='#' onClick={top}>
+						Back to top
+					</a>
+				</p>
+				<p>Develped by &copy; AW</p>
+			</div>
+		</footer>
 	);
 };
 export default FooterComp;

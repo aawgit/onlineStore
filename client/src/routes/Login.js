@@ -1,12 +1,12 @@
 import React from 'react';
-import { Context } from '../App';
+import { AppContext } from '../AppContext';
 import LoginFormComp from '../components/LoginFormComp';
 
 const Login = () => {
-	const context = React.useContext(Context);
+	const context = React.useContext(AppContext);
 	return (
 		<div>
-			<LoginFormComp setUser={context.name} />
+			<LoginFormComp setUser={context.user.name} />
 		</div>
 	);
 };
