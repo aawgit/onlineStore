@@ -5,7 +5,7 @@ import { signOut } from './_helper/LogInHandler';
 
 jest.mock('./_helper/LogInHandler');
 
-describe('App Component', () => {
+describe('<App />', () => {
 	let wrapper;
 
 	beforeAll(() => {
@@ -15,7 +15,7 @@ describe('App Component', () => {
 	});
 
 	it('should render', () => {
-		expect(wrapper.find('Routes')).toBeTruthy();
+		expect(wrapper).toMatchSnapshot();
 	});
 
 	it('should read session', () => {
