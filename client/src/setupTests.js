@@ -20,5 +20,8 @@ const sessionStorageMock = {
 	getItem: function (field) {
 		return this.storage.field;
 	},
+	removeItem: function (field) {
+		delete this.storage.field;
+	},
 };
 global.sessionStorage = sessionStorageMock;
