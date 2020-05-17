@@ -22,14 +22,16 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"cov": "npm run test -- --coverage",
+		"cov": "react-scripts test -- --coverage",
 		"eject": "react-scripts eject"
 	},
 	"jest": {
 		"collectCoverageFrom": [
 			"src/**/*.{js,jsx,ts,tsx}",
 			"!<rootDir>/node_modules/",
-			"!<rootDir>/path/to/dir/"
+			"!<rootDir>/src/index.js",
+			"!<rootDir>/src/serviceWorker.js",
+			"!<rootDir>/src/setupTests.js"
 		],
 		"coverageReporters": [
 			"text"
