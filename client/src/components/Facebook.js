@@ -44,7 +44,7 @@ class Facebook extends Component {
 	}
 
 	responseFacebook(response) {
-		if (response.accessToken) {
+		if (response && response.hasOwnProperty('accessToken')) {
 			this.setState({
 				user: {
 					isLoggedIn: true,
