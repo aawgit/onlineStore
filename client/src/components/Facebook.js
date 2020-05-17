@@ -40,7 +40,10 @@ class Facebook extends Component {
 					redirect: true,
 				});
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				console.log(err);
+				throw new Error(err);
+			});
 	}
 
 	responseFacebook(response) {

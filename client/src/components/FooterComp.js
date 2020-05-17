@@ -10,7 +10,7 @@ const FooterComp = () => {
 		<footer className='text-muted fixed-bottom'>
 			<div className='container'>
 				<p className='float-right'>
-					<a href='#' onClick={top}>
+					<a id='scrollToTop' href='#' onClick={top}>
 						Back to top
 					</a>
 				</p>

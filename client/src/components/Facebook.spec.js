@@ -97,14 +97,14 @@ describe('<Facebook />', () => {
 				access_token: mock_user.accessToken,
 			});
 			expect(sessionStorage.getItem('user')).toBeTruthy();
-			expect(wrapper.state('redirect')).toEqual(true);
+			expect(wrapper.state().redirect).toBeTruthy();
 			expect(wrapper.find('Redirect')).toBeTruthy();
 		});
 
 		it('should reject', async () => {
 			try {
 				axios.post.mockImplementationOnce(() => reject);
-				wrapper.instance().onLoginSuccess();
+				await wrapper.instance().onLoginSuccess();
 			} catch (e) {
 				expect(global.console.log).toHaveBeenCalledWith('error1');
 			}
