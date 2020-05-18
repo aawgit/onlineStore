@@ -15,7 +15,7 @@ describe('<App />', () => {
 	});
 
 	it('should render', () => {
-		expect(wrapper).toMatchSnapshot();
+		expect(wrapper.find('Routes')).toBeTruthy();
 	});
 
 	it('should read session', () => {
