@@ -39,4 +39,28 @@ describe('<App />', () => {
 		wrapper = shallow(<App />);
 		expect(wrapper.state().user.name).toEqual('');
 	});
+
+	describe('state passing', () => {
+		beforeEach(() => {
+			wrapper.unmount();
+		});
+
+		it('removeUser', () => {
+			const mock_removeUser = jest.fn();
+			App.prototype.removeUser = mock_removeUser;
+			wrapper = shallow(<App />);
+			expect(typeof wrapper.state().removeUser).toEqual('function');
+			wrapper.state().removeUser();
+			expect(mock_removeUser).toHaveBeenCalledTimes(1);
+		});
+
+		it('setUser', () => {
+			const mock_setUser = jest.fn();
+			App.prototype.setUser = mock_setUser;
+			wrapper = shallow(<App />);
+			expect(typeof wrapper.state().setUser).toEqual('function');
+			wrapper.state().setUser({ user: { name: 'name1' } });
+			expect(mock_setUser).toHaveBeenCalledTimes(1);
+		});
+	});
 });

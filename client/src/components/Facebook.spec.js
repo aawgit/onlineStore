@@ -1,8 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Facebook, { API_PATH } from './Facebook';
+import Facebook from './Facebook';
 import FacebookLogin from 'react-facebook-login';
 import axios from 'axios';
+import { API_PATH_FACEBOOK } from '../constants';
 
 jest.mock('axios');
 
@@ -21,7 +22,7 @@ describe('<Facebook />', () => {
 
 	it('should render', () => {
 		const wrapper = shallow(<Facebook />);
-		expect(wrapper).toMatchSnapshot();
+		expect(wrapper.find(FacebookLogin)).toBeTruthy();
 	});
 
 	describe('responseFacebook', () => {
@@ -93,7 +94,7 @@ describe('<Facebook />', () => {
 			axios.post.mockImplementationOnce(() => resolve);
 			wrapper.instance().onLoginSuccess();
 			await resolve;
-			expect(axios.post).toHaveBeenCalledWith(API_PATH, {
+			expect(axios.post).toHaveBeenCalledWith(API_PATH_FACEBOOK, {
 				access_token: mock_user.accessToken,
 			});
 			expect(sessionStorage.getItem('user')).toBeTruthy();
