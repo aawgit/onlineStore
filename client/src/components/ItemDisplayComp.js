@@ -16,7 +16,6 @@ class ItemDisplayComp extends React.Component {
 			.get('api/items')
 			.then((response) => {
 				this.setState({
-					...this.state,
 					items: response.data,
 				});
 			})

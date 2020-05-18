@@ -1,43 +1,47 @@
 import React, { Component } from 'react';
+import { API_PATH_REGISTER } from '../constants';
 import axios from 'axios';
-import ReactDOM from 'react-dom';
 
 class RegisterFormComp extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			message: false,
+			user: {
+				firstName: '',
+				lastName: '',
+				email: '',
+				password: '',
+			},
+		};
 		this.onValuChange = this.onValuChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
 	onValuChange(e) {
-		this.setState({ [e.target.name]: e.target.value });
+		this.setState({ user: { [e.target.name]: e.target.value } });
 	}
 
 	onSubmit(e) {
-		var message = '';
 		e.preventDefault();
 
-		let newUser = {
-			name: this.state.firstName + ' ' + this.state.lastName,
-			email: this.state.email,
-			password: this.state.password,
+		const user = {
+			name: this.state.user.firstName + ' ' + this.state.user.lastName,
+			email: this.state.user.email,
+			password: this.state.user.password,
 		};
+
 		axios
-			.post('/api/auth/register', newUser)
+			.post(API_PATH_REGISTER, user)
 			.then((res) => {
-				message = `Verification e-mail has been sent to ${res.data}.`;
-				ReactDOM.render(message, document.getElementById('message'));
-				console.log(res.data);
+				this.setState({
+					message: `Verification e-mail has been sent to ${res.data}.`,
+				});
 			})
 			.catch((err) => {
-				message = `Oops! There is a problem. ${err.response.data.message}.`;
-				ReactDOM.render(message, document.getElementById('message'));
 				console.log(err.response.data);
 			});
 	}
-
-	componentDidMount() {}
 
 	render() {
 		return (
@@ -109,7 +113,7 @@ class RegisterFormComp extends Component {
 										Register
 									</button>
 									<br />
-									<div id='message' />
+									<div id='message'>{this.state.message}</div>
 								</form>
 							</div>
 						</div>

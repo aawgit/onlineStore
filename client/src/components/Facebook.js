@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
-
-export const API_PATH = '/api/auth/facebook/login';
+import { API_PATH_FACEBOOK } from '../constants';
 
 class Facebook extends Component {
-	constructor(props, context) {
-		super(props, context);
+	constructor(props) {
+		super(props);
 		this.state = {
 			redirect: false,
 			user: {
@@ -22,9 +21,12 @@ class Facebook extends Component {
 		this.responseFacebook = this.responseFacebook.bind(this);
 	}
 
+	/**
+	 * Chained callback from Facebook API to tokenize session
+	 */
 	onLoginSuccess() {
 		axios
-			.post(API_PATH, {
+			.post(API_PATH_FACEBOOK, {
 				access_token: this.state.user.accessToken,
 			})
 			.then((res) => {
@@ -46,6 +48,12 @@ class Facebook extends Component {
 			});
 	}
 
+	/**
+	 * Callback method of the external Facebook component
+	 * Getting fired when user closes the login prompt.
+	 * See more: https://github.com/keppelen/react-facebook-login	 *
+	 * @param {object} response Data sent back by the Facebook API
+	 */
 	responseFacebook(response) {
 		if (response && response.hasOwnProperty('accessToken')) {
 			this.setState({
@@ -60,7 +68,13 @@ class Facebook extends Component {
 			this.onLoginSuccess();
 		}
 	}
+	/**
+	 * There is no need to test the render method itself because
+	 * both components has it's own unit tests and the internal state
+	 * is check elsewhere for this statement
+	 */
 
+	/*istanbul ignore next*/
 	render() {
 		if (this.state.redirect) {
 			return <Redirect to='/' />;
