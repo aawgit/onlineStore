@@ -2,19 +2,19 @@ import React from 'react';
 import { render } from 'enzyme';
 import { AppContext } from '../AppContext';
 import { MemoryRouter } from 'react-router-dom';
-import NavBarComp from './NavBarComp';
+import Navbar from './Navbar';
 
 let context = {
 	user: { name: 'name1' },
 	removeUser: () => jest.fn(),
 };
 
-describe('<NavBarComp />', () => {
+describe('<Navbar />', () => {
 	it('should render user navbar', () => {
 		const wrapper = render(
 			<MemoryRouter>
 				<AppContext.Provider value={context}>
-					<NavBarComp />
+					<Navbar />
 				</AppContext.Provider>
 			</MemoryRouter>
 		);
@@ -27,7 +27,7 @@ describe('<NavBarComp />', () => {
 		const wrapper = render(
 			<MemoryRouter>
 				<AppContext.Provider value={context}>
-					<NavBarComp />
+					<Navbar />
 				</AppContext.Provider>
 			</MemoryRouter>
 		);

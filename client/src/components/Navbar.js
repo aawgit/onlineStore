@@ -2,7 +2,7 @@ import React from 'react';
 import { AppContext } from '../AppContext';
 import { Link } from 'react-router-dom';
 
-const NavBarComp = () => {
+const Navbar = () => {
 	const context = React.useContext(AppContext);
 	return (
 		<div>
@@ -73,4 +73,4 @@ const NavBarComp = () => {
 	);
 };
 
-export default NavBarComp;
+export default Navbar;

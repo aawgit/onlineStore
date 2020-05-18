@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { signOut } from './_helper/LogInHandler';
+import { signOut } from './utils';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Routes from './Routes';
 import { AppContext } from './AppContext';
-import NavBarComp from './components/NavBarComp';
-import FooterComp from './components/FooterComp';
+import Routes from './Routes';
+import { Navbar } from './components';
+import { Footer } from './components';
 
 class App extends Component {
 	constructor(props) {
@@ -41,11 +41,11 @@ class App extends Component {
 		return (
 			<Router>
 				<AppContext.Provider value={this.state}>
-					<NavBarComp />
+					<Navbar />
 					<div className='content'>
 						<Routes />
 					</div>
-					<FooterComp />
+					<Footer />
 				</AppContext.Provider>
 			</Router>
 		);

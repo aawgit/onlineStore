@@ -1,12 +1,12 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import FooterComp from './FooterComp';
+import Footer from './Footer';
 
-describe('<FooterComp />', () => {
+describe('<Footer />', () => {
 	let wrapper;
 
 	beforeEach(() => {
-		wrapper = mount(<FooterComp />);
+		wrapper = mount(<Footer />);
 	});
 
 	it('should render', () => {

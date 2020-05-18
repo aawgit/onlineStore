@@ -1,7 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import LoginFormComp, { API_PATH_LOGIN } from './LoginFormComp';
 import axios from 'axios';
+import Login from './Login';
+import { Facebook } from '../components';
+import { API_PATH_LOGIN } from '../constants';
 
 jest.mock('axios');
 
@@ -9,17 +11,17 @@ global.console = {
 	log: jest.fn(),
 };
 
-describe('<LoginFormComp />', () => {
+describe('<Login />', () => {
 	it('should render', () => {
-		const wrapper = shallow(<LoginFormComp />);
-		expect(wrapper.find('.container')).toHaveLength(1);
+		const wrapper = shallow(<Login />);
+		expect(wrapper.find(Facebook)).toHaveLength(1);
 	});
 
 	describe('onSubmit', () => {
 		let wrapper, resolve, reject;
 
 		beforeEach(() => {
-			wrapper = shallow(<LoginFormComp />);
+			wrapper = shallow(<Login />);
 			resolve = Promise.resolve({
 				data: {
 					token: 'token1',
@@ -56,12 +58,10 @@ describe('<LoginFormComp />', () => {
 
 	describe('onValueChange', () => {
 		it('should set state', () => {
-			const wrapper = shallow(<LoginFormComp />);
-			wrapper
-				.find('#inputEmail')
-				.simulate('change', {
-					target: { name: 'emailName', value: 'emailValue' },
-				});
+			const wrapper = shallow(<Login />);
+			wrapper.find('#inputEmail').simulate('change', {
+				target: { name: 'emailName', value: 'emailValue' },
+			});
 			expect(wrapper.state().user.emailName).toEqual('emailValue');
 		});
 	});

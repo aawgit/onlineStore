@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import App from './App';
-import { signOut } from './_helper/LogInHandler';
+import { signOut } from './utils';
 
-jest.mock('./_helper/LogInHandler');
+jest.mock('./utils/LogInHandler');
 
 describe('<App />', () => {
 	let wrapper;

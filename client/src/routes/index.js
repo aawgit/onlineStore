@@ -4,7 +4,7 @@ import Contact from './Contact';
 import Login from './Login';
 import Register from './Register';
 import Profile from './Profile';
-import Item from './Item';
+import ShowItem from './ShowItem';
 import AddItem from './AddItem';
 import EditItem from './EditItem';
 
@@ -15,7 +15,7 @@ export {
 	Login,
 	Register,
 	Profile,
-	Item,
+	ShowItem,
 	AddItem,
 	EditItem,
 };

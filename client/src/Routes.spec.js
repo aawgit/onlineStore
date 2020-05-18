@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Routes from './Routes';
-import { Switch, Route } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 
 describe('<Routes />', () => {
 	it('should render', () => {

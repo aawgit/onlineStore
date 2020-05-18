@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import axios from 'axios';
 import { API_PATH_REGISTER } from '../constants';
-import RegisterFormComp from './RegisterFormComp';
+import Register from './Register';
 
 jest.mock('axios');
 
@@ -10,9 +10,9 @@ global.console = {
 	log: jest.fn(),
 };
 
-describe('<RegisterFormComp />', () => {
+describe('<Register />', () => {
 	it('should render', () => {
-		const wrapper = shallow(<RegisterFormComp />);
+		const wrapper = shallow(<Register />);
 		expect(wrapper.find('.container')).toBeTruthy();
 	});
 
@@ -20,7 +20,7 @@ describe('<RegisterFormComp />', () => {
 		let wrapper, resolve, reject;
 
 		beforeEach(() => {
-			wrapper = shallow(<RegisterFormComp />);
+			wrapper = shallow(<Register />);
 			resolve = Promise.resolve({
 				data: 'email1',
 			});
@@ -60,7 +60,7 @@ describe('<RegisterFormComp />', () => {
 
 	describe('onValueChange', () => {
 		it('should set state', () => {
-			const wrapper = shallow(<RegisterFormComp />);
+			const wrapper = shallow(<Register />);
 			wrapper.find('#email').simulate('change', {
 				target: { name: 'emailName', value: 'emailValue' },
 			});

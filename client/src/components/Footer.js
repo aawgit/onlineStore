@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 
-const FooterComp = () => {
+const Footer = () => {
 	const top = () => {
 		document.body.scrollTop = 0; // For Safari
 		document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
@@ -10,7 +10,7 @@ const FooterComp = () => {
 		<footer className='text-muted fixed-bottom'>
 			<div className='container'>
 				<p className='float-right'>
-					<a id='scrollToTop' href='#' onClick={top}>
+					<a id='scrollToTop' onClick={top}>
 						Back to top
 					</a>
 				</p>
@@ -19,4 +19,4 @@ const FooterComp = () => {
 		</footer>
 	);
 };
-export default FooterComp;
+export default Footer;
