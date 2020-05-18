@@ -4,49 +4,6 @@ import { Link } from 'react-router-dom';
 
 const NavBarComp = () => {
 	const context = React.useContext(AppContext);
-	const displayNavs = () => {
-		if (context.user.name !== '') {
-			return (
-				<ul className='navbar-nav ml-auto'>
-					<li>
-						<Link to='/profile' className='nav-link'>
-							{context.user.name}
-						</Link>
-					</li>
-					<li>
-						<Link to='/addItem' className='btn btn-success mx-1'>
-							{' '}
-							Add item{' '}
-						</Link>
-					</li>
-					<li>
-						<button
-							onClick={context.removeUser}
-							className='btn btn-outline-light'
-						>
-							{' '}
-							Sign out{' '}
-						</button>
-					</li>
-				</ul>
-			);
-		} else {
-			return (
-				<ul className='navbar-nav ml-auto'>
-					<li className='nav-item'>
-						<Link className='nav-link' to='/login'>
-							Login
-						</Link>
-					</li>
-					<li className='nav-item'>
-						<Link className='nav-link' to='/register'>
-							Register
-						</Link>
-					</li>
-				</ul>
-			);
-		}
-	};
 	return (
 		<div>
 			<nav className='navbar navbar-expand-md navbar-dark bg-dark'>
@@ -73,7 +30,43 @@ const NavBarComp = () => {
 					</button>
 				</div>
 				<div className='navbar-collapse collapse w-100 order-3 dual-collapse2'>
-					{displayNavs()}
+					{context.user.name ? (
+						<ul className='navbar-nav ml-auto'>
+							<li>
+								<Link to='/profile' className='nav-link'>
+									{context.user.name}
+								</Link>
+							</li>
+							<li>
+								<Link to='/addItem' className='btn btn-success mx-1'>
+									{' '}
+									Add item{' '}
+								</Link>
+							</li>
+							<li>
+								<button
+									onClick={context.removeUser}
+									className='btn btn-outline-light'
+								>
+									{' '}
+									Sign out{' '}
+								</button>
+							</li>
+						</ul>
+					) : (
+						<ul className='navbar-nav ml-auto'>
+							<li className='nav-item'>
+								<Link className='nav-link' to='/login'>
+									Login
+								</Link>
+							</li>
+							<li className='nav-item'>
+								<Link className='nav-link' to='/register'>
+									Register
+								</Link>
+							</li>
+						</ul>
+					)}
 				</div>
 			</nav>
 		</div>

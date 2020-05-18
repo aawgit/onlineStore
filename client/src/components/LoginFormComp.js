@@ -51,32 +51,32 @@ class LoginFormComp extends Component {
 								<div className='card-body'>
 									<h5 className='card-title text-center'>Sign In</h5>
 									<form className='form-signin' onSubmit={this.onSubmit}>
-										<label className='sr-only'>
+										<label htmlFor='email' className='sr-only'>
 											Email address
-											<input
-												type='email'
-												id='inputEmail'
-												className='form-control'
-												placeholder='Email address'
-												required
-												autofocus
-												name='email'
-												onChange={this.onValuChange}
-											/>
 										</label>
+										<input
+											type='email'
+											id='inputEmail'
+											className='form-control'
+											placeholder='Email address'
+											required
+											autoFocus
+											name='email'
+											onChange={this.onValuChange}
+										/>
 										<br />
-										<label className='sr-only'>
+										<label htmlFor='password' className='sr-only'>
 											Password
-											<input
-												type='password'
-												id='inputPassword'
-												className='form-control'
-												placeholder='Password'
-												required
-												name='password'
-												onChange={this.onValuChange}
-											/>
 										</label>
+										<input
+											type='password'
+											id='inputPassword'
+											className='form-control'
+											placeholder='Password'
+											required
+											name='password'
+											onChange={this.onValuChange}
+										/>
 										<br />
 										<div className='checkbox'>
 											<label>

@@ -42,61 +42,59 @@ class RegisterFormComp extends Component {
 	render() {
 		return (
 			<div className='container'>
-				<div class='row'>
-					<div class='col-sm-9 col-md-7 col-lg-5 mx-auto'>
-						<div class='card card-signin my-5'>
-							<div class='card-body'>
-								<h5 class='card-title text-center'>Register</h5>
-								<form class='form-signin' onSubmit={this.onSubmit}>
-									<label for='firstName' class='sr-only'>
+				<div className='row'>
+					<div className='col-sm-9 col-md-7 col-lg-5 mx-auto'>
+						<div className='card card-signin my-5'>
+							<div className='card-body'>
+								<h5 className='card-title text-center'>Register</h5>
+								<form className='form-signin' onSubmit={this.onSubmit}>
+									<label htmlFor='firstName' className='sr-only'>
 										First name
 									</label>
 									<input
 										type='text'
 										id='firstName'
-										class='form-control'
+										className='form-control'
 										placeholder='First name'
 										required
-										autofocus
+										autoFocus
 										onChange={this.onValuChange}
 										name='firstName'
 									/>
 									<br />
-									<label for='lastName' class='sr-only'>
+									<label htmlFor='lastName' className='sr-only'>
 										Last name
 									</label>
 									<input
 										type='text'
 										id='lastName'
-										class='form-control'
+										className='form-control'
 										placeholder='LastName'
 										required
-										autofocus
 										onChange={this.onValuChange}
 										name='lastName'
 									/>
 									<br />
-									<label for='email' class='sr-only'>
+									<label htmlFor='email' className='sr-only'>
 										Email address
 									</label>
 									<input
 										type='email'
 										id='email'
-										class='form-control'
+										className='form-control'
 										name='email'
 										placeholder='Email address'
 										required
-										autofocus
 										onChange={this.onValuChange}
 									/>
 									<br />
-									<label for='password' class='sr-only'>
+									<label htmlFor='password' className='sr-only'>
 										Password
 									</label>
 									<input
 										type='password'
 										id='password'
-										class='form-control'
+										className='form-control'
 										placeholder='Password'
 										name='password'
 										required
@@ -105,7 +103,7 @@ class RegisterFormComp extends Component {
 									<br />
 
 									<button
-										class='btn btn-lg btn-primary btn-block'
+										className='btn btn-lg btn-primary btn-block'
 										type='submit'
 									>
 										Register

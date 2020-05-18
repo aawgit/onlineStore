@@ -15,8 +15,8 @@ class App extends Component {
 			user: {
 				name: '',
 			},
-			removeUser: this.removeUser,
-			setUser: this.setUser,
+			removeUser: () => this.removeUser(),
+			setUser: (user) => this.setUser(user),
 		};
 	}
 
@@ -39,18 +39,17 @@ class App extends Component {
 
 	render() {
 		return (
-			<AppContext.Provider value={this.state}>
-				<Router>
+			<Router>
+				<AppContext.Provider value={this.state}>
 					<NavBarComp />
 					<div className='content'>
 						<Routes />
 					</div>
 					<FooterComp />
-				</Router>
-			</AppContext.Provider>
+				</AppContext.Provider>
+			</Router>
 		);
 	}
 }
 
-App.contextType = AppContext;
 export default App;
