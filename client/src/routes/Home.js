@@ -12,7 +12,11 @@ class Home extends React.Component {
 	}
 
 	componentDidMount() {
-		axios
+		this.getItems();
+	}
+
+	getItems() {
+		return axios
 			.get(API_PATH_ITEMS)
 			.then((response) => {
 				this.setState({
@@ -20,12 +24,12 @@ class Home extends React.Component {
 				});
 			})
 			.catch((error) => {
-				console.log(error);
+				throw new Error(error);
 			});
 	}
 
 	render() {
-		const items = this.state.items;
+		const { items } = this.state;
 		return (
 			<div>
 				<main role='main'>

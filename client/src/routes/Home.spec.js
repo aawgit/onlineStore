@@ -1,59 +1,81 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { render } from '@testing-library/react';
 import axios from 'axios';
 import Home from './Home';
 import { API_PATH_ITEMS } from '../constants';
 
 jest.mock('axios');
 
-describe('<Home />', () => {
-	let data;
+const restoreCDM = Home.prototype.componentDidMount;
+const restoreGetItems = Home.prototype.getItems;
 
-	global.console = {
-		log: jest.fn(),
-	};
+describe('<Home />', () => {
+	let wrapper,
+		mock_CDM = jest.fn(),
+		mock_getItems = jest.fn(),
+		mock_data = {
+			data: [
+				{
+					_id: 0,
+					name: 'image1',
+					description: 'desc1',
+					price: '1$',
+					owner: {
+						name: 'owner1',
+					},
+				},
+			],
+		};
 
 	beforeEach(() => {
-		data = [
-			{
-				_id: 0,
-				name: 'image1',
-				description: 'desc1',
-				price: '1$',
-				owner: {
-					name: 'owner1',
-				},
-			},
-		];
+		Home.prototype.componentDidMount = mock_CDM;
+		Home.prototype.getItems = mock_getItems;
 	});
 
 	it('should render', () => {
-		const spy = jest
-			.spyOn(Home.prototype, 'componentDidMount')
-			.mockImplementationOnce(() => data);
-		const wrapper = shallow(<Home />);
-		wrapper.setState({ items: data });
-		expect(spy).toHaveBeenCalledTimes(1);
-		expect(wrapper.state().items).toHaveLength(1);
-		expect(wrapper.find('.row').text()).toContain('image1');
+		wrapper = shallow(<Home />);
+		expect(wrapper.find('main')).toHaveLength(1);
 	});
 
-	it('should set item', async () => {
-		const resolve = Promise.resolve({ data });
-		axios.get.mockImplementationOnce(() => resolve);
-		const wrapper = shallow(<Home />);
-		await resolve;
-		expect(axios.get).toHaveBeenCalledWith(API_PATH_ITEMS);
-		expect(wrapper.state().items).toMatchObject(data);
+	describe('componentDidMount', () => {
+		it('should have been called', () => {
+			wrapper = shallow(<Home />);
+			expect(mock_CDM).toHaveBeenCalled();
+		});
+
+		it('should call getItems', () => {
+			Home.prototype.componentDidMount = restoreCDM;
+			wrapper = shallow(<Home />);
+			expect(mock_getItems).toHaveBeenCalledTimes(1);
+		});
 	});
-	it('should log error', async () => {
-		try {
-			const reject = Promise.reject('error1');
-			axios.get.mockImplementationOnce(() => reject);
-			render(<Home />);
-		} catch (e) {
-			expect(global.console.log).toHaveBeenCalledWith('error1');
-		}
+
+	describe('getItems', () => {
+		beforeEach(() => {
+			Home.prototype.getItems = restoreGetItems;
+		});
+
+		it('should resolve', async () => {
+			axios.get.mockImplementationOnce(() => Promise.resolve(mock_data));
+			wrapper = shallow(<Home />);
+			wrapper
+				.instance()
+				.getItems()
+				.then(() => {
+					expect(wrapper.state().items).toMatchObject(mock_data.data);
+				});
+			expect(axios.get).toHaveBeenCalledWith(API_PATH_ITEMS);
+		});
+
+		it('should reject', async () => {
+			axios.get.mockImplementationOnce(() => Promise.reject('error1'));
+			wrapper = shallow(<Home />);
+			wrapper
+				.instance()
+				.getItems()
+				.catch((response) => {
+					expect(response).toEqual(new Error('error1'));
+				});
+		});
 	});
 });
