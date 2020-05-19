@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { API_PATH_ITEMS, CURRENCY_PRE, CURRENCY_POST } from '../constants';
 
-class ShowItem extends Component {
+class ShowItems extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			redirect: false,
 			options: '',
 			item: {
-				data: {},
+				data: false,
 				owner: {
 					name: '',
 					id: '',
@@ -21,14 +22,8 @@ class ShowItem extends Component {
 
 	componentDidMount() {
 		const user = JSON.parse(sessionStorage.getItem('user'));
-
-		axios
-			.get(API_PATH_ITEMS + '/' + this.props.match.params.id)
-			.then((res) => this.setState({ item: { data: res.data } }))
-			.catch((err) => console.log(err));
-
+		this.getItems();
 		const { item } = this.state;
-
 		this.setState({
 			options:
 				user && user.userId === item.owner._id ? (
@@ -57,17 +52,28 @@ class ShowItem extends Component {
 		});
 	}
 
+	getItems() {
+		return axios
+			.get(API_PATH_ITEMS + '/' + this.props.match.params.id)
+			.then((res) => this.setState({ item: res }))
+			.catch((err) => {
+				throw new Error(err);
+			});
+	}
+
 	onDelete(e) {
 		e.preventDefault();
 
-		axios
-			.delete(API_PATH_ITEMS + '/' + this.state._id, {
+		return axios
+			.delete(API_PATH_ITEMS + '/' + this.state.item.data._id, {
 				headers: {
 					'x-access-token': JSON.parse(sessionStorage.getItem('user')).jwtToken,
 				},
 			})
 			.then(() => this.setState({ redirect: '/items' }))
-			.catch((err) => console.log(err.response.data));
+			.catch((err) => {
+				throw new Error(err);
+			});
 	}
 
 	render() {
@@ -75,13 +81,13 @@ class ShowItem extends Component {
 		return (
 			<div className='container'>
 				<div className='row'>
-					{this.state.data && (
+					{item.data && (
 						<>
 							<div className='col-sm-9 col-md-6 col-lg-5'>
 								<div className='card card-signin my-5'>
 									<img
 										alt='Item'
-										src={this.props.imageLocation}
+										src={item.data.imageLocation}
 										className='card-img-top-new'
 									/>
 								</div>
@@ -89,11 +95,11 @@ class ShowItem extends Component {
 							<div className='col-sm-9 col-md-6 col-lg-5'>
 								<div className='card card-signin my-5'>
 									<div className='card-body'>
-										<h5 className='card-title text-center'>{item.name}</h5>
-										<label>{item.description}</label>
+										<h5 className='card-title text-center'>{item.data.name}</h5>
+										<label>{item.data.description}</label>
 										<br />
 										<label>
-											{CURRENCY_PRE}&nbsp;{item.price}&nbsp;{CURRENCY_POST}
+											{CURRENCY_PRE}&nbsp;{item.data.price}&nbsp;{CURRENCY_POST}
 										</label>
 										<br />
 										<label>
@@ -115,4 +121,4 @@ class ShowItem extends Component {
 	}
 }
 
-export default ShowItem;
+export default ShowItems;

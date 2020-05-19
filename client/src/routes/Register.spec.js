@@ -6,10 +6,6 @@ import Register from './Register';
 
 jest.mock('axios');
 
-global.console = {
-	log: jest.fn(),
-};
-
 describe('<Register />', () => {
 	it('should render', () => {
 		const wrapper = shallow(<Register />);
@@ -17,14 +13,10 @@ describe('<Register />', () => {
 	});
 
 	describe('onSubmit', () => {
-		let wrapper, resolve, reject;
+		let wrapper;
 
 		beforeEach(() => {
 			wrapper = shallow(<Register />);
-			resolve = Promise.resolve({
-				data: 'email1',
-			});
-			reject = Promise.reject(new Error({ response: { data: 'error1' } }));
 		});
 
 		it('should resolve', async () => {
@@ -36,25 +28,34 @@ describe('<Register />', () => {
 					password: 'password1',
 				},
 			};
-			axios.post.mockImplementationOnce(() => resolve);
+			const mock_data = {
+				data: 'email1',
+			};
+			axios.post.mockImplementationOnce(() => Promise.resolve(mock_data));
 			wrapper.setState(mock_user);
-			wrapper.instance().onSubmit({ preventDefault: jest.fn() });
-			await resolve;
+			wrapper
+				.instance()
+				.onSubmit({ preventDefault: jest.fn() })
+				.then(() => {
+					expect(wrapper.state().message).toEqual(
+						`Verification e-mail has been sent to ${mock_data.data}.`
+					);
+				});
 			expect(axios.post).toHaveBeenCalledWith(API_PATH_REGISTER, {
 				email: 'email1',
 				name: 'firstName1 lastName1',
 				password: 'password1',
 			});
-			expect(wrapper.state().message).toBeTruthy();
 		});
 
 		it('should reject', async () => {
-			try {
-				axios.post.mockImplementationOnce(() => reject);
-				await wrapper.instance().onSubmit({ preventDefault: jest.fn() });
-			} catch (e) {
-				expect(global.console.log).toHaveBeenCalledWith('error1');
-			}
+			axios.post.mockImplementationOnce(() => Promise.reject('error1'));
+			await wrapper
+				.instance()
+				.onSubmit({ preventDefault: jest.fn() })
+				.catch((response) => {
+					expect(response).toEqual(new Error('error1'));
+				});
 		});
 	});
 

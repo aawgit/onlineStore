@@ -15,34 +15,41 @@ class EditItem extends Component {
 				price: '',
 			},
 		};
-		this.onValuChange = this.onValuChange.bind(this);
+		this.onValueChange = this.onValueChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
 	componentDidMount() {
 		if (!checkLoggedIn()) this.setState({ redirect: '/login' });
-
-		axios
-			.get(API_PATH_ITEMS + '/' + this.props.match.params.id)
-			.then((res) => this.setState(res.data))
-			.catch((err) => console.log(err));
+		this.getItems();
 	}
 
-	onValuChange(e) {
-		this.setState({ [e.target.name]: e.target.value });
+	getItems() {
+		return axios.get(API_PATH_ITEMS + '/' + this.props.match.params.id).then(
+			(res) => this.setState({ item: res.data }),
+			(err) => {
+				throw new Error(err);
+			}
+		);
+	}
+
+	onValueChange(e) {
+		this.setState({ item: { [e.target.name]: e.target.value } });
 	}
 
 	onSubmit(e) {
 		e.preventDefault();
 
-		axios
-			.put(API_PATH_ITEMS + '/' + this.props.itemId, this.state, {
+		return axios
+			.put(API_PATH_ITEMS + '/' + this.props.match.params.id, this.state.item, {
 				headers: {
 					'x-access-token': JSON.parse(sessionStorage.getItem('user')).jwtToken,
 				},
 			})
 			.then((res) => this.setState({ redirect: '/viewItem/' + res.data._id }))
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				throw new Error(err);
+			});
 	}
 
 	render() {

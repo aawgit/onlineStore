@@ -7,10 +7,6 @@ import { API_PATH_LOGIN } from '../constants';
 
 jest.mock('axios');
 
-global.console = {
-	log: jest.fn(),
-};
-
 describe('<Login />', () => {
 	it('should render', () => {
 		const wrapper = shallow(<Login />);
@@ -18,41 +14,43 @@ describe('<Login />', () => {
 	});
 
 	describe('onSubmit', () => {
-		let wrapper, resolve, reject;
+		let wrapper, mock_data;
 
 		beforeEach(() => {
 			wrapper = shallow(<Login />);
-			resolve = Promise.resolve({
+			mock_data = {
 				data: {
 					token: 'token1',
 					userId: 'userid1',
 					name: 'name1',
 				},
-			});
-			reject = Promise.reject(new Error({ response: { data: 'error1' } }));
+			};
 		});
 
 		it('should set session', async () => {
-			axios.post.mockImplementationOnce(() => resolve);
-			wrapper.instance().onSubmit({ preventDefault: jest.fn() });
-			await resolve;
+			axios.post.mockImplementationOnce(() => Promise.resolve(mock_data));
+			wrapper
+				.instance()
+				.onSubmit({ preventDefault: jest.fn() })
+				.then(() => {
+					expect(JSON.parse(sessionStorage.getItem('user'))).toHaveProperty(
+						'jwtToken',
+						'userId',
+						'name'
+					);
+					expect(wrapper.state().redirect).toBeTruthy();
+				});
 			expect(axios.post).toHaveBeenCalledWith(API_PATH_LOGIN, {});
-			expect(JSON.parse(sessionStorage.getItem('user'))).toHaveProperty(
-				'jwtToken',
-				'userId',
-				'name'
-			);
-			expect(wrapper.state().redirect).toBeTruthy();
-			expect(wrapper.find('Redirect')).toBeTruthy();
 		});
 
 		it('should reject', async () => {
-			try {
-				axios.post.mockImplementationOnce(() => reject);
-				await wrapper.instance().onSubmit({ preventDefault: jest.fn() });
-			} catch (e) {
-				expect(global.console.log).toHaveBeenCalledWith('error1');
-			}
+			axios.post.mockImplementationOnce(() => Promise.reject('error1'));
+			wrapper
+				.instance()
+				.onSubmit({ preventDefault: jest.fn() })
+				.catch((response) => {
+					expect(response).toEqual(new Error('error1'));
+				});
 		});
 	});
 

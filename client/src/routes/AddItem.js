@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import { API_PATH_ITEMS } from '../constants';
+import { API_PATH_ITEMS, CURRENCY_PRE, CURRENCY_POST } from '../constants';
 import { checkLoggedIn } from '../utils';
 
-class AddItemComp extends Component {
+class AddItem extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -27,24 +27,21 @@ class AddItemComp extends Component {
 	onValueChange(e) {
 		switch (e.target.name) {
 			case 'file':
-				this.setState({ file: e.target.files[0] });
+				this.setState({ item: { file: e.target.files[0] } });
 				break;
 			default:
-				this.setState({ [e.target.name]: e.target.value });
+				this.setState({ item: { [e.target.name]: e.target.value } });
 		}
 	}
 
 	onSubmit(e) {
 		e.preventDefault();
 		const formData = new FormData();
-		const { name, description, price, file } = this.state.item;
+		Object.keys(this.state.item).forEach((key) =>
+			formData.append(key, this.state.item[key])
+		);
 
-		formData.append('name', name);
-		formData.append('description', description);
-		formData.append('price', price);
-		formData.append('file', file);
-
-		axios
+		return axios
 			.post(API_PATH_ITEMS, formData, {
 				headers: {
 					'x-access-token': JSON.parse(sessionStorage.getItem('user')).jwtToken,
@@ -53,7 +50,9 @@ class AddItemComp extends Component {
 			.then((res) => {
 				this.setState({ redirect: '/viewItem/' + res.data._id });
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				throw new Error('error1');
+			});
 	}
 
 	render() {
@@ -67,12 +66,8 @@ class AddItemComp extends Component {
 							<div className='card card-signin my-5'>
 								<div className='card-body'>
 									<h5 className='card-title text-center'>Add item</h5>
-									<form
-										className='form-signin'
-										onSubmit={this.onSubmit}
-										enctype='multipart/form-data'
-									>
-										<label for='name' className='sr-only'>
+									<form className='form-signin' encType='multipart/form-data'>
+										<label htmlFor='name' className='sr-only'>
 											Name
 										</label>
 										<input
@@ -81,12 +76,12 @@ class AddItemComp extends Component {
 											className='form-control'
 											placeholder='Item name'
 											required
-											autofocus
+											autoFocus
 											name='name'
 											onChange={this.onValueChange}
 										/>
 										<br />
-										<label for='description' className='sr-only'>
+										<label htmlFor='description' className='sr-only'>
 											Description
 										</label>
 										<input
@@ -95,13 +90,12 @@ class AddItemComp extends Component {
 											className='form-control'
 											placeholder='Item description'
 											required
-											autofocus
 											name='description'
 											onChange={this.onValueChange}
 										/>
 										<br />
-										<label for='price' className='sr-only'>
-											Price (LKR)
+										<label htmlFor='price' className='sr-only'>
+											Price&nbsp;{CURRENCY_PRE}
 										</label>
 										<input
 											type='text'
@@ -109,10 +103,10 @@ class AddItemComp extends Component {
 											className='form-control'
 											placeholder='Item price'
 											required
-											autofocus
 											name='price'
 											onChange={this.onValueChange}
 										/>
+										&nbsp;{CURRENCY_POST}
 										<br />
 										<input
 											type='file'
@@ -123,7 +117,7 @@ class AddItemComp extends Component {
 										/>
 										<button
 											className='btn btn-lg btn-primary btn-block'
-											type='submit'
+											onClick={this.onSubmit}
 										>
 											Add item
 										</button>
@@ -138,4 +132,4 @@ class AddItemComp extends Component {
 	}
 }
 
-export default AddItemComp;
+export default AddItem;

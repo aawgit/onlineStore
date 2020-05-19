@@ -25,7 +25,7 @@ class Facebook extends Component {
 	 * Chained callback from Facebook API to tokenize session
 	 */
 	onLoginSuccess() {
-		axios
+		return axios
 			.post(API_PATH_FACEBOOK, {
 				access_token: this.state.user.accessToken,
 			})
@@ -39,11 +39,10 @@ class Facebook extends Component {
 					})
 				);
 				this.setState({
-					redirect: true,
+					redirect: '/home',
 				});
 			})
 			.catch((err) => {
-				console.log(err);
 				throw new Error(err);
 			});
 	}
@@ -73,11 +72,10 @@ class Facebook extends Component {
 	 * both components has it's own unit tests and the internal state
 	 * is check elsewhere for this statement
 	 */
-
-	/*istanbul ignore next*/
+	/* istanbul ignore next */
 	render() {
 		if (this.state.redirect) {
-			return <Redirect to='/' />;
+			return <Redirect to={this.state.redirect} />;
 		} else {
 			return (
 				<FacebookLogin

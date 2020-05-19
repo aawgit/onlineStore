@@ -7,10 +7,6 @@ import { API_PATH_FACEBOOK } from '../constants';
 
 jest.mock('axios');
 
-global.console = {
-	log: jest.fn(),
-};
-
 const restoreLogin = Facebook.prototype.onLoginSuccess;
 const restoreResponse = Facebook.prototype.responseFacebook;
 
@@ -74,41 +70,43 @@ describe('<Facebook />', () => {
 	});
 
 	describe('onLoginSuccess', () => {
-		let wrapper, resolve, reject, mock_user;
+		let wrapper, mock_user, mock_data;
 		beforeEach(() => {
 			mock_user = { accessToken: 'accesstoken1' };
-			resolve = Promise.resolve({
+			mock_data = {
 				data: {
 					token: 'token1',
 					userId: 'userid1',
 					name: 'name1',
 				},
-			});
-			reject = Promise.reject('error1');
+			};
 			sessionStorage.setItem('user', null);
 			wrapper = shallow(<Facebook />);
 		});
 
 		it('should resolve', async () => {
 			wrapper.setState({ user: mock_user });
-			axios.post.mockImplementationOnce(() => resolve);
-			wrapper.instance().onLoginSuccess();
-			await resolve;
+			axios.post.mockImplementationOnce(() => Promise.resolve(mock_data));
+			await wrapper
+				.instance()
+				.onLoginSuccess()
+				.then(() => {
+					expect(sessionStorage.getItem('user')).toBeTruthy();
+					expect(wrapper.state().redirect).toEqual('/home');
+				});
 			expect(axios.post).toHaveBeenCalledWith(API_PATH_FACEBOOK, {
 				access_token: mock_user.accessToken,
 			});
-			expect(sessionStorage.getItem('user')).toBeTruthy();
-			expect(wrapper.state().redirect).toBeTruthy();
-			expect(wrapper.find('Redirect')).toBeTruthy();
 		});
 
 		it('should reject', async () => {
-			try {
-				axios.post.mockImplementationOnce(() => reject);
-				await wrapper.instance().onLoginSuccess();
-			} catch (e) {
-				expect(global.console.log).toHaveBeenCalledWith('error1');
-			}
+			axios.post.mockImplementationOnce(() => Promise.reject('error1'));
+			await wrapper
+				.instance()
+				.onLoginSuccess()
+				.catch((response) => {
+					expect(response).toEqual(new Error('error1'));
+				});
 		});
 	});
 

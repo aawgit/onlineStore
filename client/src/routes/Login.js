@@ -21,7 +21,7 @@ class Login extends Component {
 
 	onSubmit(e) {
 		e.preventDefault();
-		axios
+		return axios
 			.post(API_PATH_LOGIN, this.state.user)
 			.then((res) => {
 				sessionStorage.setItem(
@@ -35,7 +35,9 @@ class Login extends Component {
 				//TODO: set user to context
 				this.setState({ redirect: '/shop' });
 			})
-			.catch((err) => console.log(err.response.data));
+			.catch((err) => {
+				throw new Error(err);
+			});
 	}
 
 	render() {

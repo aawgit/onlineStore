@@ -31,7 +31,7 @@ class Register extends Component {
 			password: this.state.user.password,
 		};
 
-		axios
+		return axios
 			.post(API_PATH_REGISTER, user)
 			.then((res) => {
 				this.setState({
@@ -39,7 +39,7 @@ class Register extends Component {
 				});
 			})
 			.catch((err) => {
-				console.log(err.response.data);
+				throw new Error(err);
 			});
 	}
 
