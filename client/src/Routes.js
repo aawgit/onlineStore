@@ -7,7 +7,7 @@ import {
 	Login,
 	Register,
 	Profile,
-	ShowItem,
+	ShowItems,
 	AddItem,
 	EditItem,
 } from './routes';
@@ -21,7 +21,7 @@ const Routes = () => {
 			<Route path='/login' component={Login} />
 			<Route path='/register' component={Register} />
 			<Route path='/profile' component={Profile} />
-			<Route path='/viewItem/:id' component={ShowItem} />
+			<Route path='/viewItem/:id' component={ShowItems} />
 			<Route path='/addItem' component={AddItem} />
 			<Route path='/editItem/:id' component={EditItem} />
 		</Switch>
