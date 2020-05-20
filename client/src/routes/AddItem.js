@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { API_PATH_ITEMS, CURRENCY_PRE, CURRENCY_POST } from '../constants';
-import { checkLoggedIn } from '../utils';
+import Context from '../Context';
 
 class AddItem extends Component {
 	constructor(props) {
@@ -20,8 +20,12 @@ class AddItem extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
+	static contextType = Context;
+
+	// context mocked
+	/* istanbul ignore next */
 	componentDidMount() {
-		if (!checkLoggedIn()) this.setState({ redirect: '/login' });
+		if (!this.context.user) this.setState({ redirect: '/login' });
 	}
 
 	onValueChange(e) {
@@ -44,14 +48,14 @@ class AddItem extends Component {
 		return axios
 			.post(API_PATH_ITEMS, formData, {
 				headers: {
-					'x-access-token': JSON.parse(sessionStorage.getItem('user')).jwtToken,
+					'x-access-token': this.context.user.token,
 				},
 			})
 			.then((res) => {
 				this.setState({ redirect: '/viewItem/' + res.data._id });
 			})
 			.catch((err) => {
-				throw new Error('error1');
+				this.context.setError(err);
 			});
 	}
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import { checkLoggedIn } from '../utils';
+import Context from '../Context';
 import { API_PATH_ITEMS } from '../constants';
 
 class EditItem extends Component {
@@ -19,8 +19,12 @@ class EditItem extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
+	static contextType = Context;
+
+	// context mocked
+	/* istanbul ignore next */
 	componentDidMount() {
-		if (!checkLoggedIn()) this.setState({ redirect: '/login' });
+		if (!this.context.user) this.setState({ redirect: '/login' });
 		this.getItems();
 	}
 
@@ -28,7 +32,7 @@ class EditItem extends Component {
 		return axios.get(API_PATH_ITEMS + '/' + this.props.match.params.id).then(
 			(res) => this.setState({ item: res.data }),
 			(err) => {
-				throw new Error(err);
+				this.context.setError(err);
 			}
 		);
 	}
@@ -43,12 +47,12 @@ class EditItem extends Component {
 		return axios
 			.put(API_PATH_ITEMS + '/' + this.props.match.params.id, this.state.item, {
 				headers: {
-					'x-access-token': JSON.parse(sessionStorage.getItem('user')).jwtToken,
+					'x-access-token': this.context.user.token,
 				},
 			})
 			.then((res) => this.setState({ redirect: '/viewItem/' + res.data._id }))
 			.catch((err) => {
-				throw new Error(err);
+				this.context.setError(err);
 			});
 	}
 
@@ -75,7 +79,7 @@ class EditItem extends Component {
 											required
 											autoFocus
 											name='name'
-											onChange={this.onValuChange}
+											onChange={this.onValueChange}
 											value={this.state.item.name}
 										/>
 										<br />
@@ -89,7 +93,7 @@ class EditItem extends Component {
 											placeholder='Item description'
 											required
 											name='description'
-											onChange={this.onValuChange}
+											onChange={this.onValueChange}
 											value={this.state.item.description}
 										/>
 										<br />
@@ -103,7 +107,7 @@ class EditItem extends Component {
 											placeholder='Item price'
 											required
 											name='price'
-											onChange={this.onValuChange}
+											onChange={this.onValueChange}
 											value={this.state.item.price}
 										/>
 										<br />

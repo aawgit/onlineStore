@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Context from '../Context';
 import { API_PATH_REGISTER } from '../constants';
 
 class Register extends Component {
@@ -18,6 +19,12 @@ class Register extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
+	static contextType = Context;
+
+	componentDidMount() {
+		if (this.context.user) this.setState({ redirect: '/shop' });
+	}
+
 	onValuChange(e) {
 		this.setState({ user: { [e.target.name]: e.target.value } });
 	}
@@ -34,12 +41,13 @@ class Register extends Component {
 		return axios
 			.post(API_PATH_REGISTER, user)
 			.then((res) => {
+				this.context.setUser(this.state.user);
 				this.setState({
-					message: `Verification e-mail has been sent to ${res.data}.`,
+					message: `Verification e-mail has been sent to ${this.state.user.email}.`,
 				});
 			})
 			.catch((err) => {
-				throw new Error(err);
+				this.context.setError(err);
 			});
 	}
 

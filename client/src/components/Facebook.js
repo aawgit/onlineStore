@@ -2,50 +2,19 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
+import Context from '../Context';
 import { API_PATH_FACEBOOK } from '../constants';
 
 class Facebook extends Component {
 	constructor(props) {
 		super(props);
+		this.handleResponse = this.handleResponse.bind(this);
 		this.state = {
 			redirect: false,
-			user: {
-				isLoggedIn: false,
-				name: '',
-				email: '',
-				picture: '',
-				accessToken: '',
-			},
 		};
-		this.onLoginSuccess = this.onLoginSuccess.bind(this);
-		this.responseFacebook = this.responseFacebook.bind(this);
 	}
 
-	/**
-	 * Chained callback from Facebook API to tokenize session
-	 */
-	onLoginSuccess() {
-		return axios
-			.post(API_PATH_FACEBOOK, {
-				access_token: this.state.user.accessToken,
-			})
-			.then((res) => {
-				sessionStorage.setItem(
-					'user',
-					JSON.stringify({
-						jwtToken: res.data.token,
-						userId: res.data.userId,
-						name: res.data.name,
-					})
-				);
-				this.setState({
-					redirect: '/home',
-				});
-			})
-			.catch((err) => {
-				throw new Error(err);
-			});
-	}
+	static contextType = Context;
 
 	/**
 	 * Callback method of the external Facebook component
@@ -53,19 +22,18 @@ class Facebook extends Component {
 	 * See more: https://github.com/keppelen/react-facebook-login	 *
 	 * @param {object} response Data sent back by the Facebook API
 	 */
-	responseFacebook(response) {
-		if (response && response.hasOwnProperty('accessToken')) {
-			this.setState({
-				user: {
-					isLoggedIn: true,
-					name: response.name,
-					email: response.email,
-					picture: response.picture.data.url,
-					accessToken: response.accessToken,
-				},
+	handleResponse(response) {
+		return axios
+			.post(API_PATH_FACEBOOK, {
+				access_token: response.accessToken,
+			})
+			.then((res) => {
+				this.context.setUser(res.data);
+				this.setState({ redirect: '/home' });
+			})
+			.catch((err) => {
+				this.context.setError(err);
 			});
-			this.onLoginSuccess();
-		}
 	}
 	/**
 	 * There is no need to test the render method itself because

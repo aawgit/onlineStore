@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Context from '../Context';
 import { API_PATH_ITEMS, CURRENCY_PRE, CURRENCY_POST } from '../constants';
 
 class Home extends React.Component {
@@ -10,6 +11,8 @@ class Home extends React.Component {
 			items: [],
 		};
 	}
+
+	static contextType = Context;
 
 	componentDidMount() {
 		this.getItems();
@@ -24,7 +27,7 @@ class Home extends React.Component {
 				});
 			})
 			.catch((error) => {
-				throw new Error(error);
+				this.context.setError(error);
 			});
 	}
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import { AppContext } from '../AppContext';
+import Context from '../Context';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-	const context = React.useContext(AppContext);
+	const context = React.useContext(Context);
 	return (
 		<div>
 			<nav className='navbar navbar-expand-md navbar-dark bg-dark'>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { Facebook } from '../components';
+import Context from '../Context';
 import { API_PATH_LOGIN } from '../constants';
 
 class Login extends Component {
@@ -15,6 +16,12 @@ class Login extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
+	static contextType = Context;
+
+	componentDidMount() {
+		if (this.context.user) this.setState({ redirect: '/shop' });
+	}
+
 	onValuChange(e) {
 		this.setState({ user: { [e.target.name]: e.target.value } });
 	}
@@ -24,19 +31,11 @@ class Login extends Component {
 		return axios
 			.post(API_PATH_LOGIN, this.state.user)
 			.then((res) => {
-				sessionStorage.setItem(
-					'user',
-					JSON.stringify({
-						jwtToken: res.data.token,
-						userId: res.data.userId,
-						name: res.data.name,
-					})
-				);
-				//TODO: set user to context
+				this.context.setUser(res.data);
 				this.setState({ redirect: '/shop' });
 			})
 			.catch((err) => {
-				throw new Error(err);
+				this.context.setError(err);
 			});
 	}
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Context from '../Context';
 import { API_PATH_ITEMS, CURRENCY_PRE, CURRENCY_POST } from '../constants';
 
 class ShowItems extends Component {
@@ -10,46 +11,56 @@ class ShowItems extends Component {
 			redirect: false,
 			options: '',
 			item: {
-				data: false,
+				data: {
+					_id: 'testid', // test mock!
+				},
 				owner: {
 					name: '',
-					id: '',
+					_id: 'default', // test mock!
 				},
 			},
 		};
 		this.onDelete = this.onDelete.bind(this);
 	}
 
+	static contextType = Context;
+
 	componentDidMount() {
-		const user = JSON.parse(sessionStorage.getItem('user'));
-		this.getItems();
-		const { item } = this.state;
+		const userActions = (
+			<>
+				<Link
+					id='editLink'
+					to={'/editItem/' + this.state.item.data._id}
+					className='btn btn-lg btn-secondary btn-block'
+				>
+					Edit
+				</Link>
+				<button
+					id='deleteLink'
+					onClick={this.onDelete}
+					className='btn btn-lg btn-danger btn-block'
+				>
+					Delete
+				</button>
+			</>
+		);
+
+		const guestActions = (
+			<a
+				className='btn btn-lg btn-primary btn-block'
+				href={`mailto:${this.state.item.owner.email}`}
+			>
+				Contact the seller
+			</a>
+		);
+
 		this.setState({
 			options:
-				user && user.userId === item.owner._id ? (
-					<>
-						<Link
-							to={'/editItem/' + item._id}
-							className='btn btn-lg btn-secondary btn-block'
-						>
-							Edit
-						</Link>
-						<button
-							onClick={this.onDelete}
-							className='btn btn-lg btn-danger btn-block'
-						>
-							Delete
-						</button>
-					</>
-				) : (
-					<a
-						className='btn btn-lg btn-primary btn-block'
-						href={`mailto:${this.state.item.owner.email}`}
-					>
-						Contact the seller
-					</a>
-				),
+				this.context.user._id === this.state.item.owner._id
+					? userActions
+					: guestActions,
 		});
+		this.getItems();
 	}
 
 	getItems() {
@@ -57,7 +68,7 @@ class ShowItems extends Component {
 			.get(API_PATH_ITEMS + '/' + this.props.match.params.id)
 			.then((res) => this.setState({ item: res }))
 			.catch((err) => {
-				throw new Error(err);
+				this.context.setError(err);
 			});
 	}
 
@@ -67,12 +78,12 @@ class ShowItems extends Component {
 		return axios
 			.delete(API_PATH_ITEMS + '/' + this.state.item.data._id, {
 				headers: {
-					'x-access-token': JSON.parse(sessionStorage.getItem('user')).jwtToken,
+					'x-access-token': this.context.user.token,
 				},
 			})
 			.then(() => this.setState({ redirect: '/items' }))
 			.catch((err) => {
-				throw new Error(err);
+				this.context.setError(err);
 			});
 	}
 

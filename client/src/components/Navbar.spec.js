@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'enzyme';
-import { AppContext } from '../AppContext';
+import Context from '../Context';
 import { MemoryRouter } from 'react-router-dom';
 import Navbar from './Navbar';
 
@@ -13,26 +13,25 @@ describe('<Navbar />', () => {
 	it('should render user navbar', () => {
 		const wrapper = render(
 			<MemoryRouter>
-				<AppContext.Provider value={context}>
+				<Context.Provider value={context}>
 					<Navbar />
-				</AppContext.Provider>
+				</Context.Provider>
 			</MemoryRouter>
 		);
-		expect(wrapper.find('.navbar')).toBeTruthy();
-		expect(wrapper.find('Sign out')).toBeTruthy();
-		expect(wrapper.find('Login').text()).toBeFalsy();
+		expect(wrapper.find('div').text()).not.toHaveLength(0);
 	});
+
 	it('should render guest navbar', () => {
 		context = { ...context, user: { name: false } };
 		const wrapper = render(
 			<MemoryRouter>
-				<AppContext.Provider value={context}>
+				<Context.Provider value={context}>
 					<Navbar />
-				</AppContext.Provider>
+				</Context.Provider>
 			</MemoryRouter>
 		);
-		expect(wrapper.find('.navbar')).toBeTruthy();
-		expect(wrapper.find('Sign out').text()).toBeFalsy();
-		expect(wrapper.find('Login')).toBeTruthy();
+		expect(wrapper.find('div').text()).not.toHaveLength(0);
+		expect(wrapper.find('div').text()).not.toContain('Sign out');
+		expect(wrapper.find('div').text()).toContain('Login');
 	});
 });

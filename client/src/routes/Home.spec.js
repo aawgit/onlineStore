@@ -1,7 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import axios from 'axios';
 import Home from './Home';
+import Context from '../Context';
+import { MemoryRouter } from 'react-router-dom';
 import { API_PATH_ITEMS } from '../constants';
 
 jest.mock('axios');
@@ -11,6 +13,9 @@ const restoreGetItems = Home.prototype.getItems;
 
 describe('<Home />', () => {
 	let wrapper,
+		mock_context = {
+			setError: jest.fn(),
+		},
 		mock_CDM = jest.fn(),
 		mock_getItems = jest.fn(),
 		mock_data = {
@@ -57,7 +62,14 @@ describe('<Home />', () => {
 
 		it('should resolve', async () => {
 			axios.get.mockImplementationOnce(() => Promise.resolve(mock_data));
-			wrapper = shallow(<Home />);
+			wrapper = mount(
+				<MemoryRouter>
+					<Context.Provider value={mock_context}>
+						<Home />
+					</Context.Provider>
+				</MemoryRouter>
+			);
+			wrapper = wrapper.childAt(0).childAt(0);
 			wrapper
 				.instance()
 				.getItems()
@@ -69,7 +81,14 @@ describe('<Home />', () => {
 
 		it('should reject', async () => {
 			axios.get.mockImplementationOnce(() => Promise.reject('error1'));
-			wrapper = shallow(<Home />);
+			wrapper = mount(
+				<MemoryRouter>
+					<Context.Provider value={mock_context}>
+						<Home />
+					</Context.Provider>
+				</MemoryRouter>
+			);
+			wrapper = wrapper.childAt(0).childAt(0);
 			wrapper
 				.instance()
 				.getItems()

@@ -1,26 +1,30 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import Context from '../Context';
+import { API_PATH_ITEMS } from '../constants';
+import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import EditItem from './EditItem';
-import { checkLoggedIn } from '../utils/LogInHandler';
-import { API_PATH_ITEMS } from '../constants';
 
 jest.mock('axios');
-jest.mock('../utils/LogInHandler');
 
 const restoreCDM = EditItem.prototype.componentDidMount;
 const restoreGetItems = EditItem.prototype.getItems;
 
 describe('<EditItem />', () => {
 	let wrapper,
-		mock_login = true,
+		mock_context = {
+			user: {
+				token: 'token1',
+			},
+			setError: jest.fn(),
+		},
 		mock_CDM = jest.fn(),
 		mock_getItems = jest.fn();
 
 	beforeEach(() => {
 		EditItem.prototype.componentDidMount = mock_CDM;
 		EditItem.prototype.getItems = mock_getItems;
-		checkLoggedIn.mockImplementationOnce(() => mock_login);
 	});
 
 	describe('componentDidMount', () => {
@@ -29,38 +33,42 @@ describe('<EditItem />', () => {
 			expect(mock_CDM).toHaveBeenCalledTimes(1);
 		});
 
-		it('should call checkLoggedIn', () => {
-			EditItem.prototype.componentDidMount = restoreCDM;
-			wrapper = shallow(<EditItem />);
-			expect(wrapper.find('.container')).toHaveLength(1);
-			expect(checkLoggedIn).toHaveBeenCalledTimes(1);
-		});
-
 		it('should set redirect to state', () => {
 			EditItem.prototype.componentDidMount = restoreCDM;
-			mock_login = false;
-			wrapper = shallow(<EditItem />);
-			expect(wrapper.state().redirect).toEqual('/login');
+			mock_context.user = false;
+			wrapper = mount(
+				<MemoryRouter>
+					<Context.Provider value={mock_context}>
+						<EditItem />
+					</Context.Provider>
+				</MemoryRouter>
+			);
+			expect(wrapper.childAt(0).childAt(0).state().redirect).toEqual('/login');
 		});
 	});
 
 	describe('getItems', () => {
-		let mock_data;
-
 		beforeEach(() => {
 			EditItem.prototype.getItems = restoreGetItems;
-			mock_data = {
+		});
+		it('should resolve', async () => {
+			const mock_data = {
 				data: {
 					name: 'name1',
 					description: 'desc1',
 					price: 'price1',
+					file: 'file1',
 				},
 			};
-		});
-		it('should resolve', async () => {
 			axios.get.mockImplementation(() => Promise.resolve(mock_data));
-			wrapper = shallow(<EditItem />);
-			wrapper.setProps({ match: { params: { id: 'mockId' } } });
+			wrapper = mount(
+				<MemoryRouter>
+					<Context.Provider value={mock_context}>
+						<EditItem match={{ params: { id: 'mockId' } }} />
+					</Context.Provider>
+				</MemoryRouter>
+			);
+			wrapper = wrapper.childAt(0).childAt(0);
 			wrapper
 				.instance()
 				.getItems()
@@ -72,12 +80,18 @@ describe('<EditItem />', () => {
 
 		it('should reject', async () => {
 			axios.get.mockImplementation(() => Promise.reject('error1'));
-			wrapper = shallow(<EditItem />);
-			wrapper.setProps({ match: { params: { id: 'mockId' } } });
+			wrapper = mount(
+				<MemoryRouter>
+					<Context.Provider value={mock_context}>
+						<EditItem match={{ params: { id: 'mockId' } }} />
+					</Context.Provider>
+				</MemoryRouter>
+			);
+			wrapper = wrapper.childAt(0).childAt(0);
 			wrapper
 				.instance()
 				.getItems()
-				.catch((response) => expect(response).toEqual(new Error('error1')));
+				.catch(() => expect(mock_context.setError).toHaveBeenCalled());
 		});
 	});
 
@@ -92,17 +106,15 @@ describe('<EditItem />', () => {
 	});
 
 	describe('onSubmit', () => {
-		let mock_data, mock_state, mock_header;
-
-		beforeEach(() => {
-			mock_state = {
+		it('should resolve', async () => {
+			const mock_state = {
 				item: {
 					name: 'name1',
 					description: 'desc1',
 					price: 'price1',
 				},
 			};
-			mock_data = {
+			const mock_data = {
 				data: {
 					_id: 'mockId',
 				},
@@ -110,19 +122,19 @@ describe('<EditItem />', () => {
 				description: 'desc1',
 				price: 'price1',
 			};
-			mock_header = {
-				headers: {
-					'x-access-token': 'token1',
-				},
+			const mock_header = {
+				headers: { 'x-access-token': mock_context.user.token },
 			};
-		});
-
-		it('should resolve', async () => {
-			sessionStorage.setItem('user', JSON.stringify({ jwtToken: 'token1' }));
 			axios.put.mockImplementation(() => Promise.resolve(mock_data));
-			wrapper = shallow(<EditItem />);
+			wrapper = mount(
+				<MemoryRouter>
+					<Context.Provider value={mock_context}>
+						<EditItem match={{ params: { id: 'mockId' } }} />
+					</Context.Provider>
+				</MemoryRouter>
+			);
+			wrapper = wrapper.childAt(0).childAt(0);
 			wrapper.setState({ item: mock_state.item });
-			wrapper.setProps({ match: { params: { id: 'mockId' } } });
 			wrapper
 				.instance()
 				.onSubmit({ preventDefault: jest.fn() })
@@ -138,10 +150,18 @@ describe('<EditItem />', () => {
 
 		it('should reject', async () => {
 			axios.put.mockImplementation(() => Promise.reject('error1'));
+			wrapper = mount(
+				<MemoryRouter>
+					<Context.Provider value={mock_context}>
+						<EditItem match={{ params: { id: 'mockId' } }} />
+					</Context.Provider>
+				</MemoryRouter>
+			);
+			wrapper = wrapper.childAt(0).childAt(0);
 			wrapper
 				.instance()
 				.onSubmit({ preventDefault: jest.fn() })
-				.catch((response) => expect(response).toEqual(new Error('error1')));
+				.catch(() => expect(mock_context.setError).toHaveBeenCalled());
 		});
 	});
 });

@@ -1,22 +1,26 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import Context from '../Context';
+import { API_PATH_ITEMS } from '../constants';
+import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import AddItem from './AddItem';
-import { checkLoggedIn } from '../utils/LogInHandler';
-import { API_PATH_ITEMS } from '../constants';
 
 jest.mock('axios');
-jest.mock('../utils/LogInHandler');
 
 const restoreCDM = AddItem.prototype.componentDidMount;
 
 describe('<AddItem />', () => {
 	let wrapper,
-		mock_login = true,
+		mock_context = {
+			user: {
+				token: 'token1',
+			},
+			setError: jest.fn(),
+		},
 		mock_CDM = jest.fn();
 
 	beforeEach(() => {
-		checkLoggedIn.mockImplementationOnce(() => mock_login);
 		AddItem.prototype.componentDidMount = mock_CDM;
 	});
 
@@ -26,18 +30,17 @@ describe('<AddItem />', () => {
 			expect(mock_CDM).toHaveBeenCalledTimes(1);
 		});
 
-		it('should call checkLoggedIn', () => {
-			AddItem.prototype.componentDidMount = restoreCDM;
-			wrapper = shallow(<AddItem />);
-			expect(wrapper.find('.container')).toHaveLength(1);
-			expect(checkLoggedIn).toHaveBeenCalledTimes(1);
-		});
-
 		it('should set redirect to state', async () => {
 			AddItem.prototype.componentDidMount = restoreCDM;
-			mock_login = false;
-			wrapper = shallow(<AddItem />);
-			expect(wrapper.state().redirect).toEqual('/login');
+			mock_context.user = false;
+			wrapper = mount(
+				<MemoryRouter>
+					<Context.Provider value={mock_context}>
+						<AddItem />
+					</Context.Provider>
+				</MemoryRouter>
+			);
+			expect(wrapper.childAt(0).childAt(0).state().redirect).toEqual('/login');
 		});
 	});
 
@@ -78,17 +81,21 @@ describe('<AddItem />', () => {
 				},
 			};
 			const mock_header = {
-				headers: {
-					'x-access-token': 'token1',
-				},
+				headers: { 'x-access-token': mock_context.user.token },
 			};
 			const mock_data = new FormData();
 			Object.keys(mock_state.item).forEach((key) =>
 				mock_data.append(key, mock_state.item[key])
 			);
-			sessionStorage.setItem('user', JSON.stringify({ jwtToken: 'token1' }));
 			axios.post.mockImplementationOnce(() => Promise.resolve(mock_response));
-			wrapper = shallow(<AddItem />);
+			wrapper = mount(
+				<MemoryRouter>
+					<Context.Provider value={mock_context}>
+						<AddItem />
+					</Context.Provider>
+				</MemoryRouter>
+			);
+			wrapper = wrapper.childAt(0).childAt(0);
 			wrapper.setState(mock_state);
 			wrapper
 				.instance()
@@ -105,11 +112,19 @@ describe('<AddItem />', () => {
 
 		it('should reject', async () => {
 			axios.post.mockImplementationOnce(() => Promise.reject('error1'));
+			wrapper = mount(
+				<MemoryRouter>
+					<Context.Provider value={mock_context}>
+						<AddItem />
+					</Context.Provider>
+				</MemoryRouter>
+			);
+			wrapper = wrapper.childAt(0).childAt(0);
 			wrapper
 				.instance()
 				.onSubmit({ preventDefault: jest.fn() })
 				.catch((response) => {
-					expect(response).toEqual(new Error('error1'));
+					expect(mock_context.setError).toHaveBeenCalled();
 				});
 		});
 	});
