@@ -1,180 +1,123 @@
-# A CRUD API and Front end for a online store (with MERN Stack)
-This project can be used as a boiler plate for building a MongoDB-Express-React-Node stack application.
+# React / Node E-Commerce Boilerplate
+
+This project is a template for creating e-commerce website with user authenticationa and content management functionality.
+
 ## Features:
-  - CRUD operations for items, subject to user authorization
-  - User registration and verification by email
-  - User authentication with Facebook, Oauth
-  - Uploading an image of the item
 
-## Getting Started
-### Prerequisites
+- Token authenticated user management
+- Registration through Facebook API
+- Standard registration with e-mail and verification
+- Content CRUD operations
+- Cloud storage for uploaded content
 
- - NodeJS, NPM (https://www.npmjs.com/get-npm)
- - A MongoDB server, local or remote. Example: mLab (https://mlab.com/)
- - A cloudinary account (https://cloudinary.com/)
- - A Heroku free tier plan - optional
+## Prerequisites
 
-### Installing
+To run the application properly, verify that you meet all the requirements below.
 
-  - Clone the repo and check out the code
-  - Run 
-    ```
-    $ npm install 
-    $ cd client && npm install
-    ```
-  - Set following environment variables in a .env file in the root directory
-    ``` 
-    #jwt secret
-    JWT_SECRET = <some string> ex: 'myJWTSecret'
-    
-    #fb app credentials, needs to be created at https://developers.facebook.com/apps
-    CLIENT_ID = <Facebook app client ID for your app> 
-    CLIENT_SECRET = <Facebook app client secret for your app>
-    
-    #email credentials
-    MAIL_USER = <e-mail address, from which you will be sending the account verification emails to new users> ex:"support@yourstoreapp.com"
-    MAIL_PASSWORD = <e-mail password for the above account> 
-    
-    #cloudinary credentials, needs to be created at https://cloudinary.com/
-    CLOUDINARY_API_SECRET = <cloudinary API secret for your app>
-    CLOUDINARY_API_KEY =  <cloudinary API key for your app>
-    CLOUDINARY_CLOUD_NAME = <cloudinary cloud name>
-    
-    #Database server connection URI. If you are using mLab, this needs to be created at https://mlab.com/, and would look like the following:
-    MONGODB_URI = 'mongodb://<user_name>:<password>@xxxxx.mlab.com:xxxxx/<db_name>'
+- Latest Node installed
+  - CLI `: npm install -g n latest`
+  - Binary: [Official NodeJs Download Site](https://nodejs.org/en/download/)
+- MongoDB installed
+  - [Instructions to intall MongoDB Community Edition on your platform](https://docs.mongodb.com/manual/administration/install-community/)
+- Activated [Cloudinary account](https://cloudinary.com/users/register/free) with an **unsigned preset** configured
+  - [How can I add upload-options when uploading via the Media-Library?](https://support.cloudinary.com/hc/en-us/articles/208097215-How-can-I-add-upload-options-when-uploading-via-the-Media-Library-)
+- Facebook API key for the authentication
+  - Get instructions on the [Facebook Developers](https://developers.facebook.com) website
 
-  - Run ``$ npm run dev`` to start both front end and back end on ports 5000 and 3000 respectively
-  - Run ``$ npm run start`` to start the back end express server on port 5000
+## Install
 
-## Available Routes
+By installing the application the package manager installs the required dependencies automatically. **Before you do any changes remember to create a build first (see below)**!
 
-### User Authentication
+- Clone this repository
+  `~ git clone https://github.com/aawgit/onlineStore.git`
 
-- Login with Facebook
+- Install dependencies for both Server and Client
+  `~ npm install && cd client && npm install`
+
+## Configure
+
+- Set the environmental variables in the `.env` file placed on the project root. This is **required to use the application**!
 
 ```
-Method: post
-Type: public
-Route:
-/api/auth/facebook/login
+APP_NAME    = 'My App'
+APP_EMAIL   = 'support@myapp.xyz'
+APP_URL     = 'http://localhost:5000'
+MAIL_USER       = 'me@service.xyz'
+MAIL_PASSWORD   = 'mydummypassword'
+FACEBOOK_CLIENT_ID       = 1343346045860132
+FACEBOOK_CLIENT_SECRET   = 7c49c01a740912aba449c7e59927a693
+CLOUDINARY_API_SECRET   = xxxxxxxxxxxxxxxxxxxxxxxctYM
+CLOUDINARY_API_KEY      = xxxxxxxxxxx7191
+CLOUDINARY_CLOUD_NAME   = mycloudinaryname
+CLOUDINARY_URL          = cloudinary://xxxxxxxxxxx7191:xxxxxxxxxxxxxxxxxxxxxxxctYM@mycloudinaryname
+MONGODB_URI = 'mongodb://127.0.0.1:27017/mydatabase'
+HTTPS       = false
+JWT_SECRET  = 'mydummysecret'
 ```
 
-- Register new user with email
+## Build
 
-```
-Method: post
-Type: public
-Route:
-/api/auth/register
-```
+Now, that all configuration and installation done, your ready to code! This boilerplate comes with various scripts that you can run from your terminal. **Recommended to run `npm run watch:dev` in the server directory. It takes care of the building process and runs both client and server in hot reload mode.**.
 
-- Login user with email
+### Server scripts
 
-```
-Method: post
-Type: public
-Route:
-/api/auth/login
-```
+**This scripts only available in the server directory!**
 
-- Verify email address
+- `~/myapp/server/ npm start` - Builds and runs the server in **production environment** _Note: keep `start` script in production because most cloud services use this to access your server_
+- `~/myapp/server/ npm run build` - Cleans the build directory and creates a new snapshot build from the current code. The `build`process transpiles into common javascript by Babel. This is a shorthand for `clean` and `transpile` scripts.
+- `~/myapp/server/ npm run server` - Runs the default **Node Server**
+- `~/myapp/server/ npm run client` - Runs the client **watcher** script
+- `~/myapp/server/ npm run dev` - Shorthand for `build` & `server` in **development encironment**
+- `~/myapp/server/ npm run prod` - Shorthand for `build` & `server` in **production environment**
+- `~/myapp/server/ npm run watch` - Executes a **nodemon** instance on your **build directory**
+- `~/myapp/server/ npm run watch:dev` - Parellel executing of `watch` & `client`. This way you can hot reload both front- and backend. _(Note: changes in the server entry point (eg: ~/server/src/server.js) does not trigger a reload and you must restart the script to ahve changes take effect)_
+- `~/myapp/server/ npm run test` - Runs [Jest Framework](https://jestjs.io) in **watch** mode
+- `~/myapp/server/ npm run cov` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag. Executes all tests and creates a report.
+- `~/myapp/server/ npm run transpile` - Runs [Babel](https://babeljs.io) transpiler to get vanilla code in your build directory
+- `~/myapp/server/ npm run clean` - Executes [RimRaf](https://github.com/isaacs/rimraf) on the build directory.
 
-```
-Method: get
-Type: public
-Route:
-/api/auth/verify/<your token>
-```
+### Client scripts
 
-- Get profile information
+**This scripts only available from the client directory**
 
-```
-Method: get
-Type: private
-Route:
-/api/auth/me
-```
+- `~/myapp/client/ npm start` - Executes `react-scripts` in **watch** mode
+- `~/myapp/client/ npm run build` - Builds the appliction in **production mode** into the **build** directory.
+- `~/myapp/client/ npm run test` - Runs [Jest Framework](https://jestjs.io) in **watch** mode
+- `~/myapp/client/ npm run cov` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag. Executes all tests and creates a report.
 
-### User Information
+## Routing
 
-- Get all users
+### Client Routing
 
-```
-Method: get
-Type: public
-Route:
-/api/users/
-```
+Application comes with `react-router-dom` which handles the internal routing. **Routes module** handles the changes and assigns module to routes.
 
-- Get a specific user with user ID
+- Pushing a route to the router using the `<Link to="/new_route">` component.
+- Redirect pages by render the `<Redirect to="/redirect_route">` to redirect the component _(This is usually depends on component state and a conditional rendering in the `render()` method)_.
+- Assign components to routes in the `~/myapp/client/src/Routes.js` file.
 
-```
-Method: get
-Type: public
-Route:
-/api/users/<user ID>
-```
+Read more in the [Documentation](https://reacttraining.com/react-router/web) of `react-router-dom`.
 
-### Items
+### Server Routing
 
-- Create new item
+By default all routing is set in the `~/myapp/client/src/constants.js`. If you change the values or extend them, make sure you **update the request handlers on the server** in `~/myapp/server/src/server.js`.
 
-```
-Method: post
-Type: private
-Route:
-/api/items/
-```
+## Test
 
-- Get single item with item ID
-
-```
-Method: get
-Type: public
-Route:
-/api/items/<item ID>
-```
-
-- Get all available items
-
-```
-Method: get
-Type: public
-Route:
-/api/items/
-```
-
-- Delete an item with item ID
-
-```
-Method: delete
-Type: private
-Route:
-/api/items/<item ID>
-```
-
-- Update an item with item ID
-
-```
-Method: put
-Type: private
-Route:
-/api/items/<item ID>
-```
-
-## Running the tests
-
-Currently No tests are available.
+The application uses [Jest](https://jestjs.io) as its unit testing framework extended by [Enzyme](https://enzymejs.github.io/enzyme/) library. Specifitation tests follow `*.spec.js` naming convention. While developing always remember to keep your code **clean** and **isolated** to test them with ease.
 
 ## Deployment
-To deploy on Heroku, create an account and set up environment variables. Then run ``$ git push heroku master``
-[Preview](https://frozen-lake-54898.herokuapp.com/)
+
+Can be deployed on most popular cloud platforms (eg: Heroku, AWS, GCP...etc.).
 
 ## Contributing
 
-Please create an issue and start working a feature/ bug you prefer :rocket:.
+Contributors are welcome in the development! :rocket:.
+
+- Create an [Issue](https://github.com/aawgit/onlineStore/issues/new)
+- Describe the subject of your work
+- Code
+- Create _PR_ to merge your work
 
 ## License
 
-This project is licensed under ISC.
-
+This project is licensed under [ISC Software Licenses](https://www.isc.org/licenses/).
