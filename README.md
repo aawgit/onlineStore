@@ -44,15 +44,15 @@ APP_EMAIL               = 'support@myapp.xyz'
 APP_URL                 = 'http://localhost:5000'
 MAIL_USER               = 'me@service.xyz'
 MAIL_PASSWORD           = 'mydummypassword'
-FACEBOOK_CLIENT_ID      = 1343346045860132
-FACEBOOK_CLIENT_SECRET  = 7c49c01a740912aba449c7e59927a693
+FACEBOOK_CLIENT_ID      = xxxxxxxxxxxxxx123
+FACEBOOK_CLIENT_SECRET  = xxxxxxxxxxxxxxxxxxxxxxxxxxxxa693
 CLOUDINARY_API_SECRET   = xxxxxxxxxxxxxxxxxxxxxxxctYM
 CLOUDINARY_API_KEY      = xxxxxxxxxxx7191
 CLOUDINARY_CLOUD_NAME   = mycloudinaryname
 CLOUDINARY_URL          = cloudinary://xxxxxxxxxxx7191:xxxxxxxxxxxxxxxxxxxxxxxctYM@mycloudinaryname
-MONGODB_URI = 'mongodb://127.0.0.1:27017/mydatabase'
-HTTPS       = false
-JWT_SECRET  = 'mydummysecret'
+MONGODB_URI             = 'mongodb://127.0.0.1:27017/mydatabase'
+HTTPS                   = false
+JWT_SECRET              = 'mydummysecret'
 ```
 
 ## Build
