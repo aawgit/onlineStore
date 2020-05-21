@@ -39,13 +39,13 @@ By installing the application the package manager installs the required dependen
 - Set the environmental variables in the `.env` file placed on the project root. This is **required to use the application**!
 
 ```
-APP_NAME    = 'My App'
-APP_EMAIL   = 'support@myapp.xyz'
-APP_URL     = 'http://localhost:5000'
-MAIL_USER       = 'me@service.xyz'
-MAIL_PASSWORD   = 'mydummypassword'
-FACEBOOK_CLIENT_ID       = 1343346045860132
-FACEBOOK_CLIENT_SECRET   = 7c49c01a740912aba449c7e59927a693
+APP_NAME                = 'My App'
+APP_EMAIL               = 'support@myapp.xyz'
+APP_URL                 = 'http://localhost:5000'
+MAIL_USER               = 'me@service.xyz'
+MAIL_PASSWORD           = 'mydummypassword'
+FACEBOOK_CLIENT_ID      = 1343346045860132
+FACEBOOK_CLIENT_SECRET  = 7c49c01a740912aba449c7e59927a693
 CLOUDINARY_API_SECRET   = xxxxxxxxxxxxxxxxxxxxxxxctYM
 CLOUDINARY_API_KEY      = xxxxxxxxxxx7191
 CLOUDINARY_CLOUD_NAME   = mycloudinaryname
