@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import { API_PATH_ITEMS, CURRENCY_PRE, CURRENCY_POST } from '../constants';
+import {
+	API_ITEMS_CREATE,
+	CURRENCY_PRE,
+	CURRENCY_POST,
+	API_ITEMS_SHOW,
+} from '../constants';
 import Context from '../Context';
 
 class AddItem extends Component {
@@ -18,6 +23,7 @@ class AddItem extends Component {
 		};
 		this.onValueChange = this.onValueChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.openWidget = this.openWidget.bind(this);
 	}
 
 	static contextType = Context;
@@ -29,34 +35,43 @@ class AddItem extends Component {
 	}
 
 	onValueChange(e) {
-		switch (e.target.name) {
-			case 'file':
-				this.setState({ item: { file: e.target.files[0] } });
-				break;
-			default:
-				this.setState({ item: { [e.target.name]: e.target.value } });
-		}
+		const item = { ...this.state.item };
+		item[e.target.name] = e.target.value;
+		this.setState({ item });
 	}
 
 	onSubmit(e) {
 		e.preventDefault();
-		const formData = new FormData();
-		Object.keys(this.state.item).forEach((key) =>
-			formData.append(key, this.state.item[key])
-		);
-
 		return axios
-			.post(API_PATH_ITEMS, formData, {
+			.post(API_ITEMS_CREATE, this.state.item, {
 				headers: {
 					'x-access-token': this.context.user.token,
 				},
 			})
 			.then((res) => {
-				this.setState({ redirect: '/viewItem/' + res.data._id });
+				this.setState({ redirect: API_ITEMS_SHOW + res.data._id });
 			})
 			.catch((err) => {
 				this.context.setError(err);
 			});
+	}
+
+	openWidget() {
+		return window.cloudinary
+			.createUploadWidget(
+				{
+					cloudName: 'amatyas001',
+					uploadPreset: 'os_upload',
+				},
+				(error, result) => {
+					if (!error && result && result.event === 'success') {
+						const item = { ...this.state.item };
+						item.file = result.info;
+						this.setState({ item });
+					}
+				}
+			)
+			.open();
 	}
 
 	render() {
@@ -70,7 +85,11 @@ class AddItem extends Component {
 							<div className='card card-signin my-5'>
 								<div className='card-body'>
 									<h5 className='card-title text-center'>Add item</h5>
-									<form className='form-signin' encType='multipart/form-data'>
+									<form
+										id='addItemForm'
+										className='form-signin'
+										encType='multipart/form-data'
+									>
 										<label htmlFor='name' className='sr-only'>
 											Name
 										</label>
@@ -112,19 +131,19 @@ class AddItem extends Component {
 										/>
 										&nbsp;{CURRENCY_POST}
 										<br />
-										<input
-											type='file'
-											name='file'
-											accept='image/*'
-											id='file'
-											onChange={this.onValueChange}
-										/>
 										<button
 											className='btn btn-lg btn-primary btn-block'
+											onClick={this.openWidget}
+										>
+											Upload Image
+										</button>
+										<button
+											className='btn btn-lg btn-success btn-block'
 											onClick={this.onSubmit}
 										>
 											Add item
 										</button>
+										{JSON.stringify(this.state)}
 									</form>
 								</div>
 							</div>

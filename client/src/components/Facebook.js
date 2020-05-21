@@ -51,7 +51,7 @@ class Facebook extends Component {
 					autoLoad={false}
 					fields='name,email,picture'
 					onClick={() => {}}
-					callback={this.responseFacebook}
+					callback={this.handleResponse}
 				/>
 			);
 		}

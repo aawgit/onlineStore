@@ -10,6 +10,11 @@ const Navbar = () => {
 				<div className='navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2'>
 					<ul className='navbar-nav mr-auto'>
 						<li className='nav-item'>
+							<Link className='nav-link' to='/home'>
+								Home
+							</Link>
+						</li>
+						<li className='nav-item'>
 							<Link className='nav-link' to='/contact'>
 								Contact us
 							</Link>
@@ -17,8 +22,8 @@ const Navbar = () => {
 					</ul>
 				</div>
 				<div className='mx-auto order-0'>
-					<Link className='navbar-brand mx-auto' to='/shop'>
-						Shop
+					<Link className='navbar-brand mx-auto' to='/home'>
+						Online Shop
 					</Link>
 					<button
 						className='navbar-toggler'
@@ -30,7 +35,7 @@ const Navbar = () => {
 					</button>
 				</div>
 				<div className='navbar-collapse collapse w-100 order-3 dual-collapse2'>
-					{context.user.name ? (
+					{context.user ? (
 						<ul className='navbar-nav ml-auto'>
 							<li>
 								<Link to='/profile' className='nav-link'>
@@ -38,7 +43,7 @@ const Navbar = () => {
 								</Link>
 							</li>
 							<li>
-								<Link to='/addItem' className='btn btn-success mx-1'>
+								<Link to='/items/add' className='btn btn-success mx-1'>
 									{' '}
 									Add item{' '}
 								</Link>

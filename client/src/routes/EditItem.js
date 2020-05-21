@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import Context from '../Context';
-import { API_PATH_ITEMS } from '../constants';
+import { API_ITEMS_EDIT, API_ITEMS_SHOW } from '../constants';
 
 class EditItem extends Component {
 	constructor(props) {
@@ -21,47 +21,43 @@ class EditItem extends Component {
 
 	static contextType = Context;
 
-	// context mocked
-	/* istanbul ignore next */
 	componentDidMount() {
 		if (!this.context.user) this.setState({ redirect: '/login' });
 		this.getItems();
 	}
 
 	getItems() {
-		return axios.get(API_PATH_ITEMS + '/' + this.props.match.params.id).then(
-			(res) => this.setState({ item: res.data }),
-			(err) => {
-				this.context.setError(err);
-			}
-		);
+		return axios
+			.get(API_ITEMS_SHOW + this.props.match.params.id)
+			.then((res) => this.setState({ item: res.data }))
+			.catch((err) => this.context.setError(err));
 	}
 
 	onValueChange(e) {
-		this.setState({ item: { [e.target.name]: e.target.value } });
+		const item = { ...this.state.item };
+		item[e.target.name] = e.target.value;
+		this.setState({ item });
 	}
 
 	onSubmit(e) {
 		e.preventDefault();
 
 		return axios
-			.put(API_PATH_ITEMS + '/' + this.props.match.params.id, this.state.item, {
+			.put(API_ITEMS_EDIT + this.props.match.params.id, this.state.item, {
 				headers: {
 					'x-access-token': this.context.user.token,
 				},
 			})
-			.then((res) => this.setState({ redirect: '/viewItem/' + res.data._id }))
-			.catch((err) => {
-				this.context.setError(err);
-			});
+			.then((res) => this.setState({ redirect: API_ITEMS_SHOW + res.data._id }))
+			.catch((err) => this.context.setError(err));
 	}
 
 	render() {
-		if (this.state.redirect) {
-			return <Redirect to={this.state.redirect} />;
-		} else {
+		if (this.state.redirect) return <Redirect to={this.state.redirect} />;
+		else {
 			return (
 				<div className='container'>
+					{JSON.stringify(this.props.match.params)}
 					<div className='row'>
 						<div className='col-sm-9 col-md-7 col-lg-5 mx-auto'>
 							<div className='card card-signin my-5'>

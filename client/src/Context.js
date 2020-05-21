@@ -81,7 +81,8 @@ class ContextProvider extends Component {
 	 * @readonly
 	 */
 	removeUser() {
-		this.setState({ user: {} });
+		this.setState({ user: false });
+		console.log(this.state.user);
 	}
 
 	render() {

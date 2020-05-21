@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Context from '../Context';
-import { API_PATH_ITEMS, CURRENCY_PRE, CURRENCY_POST } from '../constants';
+import { API_ITEMS_SHOW, CURRENCY_PRE, CURRENCY_POST } from '../constants';
 
 class Home extends React.Component {
 	constructor(props) {
@@ -20,10 +20,10 @@ class Home extends React.Component {
 
 	getItems() {
 		return axios
-			.get(API_PATH_ITEMS)
+			.get(API_ITEMS_SHOW)
 			.then((response) => {
 				this.setState({
-					items: response.data,
+					items: response.data || [],
 				});
 			})
 			.catch((error) => {
@@ -39,15 +39,15 @@ class Home extends React.Component {
 					<div className='album py-5 bg-light'>
 						<div className='container'>
 							<div className='row'>
-								{items.map((item) => (
-									<div className='col-md-4' key={item.name + item.owner.name}>
+								{items.map((item, i) => (
+									<div className='col-md-4' key={item.name + i}>
 										<div className='card mb-4 shadow-sm'>
 											<Link
-												to={'/viewItem/' + item._id}
+												to={'/items/' + item._id}
 												className='card-img-top-new'
 											>
 												<img
-													src={item.imageLocation}
+													src={item.image}
 													className='card-img-top-new'
 													alt={item.name}
 												/>
@@ -58,18 +58,13 @@ class Home extends React.Component {
 												<p className='card-text'>
 													{item.description}
 													<br />
-													{CURRENCY_PRE +
-														'&nbsp;' +
-														item.price +
-														'&nbsp;' +
-														CURRENCY_POST}
+													{CURRENCY_PRE + item.price + CURRENCY_POST}
 													<br />
-													{item.owner.name}
 												</p>
 												<div className='d-flex justify-content-between align-items-center'>
 													<div className='btn-group'>
 														<Link
-															to={'/viewItem/' + item._id}
+															to={'/items/' + item._id}
 															className='btn btn-sm btn-outline-secondary'
 														>
 															View

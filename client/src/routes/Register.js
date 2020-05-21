@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 import Context from '../Context';
 import { API_PATH_REGISTER } from '../constants';
 
@@ -8,6 +9,7 @@ class Register extends Component {
 		super(props);
 		this.state = {
 			message: false,
+			redirect: false,
 			user: {
 				firstName: '',
 				lastName: '',
@@ -15,7 +17,7 @@ class Register extends Component {
 				password: '',
 			},
 		};
-		this.onValuChange = this.onValuChange.bind(this);
+		this.onValueChange = this.onValueChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
@@ -25,8 +27,10 @@ class Register extends Component {
 		if (this.context.user) this.setState({ redirect: '/shop' });
 	}
 
-	onValuChange(e) {
-		this.setState({ user: { [e.target.name]: e.target.value } });
+	onValueChange(e) {
+		const user = { ...this.state.user };
+		user[e.target.name] = e.target.value;
+		this.setState({ user });
 	}
 
 	onSubmit(e) {
@@ -37,6 +41,8 @@ class Register extends Component {
 			email: this.state.user.email,
 			password: this.state.user.password,
 		};
+
+		console.log(user);
 
 		return axios
 			.post(API_PATH_REGISTER, user)
@@ -52,83 +58,86 @@ class Register extends Component {
 	}
 
 	render() {
-		return (
-			<div className='container'>
-				<div className='row'>
-					<div className='col-sm-9 col-md-7 col-lg-5 mx-auto'>
-						<div className='card card-signin my-5'>
-							<div className='card-body'>
-								<h5 className='card-title text-center'>Register</h5>
-								<form className='form-signin' onSubmit={this.onSubmit}>
-									<label htmlFor='firstName' className='sr-only'>
-										First name
-									</label>
-									<input
-										type='text'
-										id='firstName'
-										className='form-control'
-										placeholder='First name'
-										required
-										autoFocus
-										onChange={this.onValuChange}
-										name='firstName'
-									/>
-									<br />
-									<label htmlFor='lastName' className='sr-only'>
-										Last name
-									</label>
-									<input
-										type='text'
-										id='lastName'
-										className='form-control'
-										placeholder='LastName'
-										required
-										onChange={this.onValuChange}
-										name='lastName'
-									/>
-									<br />
-									<label htmlFor='email' className='sr-only'>
-										Email address
-									</label>
-									<input
-										type='email'
-										id='email'
-										className='form-control'
-										name='email'
-										placeholder='Email address'
-										required
-										onChange={this.onValuChange}
-									/>
-									<br />
-									<label htmlFor='password' className='sr-only'>
-										Password
-									</label>
-									<input
-										type='password'
-										id='password'
-										className='form-control'
-										placeholder='Password'
-										name='password'
-										required
-										onChange={this.onValuChange}
-									/>
-									<br />
+		if (this.state.redirect) return <Redirect to='/' />;
+		else {
+			return (
+				<div className='container'>
+					<div className='row'>
+						<div className='col-sm-9 col-md-7 col-lg-5 mx-auto'>
+							<div className='card card-signin my-5'>
+								<div className='card-body'>
+									<h5 className='card-title text-center'>Register</h5>
+									<form className='form-signin' onSubmit={this.onSubmit}>
+										<label htmlFor='firstName' className='sr-only'>
+											First name
+										</label>
+										<input
+											type='text'
+											id='firstName'
+											className='form-control'
+											placeholder='First name'
+											required
+											autoFocus
+											onChange={this.onValueChange}
+											name='firstName'
+										/>
+										<br />
+										<label htmlFor='lastName' className='sr-only'>
+											Last name
+										</label>
+										<input
+											type='text'
+											id='lastName'
+											className='form-control'
+											placeholder='LastName'
+											required
+											onChange={this.onValueChange}
+											name='lastName'
+										/>
+										<br />
+										<label htmlFor='email' className='sr-only'>
+											Email address
+										</label>
+										<input
+											type='email'
+											id='email'
+											className='form-control'
+											name='email'
+											placeholder='Email address'
+											required
+											onChange={this.onValueChange}
+										/>
+										<br />
+										<label htmlFor='password' className='sr-only'>
+											Password
+										</label>
+										<input
+											type='password'
+											id='password'
+											className='form-control'
+											placeholder='Password'
+											name='password'
+											required
+											onChange={this.onValueChange}
+										/>
+										<br />
 
-									<button
-										className='btn btn-lg btn-primary btn-block'
-										type='submit'
-									>
-										Register
-									</button>
-									<br />
-									<div id='message'>{this.state.message}</div>
-								</form>
+										<button
+											className='btn btn-lg btn-primary btn-block'
+											type='submit'
+										>
+											Register
+										</button>
+										<br />
+										<div id='message'>{this.state.message}</div>
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		);
+			);
+		}
 	}
 }
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import {
 	Home,
-	Shop,
 	Contact,
 	Login,
 	Register,
@@ -15,15 +14,14 @@ import {
 const Routes = () => {
 	return (
 		<Switch>
-			<Route exact path='/' component={Home} />
-			<Route path='/shop' component={Shop} />
+			<Route exact path={['/', '/home']} component={Home} />
 			<Route path='/contact' component={Contact} />
 			<Route path='/login' component={Login} />
 			<Route path='/register' component={Register} />
 			<Route path='/profile' component={Profile} />
-			<Route path='/viewItem/:id' component={ShowItem} />
-			<Route path='/addItem' component={AddItem} />
-			<Route path='/editItem/:id' component={EditItem} />
+			<Route path='/items/:id' component={ShowItem} />
+			<Route path='/items/add' component={AddItem} />
+			<Route path='/items/edit/:id' component={EditItem} />
 		</Switch>
 	);
 };

@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 
 const Footer = () => {
@@ -10,9 +9,9 @@ const Footer = () => {
 		<footer className='text-muted fixed-bottom'>
 			<div className='container'>
 				<p className='float-right'>
-					<a id='scrollToTop' onClick={top}>
+					<button id='scrollToTop' onClick={top}>
 						Back to top
-					</a>
+					</button>
 				</p>
 				<p>Develped by &copy; AW</p>
 			</div>

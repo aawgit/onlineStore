@@ -1,6 +1,7 @@
-/node_modules
+node_modules/
+build/
+dist/
+*.log
 .vscode
-npm-debug.log
 .serverless
-variables.env
 .env
