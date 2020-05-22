@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import User from '../../models/User';
+import User from '../../models/User.js';
 
 const Show = express.Router();
 Show.use(bodyParser.urlencoded({ extended: true }));

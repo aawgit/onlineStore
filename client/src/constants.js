@@ -4,6 +4,7 @@
 export const APP_NAME = 'Online Shop';
 export const APP_URL = 'localhost:3000';
 export const APP_EMAIL = 'support@onlineshop.com';
+export const CLOUDINARY_NAME = 'amatyas001';
 export const CURRENCY_PRE = '$ '; // $ 100
 export const CURRENCY_POST = ''; // 100 $
 

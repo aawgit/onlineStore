@@ -5,7 +5,7 @@ import {
 	API_ITEMS_CREATE,
 	CURRENCY_PRE,
 	CURRENCY_POST,
-	API_ITEMS_SHOW,
+	CLOUDINARY_NAME,
 } from '../constants';
 import Context from '../Context';
 
@@ -28,8 +28,6 @@ class AddItem extends Component {
 
 	static contextType = Context;
 
-	// context mocked
-	/* istanbul ignore next */
 	componentDidMount() {
 		if (!this.context.user) this.setState({ redirect: '/login' });
 	}
@@ -49,7 +47,7 @@ class AddItem extends Component {
 				},
 			})
 			.then((res) => {
-				this.setState({ redirect: API_ITEMS_SHOW + res.data._id });
+				this.setState({ redirect: '/items/show/' + res.data._id });
 			})
 			.catch((err) => {
 				this.context.setError(err);
@@ -57,10 +55,10 @@ class AddItem extends Component {
 	}
 
 	openWidget() {
-		return window.cloudinary
+		return window
 			.createUploadWidget(
 				{
-					cloudName: 'amatyas001',
+					cloudName: CLOUDINARY_NAME,
 					uploadPreset: 'os_upload',
 				},
 				(error, result) => {
@@ -143,7 +141,6 @@ class AddItem extends Component {
 										>
 											Add item
 										</button>
-										{JSON.stringify(this.state)}
 									</form>
 								</div>
 							</div>

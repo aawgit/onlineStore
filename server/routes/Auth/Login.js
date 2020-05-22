@@ -1,11 +1,9 @@
-import dotenv from 'dotenv';
-if (process.env.NODE_ENV !== 'production') dotenv.config();
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import User from '../../models/User';
+
+import User from '../../models/User.js';
 
 const Login = express.Router();
 

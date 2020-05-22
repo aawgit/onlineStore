@@ -1,9 +1,7 @@
-import dotenv from 'dotenv';
-if (process.env.NODE_ENV !== 'production') dotenv.config();
-
 import express from 'express';
 import bodyParser from 'body-parser';
-import User from '../../models/User';
+
+import User from '../../models/User.js';
 
 const VerifyEmail = express.Router();
 

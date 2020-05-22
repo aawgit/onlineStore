@@ -1,12 +1,10 @@
-import dotenv from 'dotenv';
-if (process.env.NODE_ENV !== 'production') dotenv.config();
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import bcrypt from 'bcryptjs';
 import randomString from 'randomstring';
-import Mailer from '../../utils/Mailer';
-import User from '../../models/User';
+
+import Mailer from '../../utils/Mailer.js';
+import User from '../../models/User.js';
 
 const Register = express.Router();
 

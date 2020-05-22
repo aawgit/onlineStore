@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import User from '../../models/User';
+
+import User from '../../models/User.js';
 
 const Delete = express.Router();
 Delete.use(bodyParser.urlencoded({ extended: true }));

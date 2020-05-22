@@ -1,23 +1,20 @@
-import dotenv from 'dotenv';
-if (process.env.NODE_ENV !== 'production') dotenv.config();
-
 import path from 'path';
 import express from 'express';
 import mongoose from 'mongoose';
 
-import Login from './routes/Auth/Login';
-import Register from './routes/Auth/Register';
-import Facebook from './routes/Auth/Facebook';
-import VerifyEmail from './routes/Auth/VerifyEmail';
+import Login from './routes/Auth/Login.js';
+import Register from './routes/Auth/Register.js';
+import Facebook from './routes/Auth/Facebook.js';
+import VerifyEmail from './routes/Auth/VerifyEmail.js';
 
-import CreateItem from './routes/Items/Create';
-import ShowItem from './routes/Items/Show';
-import EditItem from './routes/Items/Edit';
-import DeleteItem from './routes/Items/Delete';
+import CreateItem from './routes/Items/Create.js';
+import ShowItem from './routes/Items/Show.js';
+import EditItem from './routes/Items/Edit.js';
+import DeleteItem from './routes/Items/Delete.js';
 
-import ShowUser from './routes/User/Show';
-import EditUser from './routes/User/Edit';
-import DeleteUser from './routes/User/Delete';
+import ShowUser from './routes/User/Show.js';
+import EditUser from './routes/User/Edit.js';
+import DeleteUser from './routes/User/Delete.js';
 
 const port = process.env.PORT || 5000;
 const app = express();
@@ -29,7 +26,7 @@ const db = mongoose.connect(process.env.MONGODB_URI, {
 db.catch((error) => console.log(error));
 
 app.use(express.static('public'));
-app.use(express.static(path.join(__dirname, '../../client/build/')));
+app.use(express.static(path.join(path.resolve(), '../client/build/')));
 
 app.use('/api/auth/login', Login);
 app.use('/api/auth/register', Register);
@@ -46,7 +43,7 @@ app.use('/api/user/edit/:id', EditUser);
 app.use('/api/user/delete/:id', DeleteUser);
 
 app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, '../../client/build/index.html'));
+	res.sendFile(path.join(path.resolve(), '../client/build/index.html'));
 });
 
 app.listen(port, () => {

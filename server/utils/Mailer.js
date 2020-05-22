@@ -1,7 +1,4 @@
-import dotenv from 'dotenv';
-if (process.env.NODE_ENV !== 'production') dotenv.config();
-
-import { nodemailer } from 'nodemailer';
+import nodemailer from 'nodemailer';
 
 /**
  * ### **NodeMailer**

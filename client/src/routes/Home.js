@@ -64,7 +64,7 @@ class Home extends React.Component {
 												<div className='d-flex justify-content-between align-items-center'>
 													<div className='btn-group'>
 														<Link
-															to={'/items/' + item._id}
+															to={'/items/show/' + item._id}
 															className='btn btn-sm btn-outline-secondary'
 														>
 															View

@@ -19,7 +19,7 @@ class Login extends Component {
 	static contextType = Context;
 
 	componentDidMount() {
-		if (this.context.user) this.setState({ redirect: '/shop' });
+		if (this.context.user) this.setState({ redirect: '/home' });
 	}
 
 	onValuChange(e) {
@@ -34,7 +34,7 @@ class Login extends Component {
 			.post(API_PATH_LOGIN, this.state.user)
 			.then((res) => {
 				this.context.setUser(res.data);
-				this.setState({ redirect: '/shop' });
+				this.setState({ redirect: '/home' });
 			})
 			.catch((err) => {
 				this.context.setError(err);

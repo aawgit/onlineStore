@@ -1,12 +1,10 @@
-import dotenv from 'dotenv';
-if (process.env.NODE_ENV !== 'production') dotenv.config();
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 import FacebookTokenStragegy from 'passport-facebook-token';
 import passport from 'passport';
-import User from '../../models/User';
+
+import User from '../../models/User.js';
 
 /**
  * Logs in a user if it has an entry in the database or creates a new,

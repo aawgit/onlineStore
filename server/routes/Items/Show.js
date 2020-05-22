@@ -1,9 +1,7 @@
-import dotenv from 'dotenv';
-if (process.env.NODE_ENV !== 'production') dotenv.config();
-
 import express from 'express';
 import bodyParser from 'body-parser';
-import Item from '../../models/Item';
+
+import Item from '../../models/Item.js';
 
 const Show = express.Router();
 

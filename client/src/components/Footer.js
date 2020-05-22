@@ -9,7 +9,11 @@ const Footer = () => {
 		<footer className='text-muted fixed-bottom'>
 			<div className='container'>
 				<p className='float-right'>
-					<button id='scrollToTop' onClick={top}>
+					<button
+						id='scrollToTop'
+						className='btn btn-outline-dark'
+						onClick={top}
+					>
 						Back to top
 					</button>
 				</p>

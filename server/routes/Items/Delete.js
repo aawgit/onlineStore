@@ -1,11 +1,9 @@
-import dotenv from 'dotenv';
-if (process.env.NODE_ENV !== 'production') dotenv.config();
-
 import express from 'express';
 import bodyParser from 'body-parser';
-//import cloudinary from 'cloudinary';
-import Item from '../../models/Item';
-import token from '../../utils/VerifyToken';
+import cloudinary from 'cloudinary';
+
+import Item from '../../models/Item.js';
+import token from '../../utils/VerifyToken.js';
 
 /**
  * Removes an item from the database and Cloudinary storage by `{public_id}`.

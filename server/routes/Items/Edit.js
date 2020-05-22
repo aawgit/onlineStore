@@ -1,10 +1,8 @@
-import dotenv from 'dotenv';
-if (process.env.NODE_ENV !== 'production') dotenv.config();
-
 import express from 'express';
 import bodyParser from 'body-parser';
-import Item from '../../models/Item';
-import token from '../../utils/VerifyToken';
+
+import Item from '../../models/Item.js';
+import token from '../../utils/VerifyToken.js';
 
 /**
  * Updates an item in the database by `{_id}.`. Item only

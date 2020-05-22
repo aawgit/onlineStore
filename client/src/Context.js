@@ -28,10 +28,12 @@ class ContextProvider extends Component {
 	constructor(props) {
 		super(props);
 		this.setUser = this.setUser.bind(this);
+		this.setItem = this.setItem.bind(this);
 		this.removeUser = this.removeUser.bind(this);
 		this.setError = this.setError.bind(this);
 		this.state = {
-			user: JSON.parse(sessionStorage.getItem('user')),
+			user: JSON.parse(sessionStorage.getItem('user')) || {},
+			item: JSON.parse(sessionStorage.getItem('item')) || [],
 			error: '',
 		};
 	}
@@ -39,6 +41,9 @@ class ContextProvider extends Component {
 	componentDidUpdate(prevProps, prevState) {
 		if (this.state.user !== prevState.user) {
 			sessionStorage.setItem('user', JSON.stringify(this.state.user));
+		}
+		if (this.state.item !== prevState.item) {
+			sessionStorage.setItem('item', JSON.stringify(this.state.item));
 		}
 	}
 
@@ -51,6 +56,18 @@ class ContextProvider extends Component {
 	 */
 	setUser(user) {
 		this.setState({ user });
+	}
+
+	/**
+	 * Stores an item instance to load it from context not from the server.
+	 *
+	 * @name ContextProvider.setItem()
+	 * @param {object} Item - Array with the item
+	 * @access public
+	 */
+	setItem(item) {
+		console.log('called with: ' + item);
+		this.setState({ item });
 	}
 
 	/**
@@ -82,15 +99,20 @@ class ContextProvider extends Component {
 	 */
 	removeUser() {
 		this.setState({ user: false });
-		console.log(this.state.user);
 	}
 
 	render() {
 		let message;
-		const { user, error } = this.state;
-		const { setUser, removeUser, setError } = this;
+		const context = this.state;
 
-		if (error) {
+		// merge context and state
+		for (let key in this) {
+			if (typeof this[key] === 'function') {
+				context[key] = this[key];
+			}
+		}
+
+		if (context.error) {
 			message = (
 				<div
 					className='alert alert-danger fixed-bottom'
@@ -98,7 +120,7 @@ class ContextProvider extends Component {
 					role='alert'
 				>
 					<h4 className='alert-heading'>
-						{error.name}&nbsp;|&nbsp;{error.message}
+						{context.error.name}&nbsp;|&nbsp;{context.error.message}
 					</h4>
 					<button
 						type='button'
@@ -108,20 +130,13 @@ class ContextProvider extends Component {
 					>
 						<span aria-hidden='true'>&times;</span>
 					</button>
-					<code>{error.stack}</code>
+					<code>{context.error.stack}</code>
 				</div>
 			);
 		}
 
 		return (
-			<Context.Provider
-				value={{
-					user,
-					setUser,
-					removeUser,
-					setError,
-				}}
-			>
+			<Context.Provider value={context}>
 				{message}
 				{this.props.children}
 			</Context.Provider>
