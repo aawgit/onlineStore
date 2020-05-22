@@ -1,4 +1,6 @@
-# React / Node E-Commerce Boilerplate
+# OpenShop
+
+> version 0.1.1
 
 This project is a template for creating e-commerce website with user authenticationa and content management functionality.
 
@@ -31,8 +33,8 @@ By installing the application the package manager installs the required dependen
 - Clone this repository
   `~ git clone https://github.com/aawgit/onlineStore.git`
 
-- Install dependencies for both Server and Client
-  `~ npm install && cd client && npm install`
+- Install dependencies
+  `~ npm install`
 
 ## Configure
 
@@ -57,37 +59,26 @@ JWT_SECRET              = 'mydummysecret'
 
 ## Build
 
-Now, that all configuration and installation done, your ready to code! This boilerplate comes with various scripts that you can run from your terminal. **Recommended to run `npm run watch:dev` in the server directory. It takes care of the building process and runs both client and server in hot reload mode.**.
+Now, that all configuration and installation done, your ready to code! This boilerplate comes with various scripts that you can run from your terminal.
 
-### Server scripts
+- `npm run build` - This will create a build from the CRA app and merges it with the Babel transpiled server code into the `~/myapp/build` directory.
 
-**This scripts only available in the server directory!**
+### Scripts
 
-- `~/myapp/server/ npm start` - Builds and runs the server in **production environment** _Note: keep `start` script in production because most cloud services use this to access your server_
-- `~/myapp/server/ npm run build` - Cleans the build directory and creates a new snapshot build from the current code. The `build`process transpiles into common javascript by Babel. This is a shorthand for `clean` and `transpile` scripts.
-- `~/myapp/server/ npm run server` - Runs the default **Node Server**
-- `~/myapp/server/ npm run client` - Runs the client **watcher** script
-- `~/myapp/server/ npm run dev` - Shorthand for `build` & `server` in **development encironment**
-- `~/myapp/server/ npm run prod` - Shorthand for `build` & `server` in **production environment**
-- `~/myapp/server/ npm run watch` - Executes a **nodemon** instance on your **build directory**
-- `~/myapp/server/ npm run watch:dev` - Parellel executing of `watch` & `client`. This way you can hot reload both front- and backend. _(Note: changes in the server entry point (eg: ~/server/src/server.js) does not trigger a reload and you must restart the script to ahve changes take effect)_
-- `~/myapp/server/ npm run test` - Runs [Jest Framework](https://jestjs.io) in **watch** mode
-- `~/myapp/server/ npm run cov` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag. Executes all tests and creates a report.
-- `~/myapp/server/ npm run transpile` - Runs [Babel](https://babeljs.io) transpiler to get vanilla code in your build directory
-- `~/myapp/server/ npm run clean` - Executes [RimRaf](https://github.com/isaacs/rimraf) on the build directory.
+Tasks that you can run from your terminal:
 
-### Client scripts
-
-**This scripts only available from the client directory**
-
-- `~/myapp/client/ npm start` - Executes `react-scripts` in **watch** mode
-- `~/myapp/client/ npm run build` - Builds the appliction in **production mode** into the **build** directory.
-- `~/myapp/client/ npm run test` - Runs [Jest Framework](https://jestjs.io) in **watch** mode
-- `~/myapp/client/ npm run cov` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag. Executes all tests and creates a report.
+- `npm run start` - Launches the server in production environment. You must run `npm run build` before you can do this.
+- `npm run start:dev` - Launches server directly from the source in development environment.
+- `npm run build` - Cleans the build directory with `rimraf` and creates a new snapshot build from the current code.
+- `npm run watch` - Executes a **nodemon** instance and **reac-script** hot-reload task. This allows you to change server and client code while both are watched.
+- `npm run test:server` - Runs [Jest Framework](https://jestjs.io) in **watch** mode on the **server**.
+- `npm run test:client` - Runs [Jest Framework](https://jestjs.io) in **watch** mode on the **client**.
+- `npm run coverage:server` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag on the server. Executes all tests and creates a report.
+- `run coverage:client` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag on the **client**. Executes all tests and creates a report.
 
 ## Routing
 
-### Client Routing
+### Client
 
 Application comes with `react-router-dom` which handles the internal routing. **Routes module** handles the changes and assigns module to routes.
 
@@ -97,7 +88,7 @@ Application comes with `react-router-dom` which handles the internal routing. **
 
 Read more in the [Documentation](https://reacttraining.com/react-router/web) of `react-router-dom`.
 
-### Server Routing
+### Server
 
 By default all routing is set in the `~/myapp/client/src/constants.js`. If you change the values or extend them, make sure you **update the request handlers on the server** in `~/myapp/server/src/server.js`.
 
@@ -107,17 +98,26 @@ The application uses [Jest](https://jestjs.io) as its unit testing framework ext
 
 ## Deployment
 
-Can be deployed on most popular cloud platforms (eg: Heroku, AWS, GCP...etc.).
+Can be deployed on most popular cloud platforms. For configuration refer to the given documentation by your provider. Usually they will use `npm start` to run the deployed code so keep it as is. Additional description of this process is beyond the subject of this project.
 
 ## Contributing
 
 Contributors are welcome in the development! :rocket:.
 
-- Create an [Issue](https://github.com/aawgit/onlineStore/issues/new)
-- Describe the subject of your work
-- Code
-- Create _PR_ to merge your work
+A few principles:
+
+- Consider the actual code style when writing your own
+- Provide test suite for your code
+- Document your code (not verbose but enough to understand the logic)
+- Make sure it integrates with the current state (eg: run both test tasks after you change)
+- Feel free to create Issues / PRs but describe them properly
 
 ## License
 
 This project is licensed under [ISC Software Licenses](https://www.isc.org/licenses/).
+
+Copyright 2020 OpenShop v0.1.1
+
+Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.

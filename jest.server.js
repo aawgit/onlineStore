@@ -1,6 +1,6 @@
 module.exports = {
-	name: 'client',
-	displayName: 'client',
+	name: 'server',
+	displayName: 'server',
 	rootDir: './',
 	testEnvironment: 'node',
 	testMatch: ['<rootDir>/server/**/*.spec.{js,jsx,ts,tsx}'],

@@ -7,18 +7,13 @@
 	"main": "./build/server.js",
 	"scripts": {
 		"start": "node ./build/server.js",
-		"start:dev": "NODE_ENV=development npm-run-all \"rimraf ./build\" \"node -r dotenv/config ./server/server.js\"",
-		"start:prod": "NODE_ENV=production npm-run-all node \"rimraf ./build\" \"node ./server/server.js\"",
-		"build:server": "npm-run-all \"rimraf ./build\" \"babel ./src --out-dir ./build\"",
-		"build:client": "react-scripts build",
-		"watch": "npm-run-all --parallel watch:server watch:client",
-		"watch:server": "nodemon -r dotenv/config",
-		"watch:client": "react-scripts start",
-		"test:server": "jest -- --watch",
-		"test:client": "react-scripts test",
+		"start:dev": "NODE_ENV=development node -r dotenv/config ./server/server.js",
+		"build": "npm-run-all \"rimraf ./build\" \"react-scripts build && mv build ../build\"  \"babel ./server --out-dir ./build\"",
+		"watch": "npm-run-all --parallel \"nodemon -r dotenv/config\"  \"react-scripts start\"",
+		"test:server": "jest -- --watch --project server",
+		"test:client": "react-scripts test --project client",
 		"coverage:server": "jest -- --coverage",
-		"coverage:client": "react-scripts test --coverage",
-		"heroku-postbuild": "cd ../client && npm install --only=dev && npm install && npm run build"
+		"coverage:client": "react-scripts test --coverage"
 	},
 	"dependencies": {
 		"@babel/cli": "^7.8.4",
@@ -59,9 +54,15 @@
 			"@babel/preset-env"
 		]
 	},
+	"jest": {
+		"projects": [
+			"jest.client.js",
+			"jest.server.js"
+		]
+	},
 	"nodemonConfig": {
-		"exec": "npm run dev",
-		"watch": "server/src/**/*",
+		"exec": "npm run start:dev",
+		"watch": "server/**/*",
 		"ignore": [
 			"**/__tests__/**",
 			"*.test.js",

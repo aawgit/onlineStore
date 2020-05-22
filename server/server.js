@@ -26,7 +26,7 @@ const db = mongoose.connect(process.env.MONGODB_URI, {
 db.catch((error) => console.log(error));
 
 app.use(express.static('public'));
-app.use(express.static(path.join(path.resolve(), '../client/build/')));
+app.use(express.static(path.join(path.resolve(), '../build/')));
 
 app.use('/api/auth/login', Login);
 app.use('/api/auth/register', Register);
@@ -43,7 +43,7 @@ app.use('/api/user/edit/:id', EditUser);
 app.use('/api/user/delete/:id', DeleteUser);
 
 app.get('*', (req, res) => {
-	res.sendFile(path.join(path.resolve(), '../client/build/index.html'));
+	res.sendFile(path.join(path.resolve(), '../build/index.html'));
 });
 
 app.listen(port, () => {
