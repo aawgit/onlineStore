@@ -1,9 +1,27 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ContextProvider } from './Context';
+import Routes from './Routes';
+import { Navbar } from './components';
+import { Footer } from './components';
 
- 
-ReactDOM.render(
-  <App/>, 
-  document.getElementById("root")
-);
+class App extends Component {
+	render() {
+		return (
+			<Router>
+				<ContextProvider>
+					<Navbar />
+					<div className='content'>
+						<Routes />
+					</div>
+					<Footer />
+				</ContextProvider>
+			</Router>
+		);
+	}
+}
+
+export default App;
+
+ReactDOM.render(<App />, document.getElementById('root'));

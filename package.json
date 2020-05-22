@@ -1,0 +1,83 @@
+{
+	"name": "openshop",
+	"version": "0.1.1",
+	"description": "Node/React E-Commerce Boilerplate",
+	"author": "Mátyás Angyal <amatyas001.github.io>",
+	"license": "ISC",
+	"main": "./build/server.js",
+	"scripts": {
+		"start": "node ./build/server.js",
+		"start:dev": "NODE_ENV=development npm-run-all \"rimraf ./build\" \"node -r dotenv/config ./server/server.js\"",
+		"start:prod": "NODE_ENV=production npm-run-all node \"rimraf ./build\" \"node ./server/server.js\"",
+		"build:server": "npm-run-all \"rimraf ./build\" \"babel ./src --out-dir ./build\"",
+		"build:client": "react-scripts build",
+		"watch": "npm-run-all --parallel watch:server watch:client",
+		"watch:server": "nodemon -r dotenv/config",
+		"watch:client": "react-scripts start",
+		"test:server": "jest -- --watch",
+		"test:client": "react-scripts test",
+		"coverage:server": "jest -- --coverage",
+		"coverage:client": "react-scripts test --coverage",
+		"heroku-postbuild": "cd ../client && npm install --only=dev && npm install && npm run build"
+	},
+	"dependencies": {
+		"@babel/cli": "^7.8.4",
+		"@babel/core": "^7.9.6",
+		"@babel/preset-env": "^7.9.6",
+		"rimraf": "^3.0.2",
+		"axios": "^0.18.1",
+		"bootstrap": "^4.5.0",
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1",
+		"react-facebook-login": "^4.1.1",
+		"react-router-dom": "^5.2.0",
+		"react-scripts": "^2.1.8",
+		"bcryptjs": "^2.4.3",
+		"body-parser": "^1.18.2",
+		"cors": "^2.8.5",
+		"dotenv": "^7.0.0",
+		"express": "^4.16.2",
+		"jsonwebtoken": "^8.5.0",
+		"mongoose": "^5.9.15",
+		"nodemailer": "^5.1.1",
+		"npm-run-all": "^4.1.5",
+		"passport": "^0.4.0",
+		"passport-facebook-token": "^3.3.0",
+		"randomstring": "^1.1.5",
+		"validator": "^11.0.0"
+	},
+	"devDependencies": {
+		"@testing-library/jest-dom": "^5.7.0",
+		"@testing-library/react": "^10.0.4",
+		"enzyme": "^3.11.0",
+		"enzyme-adapter-react-16": "^1.15.2",
+		"jest": "^26.0.1",
+		"nodemon": "^2.0.4"
+	},
+	"babel": {
+		"presets": [
+			"@babel/preset-env"
+		]
+	},
+	"nodemonConfig": {
+		"exec": "npm run dev",
+		"watch": "server/src/**/*",
+		"ignore": [
+			"**/__tests__/**",
+			"*.test.js",
+			"*.spec.js"
+		]
+	},
+	"engines": {
+		"node": "10.15.1"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not ie <= 11",
+		"not op_mini all"
+	]
+}
