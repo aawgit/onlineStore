@@ -1,0 +1,88 @@
+{
+	"name": "openshop-server",
+	"version": "0.1.1",
+	"private": true,
+	"description": "OpenShop boilerplate server module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/amatyas001/openshop.git"
+	},
+	"author": "Mátyás Angyal <amatyas001@gmail.com> (amatyas001.github.io)",
+	"keywords": [
+		"openshop",
+		"boilerplate",
+		"template",
+		"react",
+		"node",
+		"ecommerce",
+		"server"
+	],
+	"license": "ISC",
+	"main": "./build/server.js",
+	"scripts": {
+		"start": "npm-run-all build start:prod",
+		"build": "npx rimraf ./build &&  npx babel ./src --out-dir ./build",
+		"watch": "npm-run-all --parallel watch:server  watch:client",
+		"start:prod": "NODE_ENV=production node build/server.js",
+		"start:dev": "NODE_ENV=development node -r dotenv/config build/server.js",
+		"watch:server": "nodemon",
+		"watch:client": "cd ../client && npm run start",
+		"test": "jest -- --watch",
+		"coverage": "jest -- --coverage"
+	},
+	"dependencies": {
+		"@babel/cli": "^7.8.4",
+		"@babel/core": "^7.9.6",
+		"@babel/preset-env": "^7.9.6",
+		"bcryptjs": "^2.4.3",
+		"body-parser": "^1.19.0",
+		"cloudinary": "^1.21.0",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^5.9.15",
+		"nodemailer": "^6.4.6",
+		"nodemon": "^2.0.4",
+		"npm-run-all": "^4.1.5",
+		"passport": "^0.4.1",
+		"passport-facebook-token": "^3.3.0",
+		"randomstring": "^1.1.5",
+		"rimraf": "^3.0.2",
+		"validator": "^13.0.0"
+	},
+	"babel": {
+		"presets": [
+			"@babel/preset-env"
+		]
+	},
+	"jest": {
+		"name": "server",
+		"displayName": "server",
+		"rootDir": "./src",
+		"testEnvironment": "node",
+		"testMatch": [
+			"<rootDir>/**/*.spec.{js,jsx,ts,tsx}",
+			"!/node_modules/*"
+		],
+		"collectCoverageFrom": [
+			"<rootDir>/**/*.{js,jsx,ts,tsx}",
+			"!/node_modules/*"
+		],
+		"coverageReporters": [
+			"text"
+		]
+	},
+	"nodemonConfig": {
+		"exec": "npm-run-all build start:dev",
+		"watch": "src/**/*",
+		"ignore": [
+			"**/__tests__/**",
+			"*.test.js",
+			"*.spec.js"
+		]
+	},
+	"engines": {
+		"node": ">=13"
+	}
+}

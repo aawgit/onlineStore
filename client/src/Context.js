@@ -32,18 +32,17 @@ class ContextProvider extends Component {
 		this.removeUser = this.removeUser.bind(this);
 		this.setError = this.setError.bind(this);
 		this.state = {
-			user: JSON.parse(sessionStorage.getItem('user')) || {},
-			item: JSON.parse(sessionStorage.getItem('item')) || [],
+			user: JSON.parse(sessionStorage.getItem('user')),
+			item: JSON.parse(sessionStorage.getItem('item')),
 			error: '',
 		};
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.state.user !== prevState.user) {
-			sessionStorage.setItem('user', JSON.stringify(this.state.user));
-		}
-		if (this.state.item !== prevState.item) {
-			sessionStorage.setItem('item', JSON.stringify(this.state.item));
+		for (let key in this.state) {
+			if (this.state[key] !== prevState[key]) {
+				sessionStorage.setItem(key, JSON.stringify(this.state[key]));
+			}
 		}
 	}
 
@@ -66,7 +65,6 @@ class ContextProvider extends Component {
 	 * @access public
 	 */
 	setItem(item) {
-		console.log('called with: ' + item);
 		this.setState({ item });
 	}
 

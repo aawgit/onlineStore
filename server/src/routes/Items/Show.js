@@ -18,7 +18,7 @@ Show.get('/:id', (req, res) => {
 		});
 });
 
-Show.get('*', (req, res) => {
+Show.get('/', (req, res) => {
 	Item.find({})
 		.populate({ path: 'owner', select: 'name' })
 		.exec((err, items) => {

@@ -1,37 +1,35 @@
-# OpenShop
+# OpenShop Boilerplate
 
 > version 0.1.1
 
-This project is a template for creating e-commerce website with user authenticationa and content management functionality.
+This project is a template for creating e-commerce website with user authentications and content management functionality.
 
 ## Features:
 
-- Token authenticated user management
-- Registration through Facebook API
-- Standard registration with e-mail and verification
-- Content CRUD operations
-- Cloud storage for uploaded content
+- Token verification
+- Social login
+- Integrated RESTful API
+- Cloud upload
 
 ## Prerequisites
 
-To run the application properly, verify that you meet all the requirements below.
+To run the application check that you meet all the requirements:
 
 - Latest Node installed
-  - CLI `: npm install -g n latest`
+  - Check current version `node -v` _>=13.x.x_
+  - CLI `: npm install -g n latest` _Or version that meets the above statement_
   - Binary: [Official NodeJs Download Site](https://nodejs.org/en/download/)
 - MongoDB installed
   - [Instructions to intall MongoDB Community Edition on your platform](https://docs.mongodb.com/manual/administration/install-community/)
-- Activated [Cloudinary account](https://cloudinary.com/users/register/free) with an **unsigned preset** configured
+- Activated [Cloudinary account](https://cloudinary.com/users/register/free) with **upload preset configuration**
   - [How can I add upload-options when uploading via the Media-Library?](https://support.cloudinary.com/hc/en-us/articles/208097215-How-can-I-add-upload-options-when-uploading-via-the-Media-Library-)
-- Facebook API key for the authentication
+- Facebook API key for authentication
   - Get instructions on the [Facebook Developers](https://developers.facebook.com) website
 
 ## Install
 
-By installing the application the package manager installs the required dependencies automatically. **Before you do any changes remember to create a build first (see below)**!
-
 - Clone this repository
-  `~ git clone https://github.com/aawgit/onlineStore.git`
+  `~ git clone https://github.com/amatyas001/openstore.git`
 
 - Install dependencies
   `~ npm install`
@@ -59,22 +57,30 @@ JWT_SECRET              = 'mydummysecret'
 
 ## Build
 
-Now, that all configuration and installation done, your ready to code! This boilerplate comes with various scripts that you can run from your terminal.
-
-- `npm run build` - This will create a build from the CRA app and merges it with the Babel transpiled server code into the `~/myapp/build` directory.
+- Run `npm run watch` from the **~/server/** directory and you ready to go! This will take care of the building and server starting.
 
 ### Scripts
 
-Tasks that you can run from your terminal:
+There are multiple scripts under each module, however some of them only helpers to shorten main scripts and not listed here. Usually you manage tasks from the **server directory**, but it's possible to run command only for the client. This is helpful when you want to test your client code or get the test coverage.
 
-- `npm run start` - Launches the server in production environment. You must run `npm run build` before you can do this.
-- `npm run start:dev` - Launches server directly from the source in development environment.
-- `npm run build` - Cleans the build directory with `rimraf` and creates a new snapshot build from the current code.
-- `npm run watch` - Executes a **nodemon** instance and **reac-script** hot-reload task. This allows you to change server and client code while both are watched.
-- `npm run test:server` - Runs [Jest Framework](https://jestjs.io) in **watch** mode on the **server**.
-- `npm run test:client` - Runs [Jest Framework](https://jestjs.io) in **watch** mode on the **client**.
-- `npm run coverage:server` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag on the server. Executes all tests and creates a report.
-- `run coverage:client` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag on the **client**. Executes all tests and creates a report.
+#### Server
+
+> _Run from the `~/server/`directory_
+
+- `npm run start` - Launches the server in production environment.
+- `npm run build` - Cleans the build directory with `rimraf` and creates a new snapshot build from the current code with Babel.
+- `npm run watch` - Executes a **nodemon** instance and **reac-script** watcher. This allows you to change server and client code while both are watched and reloaded when change detected.
+- `npm run test` - Runs [Jest Framework](https://jestjs.io) in **watch** mode on the server. If you need configurations you can freely use `npx jest [options]` format as well.
+- `npm run coverage` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag on the server. Executes all tests and creates a report.
+
+#### Client
+
+> _Run from the `~/client/`directory_
+
+- `npm run start` - Same as any other Create React App `npm start`
+- `npm run build` - Create a production bundle from client module.
+- `npm run test` - Runs [Jest Framework](https://jestjs.io) in **watch** mode.
+- `npm run coverage` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag. Executes all tests and creates a report.
 
 ## Routing
 
@@ -96,21 +102,22 @@ By default all routing is set in the `~/myapp/client/src/constants.js`. If you c
 
 The application uses [Jest](https://jestjs.io) as its unit testing framework extended by [Enzyme](https://enzymejs.github.io/enzyme/) library. Specifitation tests follow `*.spec.js` naming convention. While developing always remember to keep your code **clean** and **isolated** to test them with ease.
 
-## Deployment
+## Deploy
 
-Can be deployed on most popular cloud platforms. For configuration refer to the given documentation by your provider. Usually they will use `npm start` to run the deployed code so keep it as is. Additional description of this process is beyond the subject of this project.
+Can be deployed to most of the popular cloud platforms. For configuration refer to the given documentation by your provider. Usually they will use `npm start` to run the deployed code so keep it as is. Additional description of this process is beyond the subject of this project.
 
 ## Contributing
 
+There are a lot of improvements needed in this project. If you have an idea or want to help achieve the existings feel free to join in.
+
 Contributors are welcome in the development! :rocket:.
 
-A few principles:
-
-- Consider the actual code style when writing your own
-- Provide test suite for your code
-- Document your code (not verbose but enough to understand the logic)
-- Make sure it integrates with the current state (eg: run both test tasks after you change)
-- Feel free to create Issues / PRs but describe them properly
+- We need your voice
+  > Open issues and pull request freely
+- Stuff can break
+  > Provide test suite for your code with possible edge cases
+- Your write code for humans not compilers
+  > Document your code if needed (not verbose but enough to understand the logic)
 
 ## License
 

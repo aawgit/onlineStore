@@ -1,0 +1,67 @@
+{
+	"name": "openshop-client",
+	"version": "0.1.1",
+	"private": true,
+	"description": "OpenShop boilerplate client module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/amatyas001/openshop.git"
+	},
+	"author": "Mátyás Angyal <amatyas001@gmail.com> (amatyas001.github.io)",
+	"keywords": [
+		"openshop",
+		"boilerplate",
+		"template",
+		"react",
+		"node",
+		"ecommerce",
+		"client"
+	],
+	"license": "ISC",
+	"main": "./build/index.js",
+	"proxy": "http://localhost:5000",
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"coverage": "react-scripts test --coverage"
+	},
+	"dependencies": {
+		"@testing-library/jest-dom": "^5.7.0",
+		"@testing-library/react": "^10.0.4",
+		"axios": "^0.19.2",
+		"bootstrap": "^4.5.0",
+		"enzyme": "^3.11.0",
+		"enzyme-adapter-react-16": "^1.15.2",
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1",
+		"react-facebook-login": "^4.1.1",
+		"react-router-dom": "^5.2.0",
+		"react-scripts": "^3.4.1"
+	},
+	"jest": {
+		"name": "client",
+		"displayName": "client",
+		"rootDir": "./",
+		"testMatch": [
+			"<rootDir>/**/*.spec.{js,jsx,ts,tsx}",
+			"!/node_modules/*"
+		],
+		"collectCoverageFrom": [
+			"<rootDir>/**/*.{js,jsx,ts,tsx}",
+			"!/node_modules/*"
+		],
+		"coverageReporters": [
+			"text"
+		]
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not ie <= 11",
+		"not op_mini all"
+	]
+}
