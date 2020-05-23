@@ -23,7 +23,7 @@ const Navbar = () => {
 				</div>
 				<div className='mx-auto order-0'>
 					<Link className='navbar-brand mx-auto' to='/home'>
-						Online Shop
+						{process.env.REACT_APP_NAME}
 					</Link>
 					<button
 						className='navbar-toggler'

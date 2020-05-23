@@ -23,6 +23,11 @@ class ShowItems extends Component {
 
 	componentDidMount() {
 		this.getItems();
+		this.setState({
+			item: this.context.item.filter(
+				(item) => item._id === this.props.match.params.id
+			)[0],
+		});
 		const userActions = (
 			<>
 				<Link
@@ -56,18 +61,17 @@ class ShowItems extends Component {
 		});
 	}
 
-	getItems() {
-		if (!sessionStorage.getItem('item')) {
-			return axios
-				.get(API_ITEMS_SHOW + this.props.match.params.id)
-				.then((res) => this.context.setItem(res.data))
-				.catch((err) => this.context.setError(err));
+	async getItems() {
+		try {
+			const res = await axios.get(API_ITEMS_SHOW + this.props.match.params.id);
+			return this.context.setItem(res.data);
+		} catch (err) {
+			return this.context.setError(err);
 		}
 	}
 
 	onDelete(e) {
 		e.preventDefault();
-
 		return axios
 			.delete(API_ITEMS_DELETE + this.state.item.public_id, {
 				headers: {
@@ -85,50 +89,51 @@ class ShowItems extends Component {
 		else {
 			return (
 				<div className='container'>
-					{this.context.item &&
-						this.context.item.map((item, i) => (
-							<div className='row' key={i}>
-								<>
-									<Link
-										to={'/items'}
-										className='btn btn-lg btn-outline-warning btn-block'
-									>
-										Go Back
-									</Link>
-									<div className='col-sm-9 col-md-6 col-lg-5'>
-										<div className='card card-signin my-5'>
-											<img
-												alt='Item'
-												src={item.image}
-												className='card-img-top-new'
-											/>
+					{this.state.item && (
+						<div className='row'>
+							<>
+								<Link
+									to={'/items'}
+									className='btn btn-lg btn-outline-warning btn-block'
+								>
+									Go Back
+								</Link>
+								<div className='col-sm-9 col-md-6 col-lg-5'>
+									<div className='card card-signin my-5'>
+										<img
+											alt='Item'
+											src={this.state.item.image}
+											className='card-img-top-new'
+										/>
+									</div>
+								</div>
+								<div className='col-sm-9 col-md-6 col-lg-5'>
+									<div className='card card-signin my-5'>
+										<div className='card-body'>
+											<h5 className='card-title text-center'>
+												{this.state.item.name}
+											</h5>
+											<label>{this.state.item.description}</label>
+											<br />
+											<label>
+												{CURRENCY_PRE}&nbsp;{this.state.item.price}&nbsp;
+												{CURRENCY_POST}
+											</label>
+											<br />
+											<label>
+												{' '}
+												From <span />
+												{this.state.item.owner.name}
+											</label>
+											<br />
+											<br />
+											<div id='action'>{this.state.options}</div>
 										</div>
 									</div>
-									<div className='col-sm-9 col-md-6 col-lg-5'>
-										<div className='card card-signin my-5'>
-											<div className='card-body'>
-												<h5 className='card-title text-center'>{item.name}</h5>
-												<label>{item.description}</label>
-												<br />
-												<label>
-													{CURRENCY_PRE}&nbsp;{item.price}&nbsp;
-													{CURRENCY_POST}
-												</label>
-												<br />
-												<label>
-													{' '}
-													From <span />
-													{item.owner.name}
-												</label>
-												<br />
-												<br />
-												<div id='action'>{this.state.options}</div>
-											</div>
-										</div>
-									</div>
-								</>
-							</div>
-						))}
+								</div>
+							</>
+						</div>
+					)}
 				</div>
 			);
 		}

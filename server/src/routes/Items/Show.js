@@ -13,7 +13,7 @@ Show.get('/:id', (req, res) => {
 		.populate({ path: 'owner', select: 'name' })
 		.exec((err, item) => {
 			if (err) return res.status(500).send(err);
-			if (!item) return res.status(404).send('No user found.');
+			if (!item) return res.status(404).send('No item found.');
 			res.status(200).send(item);
 		});
 });

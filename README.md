@@ -36,7 +36,12 @@ To run the application check that you meet all the requirements:
 
 ## Configure
 
-- Set the environmental variables in the `.env` file placed on the project root. This is **required to use the application**!
+- Set the environmental variables in the `.env` file placed under **`~/client/`**
+
+REACT_APP_NAME = 'My App'
+REACT_APP_VERSION = 'v0.1.1'
+
+- Set the environmental variables in the `.env` file placed under **`~/server/`**.
 
 ```
 APP_NAME                = 'My App'

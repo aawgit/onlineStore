@@ -17,7 +17,10 @@ const Footer = () => {
 						Back to top
 					</button>
 				</p>
-				<p>Develped by &copy; AW</p>
+				<p>
+					{process.env.REACT_APP_NAME + ' ' + process.env.REACT_APP_VERSION}{' '}
+					&copy; {new Date().getFullYear()}
+				</p>
 			</div>
 		</footer>
 	);

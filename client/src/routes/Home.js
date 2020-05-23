@@ -19,27 +19,23 @@ class Home extends React.Component {
 	}
 
 	getItems() {
-		return axios
+		axios
 			.get(API_ITEMS_SHOW)
-			.then((response) => {
-				this.setState({
-					items: response.data || [],
-				});
+			.then((res) => {
+				this.context.setItem(res.data);
+				this.setState({ items: res.data });
 			})
-			.catch((error) => {
-				this.context.setError(error);
-			});
+			.catch((error) => this.context.setError(error));
 	}
 
 	render() {
-		const { items } = this.state;
 		return (
 			<div>
 				<main role='main'>
 					<div className='album py-5 bg-light'>
 						<div className='container'>
 							<div className='row'>
-								{items.map((item, i) => (
+								{this.state.items.map((item, i) => (
 									<div className='col-md-4' key={item.name + i}>
 										<div className='card mb-4 shadow-sm'>
 											<Link

@@ -42,7 +42,7 @@ Login.post('*', (req, res) => {
 			token: jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
 				expiresIn: 86400,
 			}),
-			userId: user._id,
+			id: user._id,
 			name: user.name,
 		});
 	});

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import {
+	API_ITEMS_SHOW,
 	API_ITEMS_CREATE,
 	CURRENCY_PRE,
 	CURRENCY_POST,
-	CLOUDINARY_NAME,
 } from '../constants';
 import Context from '../Context';
 
@@ -14,16 +14,8 @@ class AddItem extends Component {
 		super(props);
 		this.state = {
 			redirect: false,
-			item: {
-				name: '',
-				description: '',
-				price: '',
-				file: '',
-			},
 		};
-		this.onValueChange = this.onValueChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
-		this.openWidget = this.openWidget.bind(this);
 	}
 
 	static contextType = Context;
@@ -32,44 +24,21 @@ class AddItem extends Component {
 		if (!this.context.user) this.setState({ redirect: '/login' });
 	}
 
-	onValueChange(e) {
-		const item = { ...this.state.item };
-		item[e.target.name] = e.target.value;
-		this.setState({ item });
-	}
-
 	onSubmit(e) {
+		const data = new FormData(document.getElementById('addItemForm'));
+		data.append('id', this.context.user.id);
 		e.preventDefault();
-		return axios
-			.post(API_ITEMS_CREATE, this.state.item, {
+		axios
+			.post(API_ITEMS_CREATE, data, {
 				headers: {
 					'x-access-token': this.context.user.token,
 				},
 			})
 			.then((res) => {
-				this.setState({ redirect: '/items/show/' + res.data._id });
+				this.context.setItem(res.data);
+				this.setState({ redirect: API_ITEMS_SHOW + res.data.id });
 			})
-			.catch((err) => {
-				this.context.setError(err);
-			});
-	}
-
-	openWidget() {
-		return window
-			.createUploadWidget(
-				{
-					cloudName: CLOUDINARY_NAME,
-					uploadPreset: 'os_upload',
-				},
-				(error, result) => {
-					if (!error && result && result.event === 'success') {
-						const item = { ...this.state.item };
-						item.file = result.info;
-						this.setState({ item });
-					}
-				}
-			)
-			.open();
+			.catch((err) => this.context.setError(err));
 	}
 
 	render() {
@@ -86,6 +55,8 @@ class AddItem extends Component {
 									<form
 										id='addItemForm'
 										className='form-signin'
+										action='/api/items/create'
+										method='post'
 										encType='multipart/form-data'
 									>
 										<label htmlFor='name' className='sr-only'>
@@ -99,7 +70,6 @@ class AddItem extends Component {
 											required
 											autoFocus
 											name='name'
-											onChange={this.onValueChange}
 										/>
 										<br />
 										<label htmlFor='description' className='sr-only'>
@@ -112,7 +82,6 @@ class AddItem extends Component {
 											placeholder='Item description'
 											required
 											name='description'
-											onChange={this.onValueChange}
 										/>
 										<br />
 										<label htmlFor='price' className='sr-only'>
@@ -125,22 +94,21 @@ class AddItem extends Component {
 											placeholder='Item price'
 											required
 											name='price'
-											onChange={this.onValueChange}
 										/>
 										&nbsp;{CURRENCY_POST}
 										<br />
-										<button
-											className='btn btn-lg btn-primary btn-block'
-											onClick={this.openWidget}
-										>
-											Upload Image
-										</button>
-										<button
+										<input
+											type='file'
+											name='image'
+											accept='image/*'
+											id='file'
+										/>
+										<input
 											className='btn btn-lg btn-success btn-block'
 											onClick={this.onSubmit}
-										>
-											Add item
-										</button>
+											type='submit'
+											value='Add Item'
+										/>
 									</form>
 								</div>
 							</div>

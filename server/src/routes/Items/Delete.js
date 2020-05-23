@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import cloudinary from 'cloudinary';
+//import cloudinary from 'cloudinary';
 
 import Item from '../../models/Item.js';
 import token from '../../utils/VerifyToken.js';
@@ -11,6 +11,7 @@ import token from '../../utils/VerifyToken.js';
  *
  * **Request must be `HTTP-DELETE @ <root>/api/items/delete/:id`**
  *
+ * @todo Implementing cloudinary deletion
  * @implements Item Schema
  * @returns Confirmation message
  */
