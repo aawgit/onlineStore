@@ -4,6 +4,8 @@
 
 This project is a template for creating e-commerce website with user authentications and content management functionality.
 
+- See it in action on the [demo site](https://openshop-amatyas001.herokuapp.com/login)
+
 ## Features:
 
 - Token verification
@@ -73,10 +75,12 @@ There are multiple scripts under each module, however some of them only helpers 
 > _Run from the `~/server/`directory_
 
 - `npm run start` - Launches the server in production environment.
-- `npm run build` - Cleans the build directory with `rimraf` and creates a new snapshot build from the current code with Babel.
+- `npm run build` - Merges the client and server builds to prepare deployment.
 - `npm run watch` - Executes a **nodemon** instance and **reac-script** watcher. This allows you to change server and client code while both are watched and reloaded when change detected.
 - `npm run test` - Runs [Jest Framework](https://jestjs.io) in **watch** mode on the server. If you need configurations you can freely use `npx jest [options]` format as well.
 - `npm run coverage` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag on the server. Executes all tests and creates a report.
+
+**_Important!_** - Use the `deploy-master` branch for deployment, which contains the output of `npm run build`
 
 #### Client
 
