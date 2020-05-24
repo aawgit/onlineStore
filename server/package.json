@@ -20,7 +20,9 @@
 	"main": "./build/server.js",
 	"scripts": {
 		"start": "npm-run-all build start:prod",
-		"build": "npx rimraf ./build &&  npx babel ./src --out-dir ./build",
+		"build": "npx rimraf ./build && npm-run-all build:server build:client",
+		"build:server": "npx babel ./src --out-dir ./build",
+		"build:client": "cd ../client && npm run build && mv -v build/* ../server/build/",
 		"watch": "npm-run-all --parallel watch:server  watch:client",
 		"start:prod": "NODE_ENV=production node build/server.js",
 		"start:dev": "NODE_ENV=development node -r dotenv/config build/server.js",
