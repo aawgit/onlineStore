@@ -34,14 +34,17 @@ To run the application check that you meet all the requirements:
   `~ git clone https://github.com/amatyas001/openstore.git`
 
 - Install dependencies
-  `~ npm install`
+  `~/myapp/ cd client && npm install && cd ../server && npm intall`
 
 ## Configure
 
 - Set the environmental variables in the `.env` file placed under **`~/client/`**
 
-REACT_APP_NAME = 'My App'
-REACT_APP_VERSION = 'v0.1.1'
+```
+ REACT_APP_NAME         = 'My App'
+ REACT_APP_VERSION      = 'v0.1.1'
+ REACT_APP_FACEBOOK_ID  = xxxxxxxxxxxxxx123
+```
 
 - Set the environmental variables in the `.env` file placed under **`~/server/`**.
 
@@ -62,9 +65,17 @@ HTTPS                   = false
 JWT_SECRET              = 'mydummysecret'
 ```
 
+_Note: If you deploy your app, your should only set the server variables to the environment but make sure before the build that your client `.env` is set properly._
+
 ## Build
 
-- Run `npm run watch` from the **~/server/** directory and you ready to go! This will take care of the building and server starting.
+> Development
+
+- Run `npm run watch` from the **~/server/** directory and you ready to go! This will take care of the building and server starting. You can modify both server and client code and
+
+> Production (This assumes you have set up your environment on the provider)
+
+- Refer to the [Deploy](https://github.com/amatyas001/openshop#deploy) section
 
 ### Scripts
 
@@ -113,7 +124,17 @@ The application uses [Jest](https://jestjs.io) as its unit testing framework ext
 
 ## Deploy
 
-Can be deployed to most of the popular cloud platforms. For configuration refer to the given documentation by your provider. Usually they will use `npm start` to run the deployed code so keep it as is. Additional description of this process is beyond the subject of this project.
+This process assumes that you have configured your platform, database and set the environmentals. Next you can see the general process of deploying to a prepared host:
+
+- Make a **new git branch** (eg: `git branch deploy-master && git checkout deploy-master`)
+- Edit the static paths in the `server.js`: change `../build` to `build` _(In development mode client and server are separated)_
+- Modify the **starting script** in `package.json` to `"start": "node ./build/server.js"`
+- Build your project running `npm run build` in the **server** directory _(This will create a production ready build from the client app and transpiles the server code with babel to the `build` directory)_
+- Delete everything except the `build` directory and `package.json` - **_Double check that you are in a deploy-branch: `git status`_**
+- Commit to the **branch** you just created
+- Push the deploy-branch to the provider (you can use CI/CD and everything you prefer)
+
+After these steps, your app can be deployed on most of the cloud platforms _(tested only on Heroku)_. For configuration refer to the given documentation by your provider. Usually they will use `npm start` to run the deployed code so keep it as is. Make sure that the _deploy-branch_ `package.json` is in your project root. Additional description of this process is beyond the subject of this project.
 
 ## Contributing
 
