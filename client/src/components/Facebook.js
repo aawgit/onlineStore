@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import Context from '../Context';
 import { API_PATH_FACEBOOK } from '../constants';
+import { FaFacebookF } from 'react-icons/fa';
 
 class Facebook extends Component {
 	constructor(props) {
@@ -47,11 +48,14 @@ class Facebook extends Component {
 		} else {
 			return (
 				<FacebookLogin
-					appId='1343346045860132'
+					appId={process.env.REACT_APP_FACEBOOK_ID}
 					autoLoad={false}
 					fields='name,email,picture'
 					onClick={() => {}}
 					callback={this.handleResponse}
+					cssClass='facebookButton btn btn-lg btn-block btn-primary'
+					icon={<FaFacebookF className='mb-1' />}
+					textButton=' Continue with Facebook'
 				/>
 			);
 		}

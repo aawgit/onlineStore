@@ -8,7 +8,6 @@ import {
 	Profile,
 	ShowItem,
 	AddItem,
-	EditItem,
 } from './routes';
 
 const Routes = () => {
@@ -21,7 +20,6 @@ const Routes = () => {
 			<Route path='/profile' component={Profile} />
 			<Route path='/items/show/:id' component={ShowItem} />
 			<Route path='/items/add' component={AddItem} />
-			<Route path='/items/edit/:id' component={EditItem} />
 		</Switch>
 	);
 };

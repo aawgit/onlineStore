@@ -3,7 +3,6 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import formidable from 'formidable';
 import cloudinary from 'cloudinary';
-import streamifier from 'streamifier';
 
 import Item from '../../models/Item.js';
 import token from '../../utils/VerifyToken.js';
@@ -16,7 +15,6 @@ import token from '../../utils/VerifyToken.js';
  *
  * **Request must be `HTTP-POST @ <root>/api/items/create`**
  *
- * @todo Implementing cloudinary upload
  * @implements Item Schema
  * @returns MongoDB Response Object
  */
@@ -26,6 +24,15 @@ Create.use(bodyParser.urlencoded({ extended: true }));
 Create.use(bodyParser.json());
 
 Create.post('*', token, (req, res, next) => {
+	/**
+	 * Upload file from the parsed request FormData through streaming.
+	 * This script does not store the file instance on the server. Instead
+	 * sends it dieractly from the`fs` call.
+	 *
+	 * @param {file} buffer - File path from parsed FormData
+	 * @param {obejct} options - Cloudinary setting object
+	 * @returns Cloudinary promise of the created file data | Error object on failure
+	 */
 	const upload = (buffer, options) => {
 		cloudinary.v2.config({
 			cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -48,13 +55,15 @@ Create.post('*', token, (req, res, next) => {
 		});
 	};
 
+	// async wrapper
 	const main = async (buffer, config) => await upload(buffer, config);
 
+	// https://github.com/node-formidable/formidable
 	const form = formidable();
 
 	form.parse(req, (err, fields, files) => {
-		console.log(files);
 		if (err) return res.send(err);
+		// pass temp file path to fs
 		main(files.image.path, {})
 			.then((result) => {
 				Item.create(

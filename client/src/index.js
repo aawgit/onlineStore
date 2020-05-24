@@ -15,7 +15,7 @@ class App extends React.Component {
 			<Router>
 				<ContextProvider>
 					<Navbar />
-					<div className='content pb-5'>
+					<div className='content px-5' style={{ paddingTop: '70px' }}>
 						<Routes />
 					</div>
 					<Footer />

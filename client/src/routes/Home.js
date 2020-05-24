@@ -18,14 +18,14 @@ class Home extends React.Component {
 		this.getItems();
 	}
 
-	getItems() {
-		axios
-			.get(API_ITEMS_SHOW)
-			.then((res) => {
-				this.context.setItem(res.data);
-				this.setState({ items: res.data });
-			})
-			.catch((error) => this.context.setError(error));
+	async getItems() {
+		try {
+			const res = await axios.get(API_ITEMS_SHOW);
+			this.context.setItem(res.data);
+			this.setState({ items: res.data });
+		} catch (error) {
+			return this.context.setError(error);
+		}
 	}
 
 	render() {
@@ -37,35 +37,35 @@ class Home extends React.Component {
 							<div className='row'>
 								{this.state.items.map((item, i) => (
 									<div className='col-md-4' key={item.name + i}>
-										<div className='card mb-4 shadow-sm'>
+										<div
+											className='card mb-4 shadow-sm p-4'
+											style={{ minHeight: '600px' }}
+										>
+											<h5 className='mb-auto'>{item.name}</h5>
 											<Link
-												to={'/items/' + item._id}
-												className='card-img-top-new'
+												to={'/items/show/' + item.public_id}
+												className='mt-5 mx-auto'
 											>
 												<img
 													src={item.image}
-													className='card-img-top-new'
+													style={{ maxWidth: '250px', maxHeight: '250px' }}
 													alt={item.name}
 												/>
 											</Link>
-											<div className='card-body'>
-												<h5>{item.name}</h5>
-												<br />
+											<div className='card-body d-flex flex-column mt-auto'>
 												<p className='card-text'>
-													{item.description}
-													<br />
-													{CURRENCY_PRE + item.price + CURRENCY_POST}
-													<br />
+													<span>{item.description}</span>
+													<span className='d-block mt-auto'>
+														{CURRENCY_PRE + item.price + CURRENCY_POST}
+													</span>
 												</p>
-												<div className='d-flex justify-content-between align-items-center'>
-													<div className='btn-group'>
-														<Link
-															to={'/items/show/' + item._id}
-															className='btn btn-sm btn-outline-secondary'
-														>
-															View
-														</Link>
-													</div>
+												<div className='mt-auto'>
+													<Link
+														to={'/items/show/' + item.public_id}
+														className='btn btn-sm btn-outline-info btn-block p-4'
+													>
+														View
+													</Link>
 												</div>
 											</div>
 										</div>

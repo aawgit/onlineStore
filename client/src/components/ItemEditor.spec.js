@@ -4,14 +4,14 @@ import Context from '../Context';
 import { API_PATH_ITEMS } from '../constants';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
-import EditItem from './EditItem';
+import  from './ItemEditor';
 
 jest.mock('axios');
 
-const restoreCDM = EditItem.prototype.componentDidMount;
-const restoreGetItems = EditItem.prototype.getItems;
+const restoreCDM = ItemEditor.prototype.componentDidMount;
+const restoreGetItems = ItemEditor.prototype.getItems;
 
-describe('<EditItem />', () => {
+describe('<ItemEditor />', () => {
 	let wrapper,
 		mock_context = {
 			user: {
@@ -23,23 +23,23 @@ describe('<EditItem />', () => {
 		mock_getItems = jest.fn();
 
 	beforeEach(() => {
-		EditItem.prototype.componentDidMount = mock_CDM;
-		EditItem.prototype.getItems = mock_getItems;
+		ItemEditor.prototype.componentDidMount = mock_CDM;
+		ItemEditor.prototype.getItems = mock_getItems;
 	});
 
 	describe('componentDidMount', () => {
 		it('should have been called', () => {
-			wrapper = shallow(<EditItem />);
+			wrapper = shallow(<ItemEditor />);
 			expect(mock_CDM).toHaveBeenCalledTimes(1);
 		});
 
 		it('should set redirect to state', () => {
-			EditItem.prototype.componentDidMount = restoreCDM;
+			ItemEditor.prototype.componentDidMount = restoreCDM;
 			mock_context.user = false;
 			wrapper = mount(
 				<MemoryRouter>
 					<Context.Provider value={mock_context}>
-						<EditItem />
+						<ItemEditor />
 					</Context.Provider>
 				</MemoryRouter>
 			);
@@ -49,7 +49,7 @@ describe('<EditItem />', () => {
 
 	describe('getItems', () => {
 		beforeEach(() => {
-			EditItem.prototype.getItems = restoreGetItems;
+			ItemEditor.prototype.getItems = restoreGetItems;
 		});
 		it('should resolve', async () => {
 			const mock_data = {
@@ -64,7 +64,7 @@ describe('<EditItem />', () => {
 			wrapper = mount(
 				<MemoryRouter>
 					<Context.Provider value={mock_context}>
-						<EditItem match={{ params: { id: 'mockId' } }} />
+						<ItemEditor match={{ params: { id: 'mockId' } }} />
 					</Context.Provider>
 				</MemoryRouter>
 			);
@@ -83,7 +83,7 @@ describe('<EditItem />', () => {
 			wrapper = mount(
 				<MemoryRouter>
 					<Context.Provider value={mock_context}>
-						<EditItem match={{ params: { id: 'mockId' } }} />
+						<ItemEditor match={{ params: { id: 'mockId' } }} />
 					</Context.Provider>
 				</MemoryRouter>
 			);
@@ -97,7 +97,7 @@ describe('<EditItem />', () => {
 
 	describe('onValueChange', () => {
 		it('should set state', () => {
-			wrapper = shallow(<EditItem />);
+			wrapper = shallow(<ItemEditor />);
 			wrapper
 				.instance()
 				.onValueChange({ target: { name: 'mock', value: 'mock1' } });
@@ -129,7 +129,7 @@ describe('<EditItem />', () => {
 			wrapper = mount(
 				<MemoryRouter>
 					<Context.Provider value={mock_context}>
-						<EditItem match={{ params: { id: 'mockId' } }} />
+						<ItemEditor match={{ params: { id: 'mockId' } }} />
 					</Context.Provider>
 				</MemoryRouter>
 			);
@@ -153,7 +153,7 @@ describe('<EditItem />', () => {
 			wrapper = mount(
 				<MemoryRouter>
 					<Context.Provider value={mock_context}>
-						<EditItem match={{ params: { id: 'mockId' } }} />
+						<ItemEditor match={{ params: { id: 'mockId' } }} />
 					</Context.Provider>
 				</MemoryRouter>
 			);

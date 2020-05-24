@@ -97,6 +97,7 @@ class ContextProvider extends Component {
 	 */
 	removeUser() {
 		this.setState({ user: false });
+		this.forceUpdate();
 	}
 
 	render() {

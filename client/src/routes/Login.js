@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { Facebook } from '../components';
 import Context from '../Context';
 import { API_PATH_LOGIN } from '../constants';
@@ -60,7 +60,7 @@ class Login extends Component {
 											type='email'
 											id='inputEmail'
 											className='form-control'
-											placeholder='Email address'
+											placeholder='johndoe@example.com'
 											required
 											autoFocus
 											name='email'
@@ -82,23 +82,38 @@ class Login extends Component {
 										<br />
 										<div className='checkbox'>
 											<label>
-												<input type='checkbox' value='remember-me' /> Remember
-												me
+												<input
+													name='remember'
+													type='checkbox'
+													value='remember-me'
+												/>{' '}
+												Remember me
 											</label>
 										</div>
 										<button
-											className='btn btn-lg btn-primary btn-block'
+											className='btn btn-lg btn-dark btn-block'
 											type='submit'
 										>
 											Sign in
 										</button>
-										<div className='text-center'>
-											<p>Or</p>
+										<div className='text-center mt-3'>
 											<Facebook />
 										</div>
 									</form>
 								</div>
 							</div>
+							<p>
+								Please login or <Link to='/register'>register</Link> to enjoy
+								our service at maximum. This gives you access to our uploading
+								platform and you can make offers with others on this website. If
+								you need support or legal information, refer to our{' '}
+								<Link to='/contact'>contact</Link> page!
+								<br />
+								Thank you for your trust!
+							</p>
+							<p className='text-center'>
+								<em>The {process.env.REACT_APP_NAME} Team</em>
+							</p>
 						</div>
 					</div>
 				</div>
