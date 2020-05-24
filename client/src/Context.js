@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Alert } from './components';
 
 /**
  * Connect child components with this constant once imported into them.
@@ -8,13 +9,13 @@ import React, { Component } from 'react';
  *  - access contextual properties with `this.context.propertyName`
  *
  * Functional Components (`const MyComponent = ({props}) => { ... }`)
- * - use the out-of-the-box React.useContext() hook `const context = React.useContext( Context )`
+ * - use the out-of-the-box `React.useContext()` hook `const context = React.useContext( Context )`
  * - access contextual properties with `context.propertyName`
  *
  * This should be the single source of truth for all internal application state.
  *
  * @author Mátyás Angyal <amatyas001@gmail.com>
- * @version 0.1.1
+ * @version 0.1.2
  * @license MIT
  */
 const Context = React.createContext();
@@ -101,42 +102,20 @@ class ContextProvider extends Component {
 	}
 
 	render() {
-		let message;
+		// methods & state = context
 		const context = this.state;
 
-		// merge context and state
 		for (let key in this) {
 			if (typeof this[key] === 'function') {
 				context[key] = this[key];
 			}
 		}
 
-		if (context.error) {
-			message = (
-				<div
-					className='alert alert-danger fixed-bottom'
-					style={{ zIndex: 9000 }}
-					role='alert'
-				>
-					<h4 className='alert-heading'>
-						{context.error.name}&nbsp;|&nbsp;{context.error.message}
-					</h4>
-					<button
-						type='button'
-						className='close'
-						data-dismiss='alert'
-						aria-label='Close'
-					>
-						<span aria-hidden='true'>&times;</span>
-					</button>
-					<code>{context.error.stack}</code>
-				</div>
-			);
-		}
-
 		return (
 			<Context.Provider value={context}>
-				{message}
+				{context.error && (
+					<Alert header='Something wrong...' message={context.error.message} />
+				)}
 				{this.props.children}
 			</Context.Provider>
 		);

@@ -42,8 +42,6 @@ class Register extends Component {
 			password: this.state.user.password,
 		};
 
-		console.log(user);
-
 		return axios
 			.post(API_PATH_REGISTER, user)
 			.then((res) => {
