@@ -1,8 +1,8 @@
 {
-	"name": "openshop-server",
-	"version": "0.1.1",
+	"name": "openshop",
+	"version": "0.1.2",
 	"private": true,
-	"description": "OpenShop boilerplate server module",
+	"description": "OpenShop Boilerplate",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/amatyas001/openshop.git"
@@ -17,19 +17,27 @@
 		"server"
 	],
 	"license": "ISC",
-	"main": "./build/server.js",
+	"main": "build/server.js",
 	"scripts": {
-		"start": "npm-run-all build start:prod",
-		"build": "npx rimraf ./build && npm-run-all build:server build:client",
-		"build:server": "npx babel ./src --out-dir ./build",
-		"build:client": "cd ../client && npm run build && mv -v build/* ../server/build/",
-		"watch": "npm-run-all --parallel watch:server  watch:client",
-		"start:prod": "NODE_ENV=production node build/server.js",
+		"start": "npm-run-all build:prod start:prod",
+		"start:prod": "NODE_ENV=production node dist/server.js",
 		"start:dev": "NODE_ENV=development node -r dotenv/config build/server.js",
+		"build:prod": "rimraf ./dist && npm run build:server:prod && npm run build:client:prod",
+		"build:dev": "rimraf ./build && npm run build:server:dev && npm run build:client:dev",
+		"build:server:dev": "webpack --config webpack.development.js",
+		"build:server:prod": "webpack --config webpack.production.js",
+		"build:client:dev": "cd client && npm run build && mv -v build/* ../build/ && rimraf build",
+		"build:client:prod": "cd client && npm run build && mv -v build/* ../dist/ && rimraf build",
+		"watch": "npm-run-all build:dev --parallel watch:server watch:client",
 		"watch:server": "nodemon",
-		"watch:client": "cd ../client && npm run start",
-		"test": "jest -- --watch",
-		"coverage": "jest -- --coverage"
+		"watch:client": "cd client && npm run start",
+		"test": "npm-run-all test:server test:client",
+		"test:server": "jest",
+		"test:watch:server": "jest --watch",
+		"test:client": "cd client && npm run test",
+		"test:watch:client": "cd client && npm run test:watch",
+		"coverage:server": "jest --coverage",
+		"coverage:client": "cd client && npm run coverage"
 	},
 	"dependencies": {
 		"@babel/cli": "^7.8.4",
@@ -37,6 +45,7 @@
 		"@babel/plugin-transform-runtime": "^7.9.6",
 		"@babel/preset-env": "^7.9.6",
 		"@babel/runtime": "^7.9.6",
+		"babel-loader": "^8.1.0",
 		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.19.0",
 		"cloudinary": "^1.21.0",
@@ -44,6 +53,7 @@
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"formidable": "^1.2.2",
+		"jest": "^24.9.0",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^5.9.15",
 		"nodemailer": "^6.4.6",
@@ -53,7 +63,11 @@
 		"passport-facebook-token": "^3.3.0",
 		"randomstring": "^1.1.5",
 		"rimraf": "^3.0.2",
-		"validator": "^13.0.0"
+		"supertest": "^4.0.2",
+		"validator": "^13.0.0",
+		"webpack": "^4.42.0",
+		"webpack-cli": "^3.3.11",
+		"webpack-node-externals": "^1.7.2"
 	},
 	"babel": {
 		"presets": [
@@ -68,7 +82,7 @@
 	"jest": {
 		"name": "server",
 		"displayName": "server",
-		"rootDir": "./src",
+		"rootDir": "./server/",
 		"testEnvironment": "node",
 		"testMatch": [
 			"<rootDir>/**/*.spec.{js,jsx,ts,tsx}",
@@ -83,8 +97,8 @@
 		]
 	},
 	"nodemonConfig": {
-		"exec": "npm-run-all build start:dev",
-		"watch": "src/**/*",
+		"exec": "npm-run-all build:server:dev start:dev",
+		"watch": "server/**/*",
 		"ignore": [
 			"**/__tests__/**",
 			"*.test.js",
@@ -92,6 +106,6 @@
 		]
 	},
 	"engines": {
-		"node": ">=13"
+		"node": ">=14"
 	}
 }

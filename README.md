@@ -12,13 +12,17 @@ This project is a template for creating e-commerce website with user authenticat
 - Social login
 - Integrated RESTful API
 - Cloud upload
+- Optimized Webpack bundling
+- Hot-reloading environment
+- Test environment
+- Easy setup and deploygit
 
 ## Prerequisites
 
 To run the application check that you meet all the requirements:
 
 - Latest Node installed
-  - Check current version `node -v` _>=13.x.x_
+  - Check current version `node -v` _>=14.x.x_
   - CLI `: npm install -g n latest` _Or version that meets the above statement_
   - Binary: [Official NodeJs Download Site](https://nodejs.org/en/download/)
 - MongoDB installed
@@ -34,21 +38,21 @@ To run the application check that you meet all the requirements:
   `~ git clone https://github.com/amatyas001/openstore.git`
 
 - Install dependencies
-  `~/myapp/ cd client && npm install && cd ../server && npm intall`
+  `~/myapp/ npm install && cd client && npm install`
 
 ## Configure
 
-- Set the environmental variables in the `.env` file placed under **`~/client/`**
+- Set the environmental variables in the `.env` file placed under **`~/client/`**.
 
-```
+```dotenv
  REACT_APP_NAME         = 'My App'
  REACT_APP_VERSION      = 'v0.1.1'
  REACT_APP_FACEBOOK_ID  = xxxxxxxxxxxxxx123
 ```
 
-- Set the environmental variables in the `.env` file placed under **`~/server/`**.
+- Set the environmental variables in the `.env` file placed under **root**.
 
-```
+```dotenv
 APP_NAME                = 'My App'
 APP_EMAIL               = 'support@myapp.xyz'
 APP_URL                 = 'http://localhost:5000'
@@ -65,48 +69,29 @@ HTTPS                   = false
 JWT_SECRET              = 'mydummysecret'
 ```
 
-_Note: If you deploy your app, your should only set the server variables to the environment but make sure before the build that your client `.env` is set properly._
+## Development
 
-## Build
+- Run `npm run watch` and you ready to go! This will take care of the building and server starting. You can modify both server and client code and get instant results.
 
-> Development
+### Deploy
 
-- Run `npm run watch` from the **~/server/** directory and you ready to go! This will take care of the building and server starting. You can modify both server and client code and
-
-> Production (This assumes you have set up your environment on the provider)
-
-- Refer to the [Deploy](https://github.com/amatyas001/openshop#deploy) section
+When you have configured your database and set the environmentals on the desired platform, simply push the codebase to the host and run the `npm start` process if required. Your app can be deployed on most of the cloud platforms _(tested only on Heroku)_. Additional description of this process is beyond the subject of this project. For configuring your host to run NodeJS applications refer to the given documentation by your provider.
 
 ### Scripts
 
-There are multiple scripts under each module, however some of them only helpers to shorten main scripts and not listed here. Usually you manage tasks from the **server directory**, but it's possible to run command only for the client. This is helpful when you want to test your client code or get the test coverage.
+There are a lot of helper scipts in the `package.json` file but to run basic tasks you only need a few of them:
 
-#### Server
-
-> _Run from the `~/server/`directory_
-
-- `npm run start` - Launches the server in production environment.
-- `npm run build` - Merges the client and server builds to prepare deployment.
-- `npm run watch` - Executes a **nodemon** instance and **reac-script** watcher. This allows you to change server and client code while both are watched and reloaded when change detected.
-- `npm run test` - Runs [Jest Framework](https://jestjs.io) in **watch** mode on the server. If you need configurations you can freely use `npx jest [options]` format as well.
-- `npm run coverage` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag on the server. Executes all tests and creates a report.
-
-**_Important!_** - Use the `deploy-master` branch for deployment, which contains the output of `npm run build`
-
-#### Client
-
-> _Run from the `~/client/`directory_
-
-- `npm run start` - Same as any other Create React App `npm start`
-- `npm run build` - Create a production bundle from client module.
-- `npm run test` - Runs [Jest Framework](https://jestjs.io) in **watch** mode.
-- `npm run coverage` - Runs [Jest Framework](https://jestjs.io) with **--coverage** flag. Executes all tests and creates a report.
+- `npm run start` - Launches the application in production environment.
+- `npm run build` - Builds the client and server with webpack into the project root.
+- `npm run watch` - Runs both client and server in parellel watch mode
+- `npm run test [:client | :server]` - Runs [Jest](https://jestjs.io) in **watch** mode.
+- `npm run coverage: ~client | ~server` - Jest [Istanbul](https://istanbul.js.org/docs/tutorials/jest/) coverage reporter _(eg: `npm run coverage:server`)_.
 
 ## Routing
 
 ### Client
 
-Application comes with `react-router-dom` which handles the internal routing. **Routes module** handles the changes and assigns module to routes.
+The application comes with `react-router-dom` **v5** which handles the internal routing. **Routes module** handles the changes and assigns module to routes.
 
 - Pushing a route to the router using the `<Link to="/new_route">` component.
 - Redirect pages by render the `<Redirect to="/redirect_route">` to redirect the component _(This is usually depends on component state and a conditional rendering in the `render()` method)_.
@@ -116,25 +101,15 @@ Read more in the [Documentation](https://reacttraining.com/react-router/web) of 
 
 ### Server
 
-By default all routing is set in the `~/myapp/client/src/constants.js`. If you change the values or extend them, make sure you **update the request handlers on the server** in `~/myapp/server/src/server.js`.
+We use the popular and easy-to-use [axios](https://github.com/axios/axios) service for handle API calls. All API routing is set in the `~/myapp/client/src/constants.js`. You can add to or modify these values matching to your server configuration. There is no need to manually edit all of the API calls deep in your component library.
 
 ## Test
 
-The application uses [Jest](https://jestjs.io) as its unit testing framework extended by [Enzyme](https://enzymejs.github.io/enzyme/) library. Specifitation tests follow `*.spec.js` naming convention. While developing always remember to keep your code **clean** and **isolated** to test them with ease.
+The application uses [Jest](https://jestjs.io) as its unit testing framework extended by [Enzyme](https://enzymejs.github.io/enzyme/) library. Specifitation tests follow `*.spec.js` naming convention. Server testing uses the same framework besides [Supertest](https://github.com/visionmedia/supertest) endpoint testing library While developing always remember to keep your code **clean** and **isolated** to test them with ease.
 
-## Deploy
+## Versioning
 
-This process assumes that you have configured your platform, database and set the environmentals. Next you can see the general process of deploying to a prepared host:
-
-- Make a **new git branch** (eg: `git branch deploy-master && git checkout deploy-master`)
-- Edit the static paths in the `server.js`: change `../build` to `build` _(In development mode client and server are separated)_
-- Modify the **starting script** in `package.json` to `"start": "node ./build/server.js"`
-- Build your project running `npm run build` in the **server** directory _(This will create a production ready build from the client app and transpiles the server code with babel to the `build` directory)_
-- Delete everything except the `build` directory and `package.json` - **_Double check that you are in a deploy-branch: `git status`_**
-- Commit to the **branch** you just created
-- Push the deploy-branch to the provider (you can use CI/CD and everything you prefer)
-
-After these steps, your app can be deployed on most of the cloud platforms _(tested only on Heroku)_. For configuration refer to the given documentation by your provider. Usually they will use `npm start` to run the deployed code so keep it as is. Make sure that the _deploy-branch_ `package.json` is in your project root. Additional description of this process is beyond the subject of this project.
+The keep [Create React App](https://github.com/facebook/create-react-app) intact you must use the exact verisons of `babel` and `jest` and `webpack` in the root `package.json` as the CRA's `react-scripts` uses. If there's a version mismatch, build should fail on the application. If you want to use other versions because of your special needs you can still `eject` CRA but when you do this, you could upgrade `react-scripts` anymore! Keeping up with the upgrades of `react-scripts` and upgrading the packages manually should be enough for most cases. _If you have an error related to this, you can check the versions with `npm ls <moduleName>`_
 
 ## Contributing
 

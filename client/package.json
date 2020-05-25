@@ -17,13 +17,14 @@
 		"client"
 	],
 	"license": "ISC",
-	"main": "./build/index.js",
+	"main": "./src/index.js",
 	"proxy": "http://localhost:5000",
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"coverage": "react-scripts test --coverage"
+		"test": "jest",
+		"test:watch": "jest --watch",
+		"coverage": "jest --coverage"
 	},
 	"dependencies": {
 		"@testing-library/jest-dom": "^5.7.0",
@@ -41,12 +42,8 @@
 	},
 	"jest": {
 		"name": "client",
+		"rootDir": "./src/",
 		"displayName": "client",
-		"rootDir": "./",
-		"testMatch": [
-			"<rootDir>/**/*.spec.{js,jsx,ts,tsx}",
-			"!/node_modules/*"
-		],
 		"collectCoverageFrom": [
 			"<rootDir>/**/*.{js,jsx,ts,tsx}",
 			"!/node_modules/*"
