@@ -3,12 +3,14 @@ const nodeExternals = require('webpack-node-externals');
 
 module.exports = () => {
 	return {
-		entry: './server/server.js',
-		mode: 'production',
+		entry: {
+			server: './server/server.js',
+		},
+		mode: 'development',
 		output: {
 			path: path.join(__dirname, 'build'),
 			publicPath: '/',
-			filename: 'server.js',
+			filename: '[name].js',
 		},
 		target: 'node',
 		node: {
@@ -16,6 +18,10 @@ module.exports = () => {
 			__filename: false,
 		},
 		externals: [nodeExternals()],
+		optimization: {
+			minimize: false,
+			splitChunks: false,
+		},
 		module: {
 			rules: [
 				{

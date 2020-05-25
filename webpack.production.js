@@ -1,28 +1,48 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = () => {
 	return {
 		entry: './server/server.js',
+		target: 'node',
 		mode: 'production',
+		devtool: 'source-map',
+		externals: [nodeExternals()],
 		output: {
 			path: path.join(__dirname, 'dist'),
 			publicPath: '/',
 			filename: 'server.js',
 		},
-		target: 'node',
 		node: {
 			__dirname: false,
 			__filename: false,
 		},
-		externals: [nodeExternals()],
+		optimization: {
+			splitChunks: {
+				chunks: 'all',
+			},
+			minimize: true,
+			minimizer: [
+				new TerserPlugin({
+					parallel: true,
+					cache: true,
+					sourceMap: true,
+				}),
+			],
+		},
 		module: {
 			rules: [
 				{
 					test: /\.js$/,
-					exclude: /node_modules/,
+					include: path.resolve(__dirname, 'server'),
 					use: {
 						loader: 'babel-loader',
+						options: {
+							cacheDirectory: true,
+							presets: ['@babel/preset-env'],
+							plugins: ['@babel/plugin-transform-runtime'],
+						},
 					},
 				},
 			],
