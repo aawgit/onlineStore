@@ -48,7 +48,7 @@ Register.post('*', (req, res) => {
 				(err, user) => {
 					if (err) return res.status(500).send(err);
 
-					Mailer({
+					Mailer.sendMail({
 						from: process.env.APP_EMAIL,
 						to: user.email,
 						subject: `ACCOUNT VERIFICATION ON ${process.env.APP_NAME.toUpperCase()}`,
