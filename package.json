@@ -37,7 +37,8 @@
 		"test:client": "cd client && npm run test",
 		"test:watch:client": "cd client && npm run test:watch",
 		"coverage:server": "jest --coverage",
-		"coverage:client": "cd client && npm run coverage"
+		"coverage:client": "cd client && npm run coverage",
+		"heroku-postbuild": "cd client && npm install"
 	},
 	"dependencies": {
 		"@babel/cli": "^7.8.4",
