@@ -19,7 +19,7 @@
 	"license": "ISC",
 	"main": "build/server.js",
 	"scripts": {
-		"start": "npm-run-all build:prod start:prod",
+		"start": "npm run start:prod",
 		"start:prod": "node -r dotenv/config dist/server.js",
 		"start:dev": "node -r dotenv/config build/server.js",
 		"build:prod": "rimraf ./dist && npm run build:server:prod && npm run build:client:prod",
@@ -38,7 +38,7 @@
 		"test:watch:client": "cd client && npm run test:watch",
 		"coverage:server": "jest --coverage",
 		"coverage:client": "cd client && npm run coverage",
-		"heroku-postbuild": "cd client && npm install"
+		"heroku-postbuild": "cd client && npm install && cd .. && npm run build:prod"
 	},
 	"dependencies": {
 		"@babel/cli": "^7.8.4",
