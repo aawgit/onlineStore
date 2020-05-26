@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node server/src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"npm run start\" \"cd client && npm run start\"",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
@@ -20,13 +20,14 @@
     "dotenv": "^7.0.0",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.5.0",
-    "mongoose": "^5.4.16",
+    "mongoose": "^5.7.5",
     "multer": "^1.4.1",
     "multer-storage-cloudinary": "^2.2.1",
     "nodemailer": "^5.1.1",
     "passport": "^0.4.0",
     "passport-facebook-token": "^3.3.0",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "validator": "^11.0.0"
   },
   "engines": {
     "node": "10.15.1"
