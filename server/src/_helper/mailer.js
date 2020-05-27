@@ -13,13 +13,16 @@ var transporter = nodemailer.createTransport({
 
 module.exports = {
   sendMail(mailOptions) {
-    transporter.sendMail(mailOptions, function(err, info) {
-      if (err) {
-        console.log(err);
-        return err;
-      }
-      console.log(info);
-      return info;
+    return new Promise(function(resolve, reject) {
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.log("error: ", err);
+          reject(err);
+        } else {
+          console.log(`Mail sent successfully!`);
+          resolve(info);
+        }
+      });
     });
   }
 };

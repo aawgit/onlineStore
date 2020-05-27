@@ -27,6 +27,8 @@ class RegisterFormComp extends Component {
     axios
       .post("/api/auth/register", newUser)
       .then(res => {
+        console.log(res);
+
         message = `Verification e-mail has been sent to ${res.data}.`;
         ReactDOM.render(message, document.getElementById("message"));
         console.log(res.data);
