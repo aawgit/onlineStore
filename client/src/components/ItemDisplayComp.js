@@ -11,7 +11,7 @@ class ItemDisplayComp extends React.Component {
   }
 
   componentDidMount() {
-    var self = this;
+    let self = this;
     axios
       .get("api/items")
       .then(function(response) {

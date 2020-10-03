@@ -5,16 +5,14 @@ import { Redirect } from "react-router-dom";
 class LoginFormComp extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    this.onValuChange = this.onValuChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.state = {}
   }
 
-  onValuChange(e) {
+  onValuChange=(e) =>{
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onSubmit(e) {
+  onSubmit=(e) => {
     e.preventDefault();
     console.log(this.state);
     //console.log(this.state);
@@ -42,7 +40,7 @@ class LoginFormComp extends Component {
   }
 
   componentDidMount() {
-    var self = this;
+    let self = this;
     axios
       .get("api/items/" + this.props.itemId)
       .then(function(res) {

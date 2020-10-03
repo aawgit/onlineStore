@@ -13,12 +13,12 @@ class ItemDes extends Component {
       owner: {},
       __v: 0
     }; */
-    this.onDeleteClick = this.onDeleteClick.bind(this);
+
   }
 
   componentDidMount() {}
 
-  displayEdit() {
+  displayEdit =()=> {
     const user = sessionStorage.getItem("user");
     const { item } = this.props;
     if (user) {
@@ -40,7 +40,7 @@ class ItemDes extends Component {
     );
   }
 
-  onDeleteClick(e) {
+  onDeleteClick = (e) => {
     e.preventDefault();
     axios
       .delete("/api/items/" + this.state._id, {
@@ -80,7 +80,7 @@ class ItemDes extends Component {
             <br />
 
             <br />
-            <div id="action">{this.displayEdit()}</div>
+            <div id="action">{this.displayEdit}</div>
           </div>
         </div>
       </div>
