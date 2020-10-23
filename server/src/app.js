@@ -16,7 +16,7 @@ app.use("/api/users", userController);
 app.use("/api/auth", authController);
 app.use("/api/items", itemContrller);
 
-app.use(express.static(path.join(__dirname, "client", "build")));
+app.use(express.static(path.join(__dirname, '..', '..', "client", "build")));
 app.use("/public", express.static("public"));
 
 app.get("*", (req, res) => {
