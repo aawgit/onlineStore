@@ -1,5 +1,3 @@
-// TODO: Refactor to controller and service like the other 2
-// AuthController.js
 import express from 'express';
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -15,6 +13,8 @@ import mailer from "../_helper/mailer";
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
+
+// TODO: Refactor to controller and service like the other 2
 
 //Passport strategy for facebook login
 passport.use(
