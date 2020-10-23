@@ -4,10 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node server/src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
+    "build": "babel server/src -d server/dist",
+    "start": "npm run build && node server/dist/server.js",
     "dev": "concurrently \"npm run start\" \"cd client && npm run start\"",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+    "restart": "rimraf dist && npm run start"
   },
   "author": "",
   "license": "ISC",
@@ -18,7 +20,7 @@
     "concurrently": "^4.1.0",
     "cors": "^2.8.5",
     "dotenv": "^7.0.0",
-    "express": "^4.16.2",
+    "express": "^4.17.1",
     "jsonwebtoken": "^8.5.0",
     "mongoose": "^5.7.5",
     "multer": "^1.4.1",
@@ -30,6 +32,12 @@
     "validator": "^11.0.0"
   },
   "engines": {
-    "node": "10.15.1"
+    "node": "12.19.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.1",
+    "@babel/preset-env": "^7.12.1"
   }
 }
