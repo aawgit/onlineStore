@@ -5,9 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "npm install @babel/core  @babel/node @babel/preset-env && cd client && npm install --only=dev && npm install && npm run build",
+    "heroku-postbuild": "npm install @babel/cli @babel/core @babel/node @babel/preset-env && cd client && npm install --only=dev && npm install && npm run build",
     "build": "babel server/src -d server/dist",
-    "start": "babel-node server/src/server.js",
+    "start": "babel-node server/src/",
     "dev": "concurrently \"npm run start\" \"cd client && npm run start\"",
     "restart": "rimraf dist && npm run start"
   },
