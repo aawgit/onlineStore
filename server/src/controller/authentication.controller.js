@@ -1,22 +1,18 @@
 // TODO: Refactor to controller and service like the other 2
 // AuthController.js
-var express = require("express");
+import express from 'express';
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import bodyParser from "body-parser";
+import FacebookTokenStragegy from "passport-facebook-token";
+import passport from "passport";
+import User from "../models/User";
+import config from "../config";
+import VerifyToken from "../_helper/VerifyToken";
+import randomString from "randomstring";
+import mailer from "../_helper/mailer";
+
 const router = express.Router();
-var bodyParser = require("body-parser");
-
-var User = require("../models/User");
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
-var config = require("../config");
-var VerifyToken = require("../_helper/VerifyToken");
-var randomString = require("randomstring");
-var mailer = require("../_helper/mailer");
-
-var FacebookTokenStragegy = require("passport-facebook-token");
-var passport = require("passport");
-
-var config = require("../config");
-
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
