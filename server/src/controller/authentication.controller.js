@@ -1,6 +1,7 @@
+// TODO: Refactor to controller and service like the other 2
 // AuthController.js
 var express = require("express");
-var router = express.Router();
+const router = express.Router();
 var bodyParser = require("body-parser");
 
 var User = require("../models/User");
@@ -25,20 +26,20 @@ passport.use(
   new FacebookTokenStragegy(
     {
       clientID: config.clientID,
-      clientSecret: config.clientSecret
+      clientSecret: config.clientSecret,
     },
-    function(accessToken, refreshToken, profile, done) {
+    function (accessToken, refreshToken, profile, done) {
       var user = { name: profile._json.name, email: profile._json.email };
       return done(null, user);
     }
   )
 );
 
-passport.serializeUser(function(user, cb) {
+passport.serializeUser(function (user, cb) {
   cb(null, user);
 });
 
-passport.deserializeUser(function(obj, cb) {
+passport.deserializeUser(function (obj, cb) {
   cb(null, obj);
 });
 
@@ -46,44 +47,45 @@ router.use(passport.initialize());
 router.use(passport.session());
 
 //Fb login or create user
-router.post("/facebook/login", passport.authenticate("facebookToken"), function(
-  req,
-  res
-) {
-  User.findOne({ email: req.user.email }, function(err, user) {
-    //if(err) return res.status(404).send("Problem in getting user info from Facebook")
-    if (user) {
-      var token = jwt.sign({ id: user._id }, config.secret, {
-        expiresIn: 86400 // expires in 24 hours
-      });
-      return res.send({
-        auth: true,
-        token: token,
-        userId: user._id,
-        name: user.name
-      });
-    } else {
-      User.create(req.user, function(err, user) {
-        if (err)
-          return res
-            .status(500)
-            .json({ message: "Problem in creating new user" });
-        if (user) {
-          var token = jwt.sign({ id: user._id }, config.secret, {
-            expiresIn: 86400 // expires in 24 hours
-          });
-          return res.status(201).send({
-            auth: true,
-            token: token,
-            userId: user._id,
-            name: user.name
-          });
-        }
-      });
-    }
-  });
-  //res.send(req.user ? 200 : 401);
-});
+router.post(
+  "/facebook/login",
+  passport.authenticate("facebookToken"),
+  function (req, res) {
+    User.findOne({ email: req.user.email }, function (err, user) {
+      //if(err) return res.status(404).send("Problem in getting user info from Facebook")
+      if (user) {
+        var token = jwt.sign({ id: user._id }, config.secret, {
+          expiresIn: 86400, // expires in 24 hours
+        });
+        return res.send({
+          auth: true,
+          token: token,
+          userId: user._id,
+          name: user.name,
+        });
+      } else {
+        User.create(req.user, function (err, user) {
+          if (err)
+            return res
+              .status(500)
+              .json({ message: "Problem in creating new user" });
+          if (user) {
+            var token = jwt.sign({ id: user._id }, config.secret, {
+              expiresIn: 86400, // expires in 24 hours
+            });
+            return res.status(201).send({
+              auth: true,
+              token: token,
+              userId: user._id,
+              name: user.name,
+            });
+          }
+        });
+      }
+    });
+    //res.send(req.user ? 200 : 401);
+  }
+);
 
 //New user registration
 router.post("/register", async (req, res) => {
@@ -102,7 +104,7 @@ router.post("/register", async (req, res) => {
       password: hashedPassword,
       //For email verification
       secretToken: secretToken,
-      isActivated: false
+      isActivated: false,
     });
     if (newUser) {
       console.log(newUser);
@@ -113,7 +115,7 @@ router.post("/register", async (req, res) => {
         html: `<h4>Thank you for registering.<h4>
         <p>Please verify this email address by clicking the following link</p>
         <a href="https://frozen-lake-54898.herokuapp.com/api/auth/verify/${newUser.secretToken}">
-        https://frozen-lake-54898.herokuapp.com/api/auth/verify/${newUser.secretToken}</a>`
+        https://frozen-lake-54898.herokuapp.com/api/auth/verify/${newUser.secretToken}</a>`,
       };
       let mailResponse = await mailer.sendMail(mailOptions);
       if (mailResponse.messageId) {
@@ -132,9 +134,9 @@ router.post("/register", async (req, res) => {
 });
 
 //Login registered users;
-router.post("/login", function(req, res) {
+router.post("/login", function (req, res) {
   //console.log(config.clientID, config.clientSecret)
-  User.findOne({ email: req.body.email }, function(err, user) {
+  User.findOne({ email: req.body.email }, function (err, user) {
     if (err) return res.status(500).send("Error on the server.");
     if (!user) return res.status(404).send("No user found.");
     if (!user.isActivated) {
@@ -148,7 +150,7 @@ router.post("/login", function(req, res) {
       return res.status(401).send({ auth: false, token: null });
     }
     var token = jwt.sign({ id: user._id }, config.secret, {
-      expiresIn: 86400 // expires in 24 hours
+      expiresIn: 86400, // expires in 24 hours
     });
     res
       .status(200)
@@ -157,15 +159,15 @@ router.post("/login", function(req, res) {
 });
 
 //Email verification of registered users
-router.get("/verify/:secretToken", function(req, res) {
-  User.findOne({ secretToken: req.params.secretToken }, function(err, user) {
+router.get("/verify/:secretToken", function (req, res) {
+  User.findOne({ secretToken: req.params.secretToken }, function (err, user) {
     if (err) return res.status(500).send("Error on the server.");
     if (!user) return res.status(404).send("No user found.");
 
     user.isActivated = true;
     user.secretToken = "";
 
-    user.save(function(err, user) {
+    user.save(function (err, user) {
       if (err) return res.status(500).send("Error verifying the account");
       res.redirect("https://frozen-lake-54898.herokuapp.com/#/login/");
     });
@@ -173,8 +175,8 @@ router.get("/verify/:secretToken", function(req, res) {
 });
 
 //Get info of the current user
-router.get("/me", VerifyToken, function(req, res, next) {
-  User.findById(req.userId, { password: 0 }, function(err, user) {
+router.get("/me", VerifyToken, function (req, res, next) {
+  User.findById(req.userId, { password: 0 }, function (err, user) {
     if (err)
       return res.status(500).send("There was a problem finding the user.");
     if (!user) return res.status(404).send("No user found.");
@@ -183,4 +185,4 @@ router.get("/me", VerifyToken, function(req, res, next) {
   });
 });
 
-module.exports = router;
+export default router;
