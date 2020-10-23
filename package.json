@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install @babel/cli @babel/core && npm install && npm run build",
     "build": "babel server/src -d server/dist",
     "start": "npm run build && node server/dist/server.js",
     "dev": "concurrently \"npm run start\" \"cd client && npm run start\"",
