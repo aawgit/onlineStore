@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-const isEmail = require('validator/lib/isEmail');
+import mongoose from "mongoose";
+import isEmail from 'validator/lib/isEmail';
 var UserSchema = new mongoose.Schema({  
   name: {
     type: String,
@@ -37,4 +37,4 @@ UserSchema.virtual('items', {
 
 mongoose.model('User', UserSchema);
 
-module.exports = mongoose.model('User');
+export default mongoose.model('User');
