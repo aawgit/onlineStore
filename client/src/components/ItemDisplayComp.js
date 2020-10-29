@@ -14,10 +14,10 @@ class ItemDisplayComp extends React.Component {
     var self = this;
     axios
       .get("api/items")
-      .then(function(response) {
+      .then(function (response) {
         self.setState({ items: response.data });
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
@@ -38,7 +38,7 @@ class ItemDisplayComp extends React.Component {
                         href={"/#/viewItem/" + item._id + "/#"}
                         className="card-img-top-new"
                       >
-                        <img src={item.imageLocation} className="card-img-top-new"/>
+                        <img src={item.imageLocation} className="card-img-top-new" />
                       </a>
                       <div className="card-body">
                         <h5>{item.name}</h5>
@@ -52,7 +52,7 @@ class ItemDisplayComp extends React.Component {
                         </p>
                         <div className="d-flex justify-content-between align-items-center">
                           <div className="btn-group">
-                            <a href={"/#/viewItem/"+item._id}
+                            <a href={"/#/viewItem/" + item._id}
                               type="button"
                               className="btn btn-sm btn-outline-secondary"
                             >

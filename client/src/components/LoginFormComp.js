@@ -1,25 +1,25 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Facebook from "./Facebook";
+import authService from "./services/AuthServices";
 
 class LoginFormComp extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.onValuChange = this.onValuChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onValuChange(e) {
+  onValuChange=(e)=> {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onSubmit(e) {
+  onSubmit=(e)=> {
     e.preventDefault();
     axios
       .post("/api/auth/login", this.state)
       .then(res => {
         console.log(res);
+        authService.setAuthDetail(res.data)
         sessionStorage.setItem(
           "user",
           JSON.stringify({ jwtToken: res.data.token, userId: res.data.userId, name:res.data.name })
