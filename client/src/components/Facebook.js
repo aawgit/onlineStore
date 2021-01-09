@@ -9,32 +9,36 @@ class Facebook extends Component {
     name: "",
     email: "",
     picture: "",
-    accessToken: ""
+    accessToken: "",
   };
   onLoginSuccess() {
     axios
       .post("/api/auth/facebook/login", {
-        access_token: this.state.accessToken
+        access_token: this.state.accessToken,
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         sessionStorage.setItem(
           "user",
-          JSON.stringify({ jwtToken: res.data.token, userId: res.data.userId, name:res.data.name })
+          JSON.stringify({
+            jwtToken: res.data.token,
+            userId: res.data.userId,
+            name: res.data.name,
+          })
         );
         this.props.setUser(res.data.name);
         this.props.history.push("/");
       })
-      .catch(err => console.log(err.response.data));
+      .catch((err) => console.log(err.response.data));
   }
-  responseFacebook = response => {
+  responseFacebook = (response) => {
     if (response.accessToken) {
       this.setState({
         isLoggedIn: true,
         name: response.name,
         email: response.email,
         picture: response.picture.data.url,
-        accessToken: response.accessToken
+        accessToken: response.accessToken,
       });
       console.log(response);
       this.onLoginSuccess();
@@ -51,6 +55,8 @@ class Facebook extends Component {
         fields="name,email,picture"
         onClick={this.componentClicked}
         callback={this.responseFacebook}
+        isMobile={false}
+        disableMobileRedirect={true}
       />
     );
     return <div>{fbContent}</div>;
