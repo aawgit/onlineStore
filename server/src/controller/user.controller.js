@@ -1,11 +1,12 @@
 import express from 'express';
 import bodyParser from "body-parser";
 
-import getUsers from "../service/user.service";
+import {getUsers} from "../service/user.service";
 
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
+
 
 router.get("/", async (req, res) => {
     try{
