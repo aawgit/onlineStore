@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import bodyParser from "body-parser";
@@ -64,7 +64,7 @@ router.post(
           if (err)
             return res
               .status(500)
-              .json({ message: "Problem in creating new user" });
+              .json({ message: `Problem in creating new user. Error: ${err}` });
           if (user) {
             var token = jwt.sign({ id: user._id }, config.secret, {
               expiresIn: 86400, // expires in 24 hours
