@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
+import cors from "cors"
 
 import authController from "./controller/authentication.controller";
 import userController from "./controller/user.controller";
@@ -8,6 +9,11 @@ import itemContrller from "./controller/item.controller";
 import config from "./config";
 
 const app = express();
+
+// TODO: Use a whitelist
+app.use(cors());
+app.options('*', cors());
+
 mongoose.connect(config.mLabURI);
 
 app.use(express.static("public"));
