@@ -6,11 +6,10 @@ class AddItemComp extends Component {
   constructor(props) {
     super(props);
     this.state = { name: "", description: "", price: "", file: "" };
-    this.onValueChange = this.onValueChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    
   }
 
-  onValueChange(e) {
+  onValueChange= (e)=> {
     switch (e.target.name) {
       case "file":
         this.setState({ file: e.target.files[0] });
@@ -20,7 +19,7 @@ class AddItemComp extends Component {
     }
   }
 
-  onSubmit(e) {
+  onSubmit = (e) =>{
     e.preventDefault();
     let formData = new FormData();
     const { name, description, price, file } = this.state;

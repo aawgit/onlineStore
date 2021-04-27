@@ -34,9 +34,9 @@ class NavBarComp extends Component {
       </div>
     );
   }
-  displayNavs() {
-    if (this.props.userName) {
-      return (
+  displayNavs =()=> {
+    (this.props.userName) ?
+       (
         <ul className="navbar-nav ml-auto">
           <li>
             <a href="#" className="nav-link">{this.props.userName}</a>
@@ -50,9 +50,8 @@ class NavBarComp extends Component {
             </button>
           </li>
         </ul>
-      );
-    } else {
-      return (
+      )
+    :   (
         <ul className="navbar-nav ml-auto">
           <li className="nav-item">
             <a className="nav-link" href="#/login">
@@ -66,7 +65,7 @@ class NavBarComp extends Component {
           </li>
         </ul>
       );
-    }
+    
   }
 }
 

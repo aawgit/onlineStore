@@ -6,16 +6,15 @@ import ReactDOM from "react-dom";
 class RegisterFormComp extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    this.onValuChange = this.onValuChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.state = {}
+    
   }
 
-  onValuChange(e) {
+  onValuChange =(e)=>{
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onSubmit(e) {
+  onSubmit=(e)=> {
     var message = "";
     e.preventDefault();
 
