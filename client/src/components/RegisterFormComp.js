@@ -2,17 +2,34 @@ import React, { Component } from "react";
 import axios from "axios";
 import { request } from "https";
 import ReactDOM from "react-dom";
+import validator from "validator";
 
 class RegisterFormComp extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.msg = "";
     this.onValuChange = this.onValuChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   onValuChange(e) {
     this.setState({ [e.target.name]: e.target.value });
+
+    //the basic layout for password validation
+    if (
+      validator.isStrongPassword(this.state.password, {
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+    ) {
+      console.log("Is strong password ");
+    } else {
+      console.log("Is not strong password ");
+    }
   }
 
   onSubmit(e) {
@@ -22,18 +39,18 @@ class RegisterFormComp extends Component {
     let newUser = {
       name: this.state.firstName + " " + this.state.lastName,
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
     };
     axios
       .post("/api/auth/register", newUser)
-      .then(res => {
+      .then((res) => {
         console.log(res);
 
         message = `Verification e-mail has been sent to ${res.data}.`;
         ReactDOM.render(message, document.getElementById("message"));
         console.log(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         message = `Oops! There is a problem. ${err.response.data.message}.`;
         ReactDOM.render(message, document.getElementById("message"));
         console.log(err.response.data);
