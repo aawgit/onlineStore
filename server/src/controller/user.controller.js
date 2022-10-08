@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try{
         const users = await getUsers(req.params.id)
-        if (!user) return res.status(404).send("No user found.");
+        if (!users) return res.status(404).send("No user found.");
         res.status(200).send(users);
     }
     catch(err){
