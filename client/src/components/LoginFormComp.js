@@ -1,102 +1,77 @@
 import React, { Component } from "react";
-import axios from "axios";
 import Facebook from "./Facebook";
+import { Formik, Form, Field } from 'formik'
+import { loginUser } from "../api/api";
 
-class LoginFormComp extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.onValuChange = this.onValuChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
 
-  onValuChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
+//Initial values ​​of the form
+const initialValues = {
+  email: '',
+  password: '',
+};
 
-  onSubmit(e) {
-    e.preventDefault();
-    axios
-      .post("/api/auth/login", this.state)
-      .then(res => {
-        console.log(res);
-        sessionStorage.setItem(
-          "user",
-          JSON.stringify({ jwtToken: res.data.token, userId: res.data.userId, name:res.data.name })
-        );
-        this.props.setUser(res.data.name);
-        this.props.history.push("/");
-      })
-      .catch(err => console.log(err.response.data));
-  }
+// function to log
+const handleSubmit = (values) => {
 
-  componentDidMount() {}
+  //Creating the user model
+  const user = {
+    email: values.email,
+    password: values.password
+  };
 
-  render() {
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <div className="card card-signin my-5">
-              <div className="card-body">
-                <h5 className="card-title text-center">Sign In</h5>
-                <form className="form-signin" onSubmit={this.onSubmit}>
-                  <label for="inputEmail" className="sr-only">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    id="inputEmail"
-                    className="form-control"
-                    placeholder="Email address"
-                    required
-                    autofocus
-                    name="email"
-                    onChange={this.onValuChange}
-                  />
-                  <br />
-                  <label for="inputPassword" className="sr-only">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="inputPassword"
-                    className="form-control"
-                    placeholder="Password"
-                    required
-                    name="password"
-                    onChange={this.onValuChange}
-                  />
-                  <br />
-                  <div className="checkbox">
+  //function to call the api
+  const login = async (newUser) => {
+    try {
+      // Getting the response from the api
+      const response = await loginUser(newUser);
+
+      alert(response.message);
+    } catch (error) {
+      //error
+      alert(error.message);
+    }
+  };
+
+  //activating the function
+  login(user);
+};
+
+const LoginFormComp = () => {
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div className="card card-signin my-5">
+            <div className="card-body">
+              <h5 className="card-title text-center">Sign In</h5>
+              <Formik onSubmit={handleSubmit} initialValues={initialValues} >
+                <Form>
+                  <Field name='email' type='email' id='email' className='form-control mt-3' placeholder='Email' required />
+                  <Field name='password' type='password' id='password' className='form-control mt-3' placeholder='Password' required />
+                  <div className='checkbox mt-3'>
                     <label>
                       <input type="checkbox" value="remember-me" /> Remember me
                     </label>
                   </div>
-                  <button
-                    className="btn btn-lg btn-primary btn-block"
-                    type="submit"
-                  >
-                    Sign in
-                  </button>
-                  {/*<button className="btn btn-lg btn-facebook btn-block text-uppercase">
-                    <i className="fab fa-google mr-2" /> Sign in with Google
-                    </button>*/}
+                  <button type='submit' className='btn btn-lg btn-primary btn-block mt-3' >Sign in</button>
                   <div style={{ textAlign: "center" }}>
-                    <p>Or</p>
-                    <Facebook
-                      history={this.props.history}
-                      setUser={this.props.setUser}
-                    />
+                    <p className='mt-3'>Or</p>
+                    <Facebook />
                   </div>
-                </form>
-              </div>
+                </Form>
+              </Formik>
             </div>
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+//PLEASE CHECK THE FACEBOOK LOGIN, IF IT HAS FAULTS PLEASE FIX IT
 
 export default LoginFormComp;
+
+//THE FORMIK LIBRARY WAS USED FOR THE FORM, YOU CAN FIND THE DOCUMENTATION ON ITS PAGE https://formik.org/
+
+//CONTRIBUTION: AndresH11 https://github.com/AndresH11/

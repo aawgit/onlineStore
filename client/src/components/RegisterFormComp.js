@@ -1,128 +1,111 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { registerUser } from '../api/api';
 import { request } from "https";
-import ReactDOM from "react-dom";
 
-class RegisterFormComp extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.onValuChange = this.onValuChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
 
-  onValuChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
+// Component to register user
+const RegisterFormComp = () => {
 
-  onSubmit(e) {
-    var message = "";
-    e.preventDefault();
+  //Regular expressions, for form validation
+  const regularExpressions = {
+    firstNameLastName: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, //Letters, numbers. hyphen and underscore
+    emali: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+[a-zA-Z0-9-.]+$/,
+  };
 
-    let newUser = {
-      name: this.state.firstName + " " + this.state.lastName,
-      email: this.state.email,
-      password: this.state.password
+  //Initial values ​​of the form
+  const initialValues = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  };
+
+  //Function to validate the form
+  const formValidation = (values) => {
+    const errors = {};
+
+    //we verify that values.firstName complies with the regular expression
+    if (!regularExpressions.firstNameLastName.test(values.firstName)) errors.firstName = 'This field must have only letters and spaces';
+
+    //we verify that values.lastname complies with the regular expression
+    if (!regularExpressions.firstNameLastName.test(values.lastName)) errors.lastName = 'The field must have only letters and spaces';
+
+    //we verify that values.email complies with the regular expression
+    if (regularExpressions.firstNameLastName.test(values.email)) errors.email = 'The email must contain letters, numbers, periods, hyphens and underscores';
+
+    //we verify that values.password meets the condition
+    if (values.password.length <= 5) errors.password = 'Password must be more than 5 digits';
+
+    //we return the error
+    return errors;
+  };
+
+  // function to send the form
+  const handleSubmit = (values) => {
+
+    //validating that the passwords are the same
+    if (values.password !== values.confirmPassword) return alert('Passwords do not match');
+
+    //creating the user model
+    const user = {
+      fullName: `${values.firstName} ${values.lastName}`,
+      email: values.email,
+      password: values.password
     };
-    axios
-      .post("/api/auth/register", newUser)
-      .then(res => {
-        console.log(res);
 
-        message = `Verification e-mail has been sent to ${res.data}.`;
-        ReactDOM.render(message, document.getElementById("message"));
-        console.log(res.data);
-      })
-      .catch(err => {
-        message = `Oops! There is a problem. ${err.response.data.message}.`;
-        ReactDOM.render(message, document.getElementById("message"));
-        console.log(err.response.data);
-      });
-  }
+    //function to call the api
+    const createUser = async (newUser) => {
+      try {
+        // Getting the response from the api
+        const response = await registerUser(newUser);
 
-  componentDidMount() {}
+        alert(response);
+      } catch (error) {
+        //error
+        alert(error.message);
+      }
+    };
 
-  render() {
-    return (
-      <div className="container">
-        <div class="row">
-          <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <div class="card card-signin my-5">
-              <div class="card-body">
-                <h5 class="card-title text-center">Register</h5>
-                <form class="form-signin" onSubmit={this.onSubmit}>
-                  <label for="firstName" class="sr-only">
-                    First name
-                  </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    class="form-control"
-                    placeholder="First name"
-                    required
-                    autofocus
-                    onChange={this.onValuChange}
-                    name="firstName"
-                  />
-                  <br />
-                  <label for="lastName" class="sr-only">
-                    Last name
-                  </label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    class="form-control"
-                    placeholder="LastName"
-                    required
-                    autofocus
-                    onChange={this.onValuChange}
-                    name="lastName"
-                  />
-                  <br />
-                  <label for="email" class="sr-only">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    class="form-control"
-                    name="email"
-                    placeholder="Email address"
-                    required
-                    autofocus
-                    onChange={this.onValuChange}
-                  />
-                  <br />
-                  <label for="password" class="sr-only">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    class="form-control"
-                    placeholder="Password"
-                    name="password"
-                    required
-                    onChange={this.onValuChange}
-                  />
-                  <br />
+    //activando la funcion
+    createUser(user);
+  };
 
-                  <button
-                    class="btn btn-lg btn-primary btn-block"
-                    type="submit"
-                  >
-                    Register
-                  </button>
-                  <br />
-                  <div id="message" />
-                </form>
-              </div>
+
+  return (
+    <div className="container">
+      <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Register</h5>
+              <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={formValidation} >
+                <Form>
+                  <Field name='firstName' type='text' id='firstName' className='form-control' placeholder='First name' required />
+                  <ErrorMessage name='firstName' component='span' className='text-danger' />
+                  <Field name='lastName' type='text' id='lastName' className='form-control mt-3' placeholder='lastName name' required />
+                  <ErrorMessage name='lastName' component='span' className='text-danger' />
+                  <Field name='email' type='email' id='email' className='form-control mt-3' placeholder='Email' required />
+                  <ErrorMessage name='email' component='span' className='text-danger' />
+                  <Field name='password' type='password' id='password' className='form-control mt-3' placeholder='Password' required />
+                  <ErrorMessage name='password' component='span' className='text-danger' />
+                  <Field name='confirmPassword' type='password' id='confirmPassword' className='form-control mt-3' placeholder='Confirm password' required />
+                  <button type='submit' className='btn btn-lg btn-primary btn-block mt-3' >Register</button>
+                </Form>
+              </Formik>
             </div>
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default RegisterFormComp;
+
+//THE FORMIK LIBRARY WAS USED FOR THE FORM, YOU CAN FIND THE DOCUMENTATION ON ITS PAGE https://formik.org/
+
+
+
+//CONTRIBUTION: AndresH11 https://github.com/AndresH11/
