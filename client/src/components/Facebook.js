@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import FacebookLogin from "react-facebook-login";
 import axios from "axios";
 
