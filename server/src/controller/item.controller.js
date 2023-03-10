@@ -12,6 +12,8 @@ import cloudinary from "cloudinary";
 import cloudinaryStorage from "multer-storage-cloudinary";
 import config from "../config";
 import VerifyToken from "../_helper/VerifyToken";
+import AppError from "../utils/appError";
+import catchAsync from "../utils/catchAsync";
 
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -62,60 +64,41 @@ router.post(
   "/",
   VerifyToken,
   cloudImageUpload.single("file"),
-  async (req, res) => {
-    try {
+  catchAsync(async (req, res, next) => {
       const item = await createItem(req);
+      if(!item) {
+        return next(new AppError("There was a problem adding the information to the database.", 500));
+      }
       res.status(201).send(item);
-    } catch (err) {
-      return res
-        .status(500)
-        .send("There was a problem adding the information to the database.");
-    }
-  }
+  })
 );
 
 // GETS A SINGLE ITEM FROM THE DATABASE
-router.get("/:id", async (req, res) => {
-  try {
+router.get("/:id", catchAsync(async (req, res, next) => {
     const item = await getItem(req.params.id);
-    if (!item) return res.status(404).send("No item found.");
+    if (!item) return next(new AppError('No item found', 404));
     res.status(200).send(item);
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send("There was a problem finding the item.");
-  }
-});
+}));
 
 // RETURNS ALL THE ITEMS IN THE DATABASE
-router.get("/", async (req, res) => {
-  try {
+router.get("/", catchAsync(async (req, res, next) => {
     const items = await getItem();
-    if (!items) return res.status(404).send("No items found.");
+    if (!items) return next(new AppError('No items found', 404));
     res.status(200).send(items);
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send("There was a problem finding the items.");
-  }
-});
+}));
 
-router.delete("/:id", VerifyToken, async (req, res) => {
-  try {
-    await deleteItem(req.params.id);
-    return res.status(200).send("Iteme: " + item.name + " was deleted.");
-  } catch (err) {
-    return res.status(500).send("There was a problem deleting the item.");
-  }
-});
+router.delete("/:id", VerifyToken, catchAsync(async (req, res, next) => {
+    const item = await deleteItem(req.params.id);
+    if(!item) return next(new AppError("There was a problem deleting the item.", 404))
+    res.status(204).send(`Item: ${item.name} was deleted`); // changed to template literal and corrected a typo
+}));
 
 // UPDATES A SINGLE ITEM IN THE DATABASE
-router.put("/:id", VerifyToken, async (req, res) => {
+router.put("/:id", VerifyToken, catchAsync(async (req, res) => {
   var conditions = { _id: req.params.id, owner: req.userId };
-  try {
-    await updateItem(conditions);
+    const updateItem = await updateItem(conditions);
+    if(!updateItem) return next(new AppError('No item with this ID found', 404));
     res.status(200).send(item);
-  } catch (err) {
-    return res.status(500).send("There was a problem updating the item.");
-  }
-});
+}));
 
 export default router;
