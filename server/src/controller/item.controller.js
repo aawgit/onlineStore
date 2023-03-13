@@ -12,6 +12,8 @@ import cloudinary from "cloudinary";
 import cloudinaryStorage from "multer-storage-cloudinary";
 import config from "../config";
 import VerifyToken from "../_helper/VerifyToken";
+// import AppError from "../utils/appError";
+// import catchAsync from "../utils/catchAsync";
 
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -85,6 +87,12 @@ router.get("/:id", async (req, res) => {
     return res.status(500).send("There was a problem finding the item.");
   }
 });
+
+// router.get("/:id", catchAsync(async (req, res) => {
+//     const item = await getItem(req.params.id);
+//     if (!item) return next(new AppError('No item found', 404));
+//     res.status(200).send(item);
+// }));
 
 // RETURNS ALL THE ITEMS IN THE DATABASE
 router.get("/", async (req, res) => {
