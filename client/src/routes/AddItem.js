@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import AddItemComp from "../components/item/AddItemComp";
-import LoginHandler from "../_helper/LogInHandler";
+import {checkLoggedIn} from "../_helper/LogInHandler";
 
 class AddItem extends Component {
   render() {
-    if (LoginHandler.checkLoggedIn()) {
+    if (checkLoggedIn()) {
       return (
         <div>
           <AddItemComp history={this.props.history} />
