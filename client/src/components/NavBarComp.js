@@ -1,4 +1,5 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import '../App.css';
 
 class NavBarComp extends Component {
   render() {
@@ -14,7 +15,7 @@ class NavBarComp extends Component {
               </li>
             </ul>
           </div>
-          <div className="mx-auto order-0">
+          <div className="mx-auto order-0 Nav1">
             <a className="navbar-brand mx-auto" href="#">
               Shop
             </a>
@@ -38,11 +39,13 @@ class NavBarComp extends Component {
     if (this.props.userName) {
       return (
         <ul className="navbar-nav ml-auto">
+          <div class="dropdown-divider"></div>
           <li>
             <a href="#" className="nav-link">{this.props.userName}</a>
           </li>
+          <div class="dropdown-divider"></div>
           <li>
-            <a href="/#/addItem" className="btn btn-success" style={{marginLeft:"4px", marginRight:"4px"}}>Add item</a>
+            <a href="/#/addItem" className="btn btn-success" style={{ marginLeft: "4px", marginRight: "4px" }}>Add item</a>
           </li>
           <li>
             <button onClick={this.props.removeUser} className="btn btn-outline-light">
@@ -54,11 +57,13 @@ class NavBarComp extends Component {
     } else {
       return (
         <ul className="navbar-nav ml-auto">
+          <div class="dropdown-divider"></div>
           <li className="nav-item">
             <a className="nav-link" href="#/login">
               Login
             </a>
           </li>
+          <div class="dropdown-divider"></div>
           <li className="nav-item">
             <a className="nav-link" href="#/register">
               Register
